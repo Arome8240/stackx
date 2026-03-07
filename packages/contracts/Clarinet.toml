@@ -1,0 +1,8 @@
+[project]
+name = "staxial-contracts"
+network = "devnet"
+
+[contracts.sample]
+path = "contracts/sample.clar"
+
+

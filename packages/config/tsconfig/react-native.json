@@ -1,0 +1,13 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noEmit": true,
+    "types": ["react-native", "react", "react-dom"]
+  },
+  "exclude": ["node_modules"]
+}
+
+

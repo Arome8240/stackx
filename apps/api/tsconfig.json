@@ -1,0 +1,14 @@
+{
+  "extends": "../../packages/config/tsconfig/nest.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@staxial/types": ["../../packages/types/src"],
+      "@staxial/types/*": ["../../packages/types/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+}
+
+
