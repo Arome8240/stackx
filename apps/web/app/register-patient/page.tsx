@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { openContractCall } from '@stacks/connect';
 import { stringAsciiCV, bufferCV } from '@stacks/transactions';
+import { toast } from 'sonner';
+import { ShieldCheck, Loader2 } from 'lucide-react';
 import { useWallet } from '../../components/providers/wallet-provider';
 import { Contracts } from '../../lib/contracts';
+import { contractCall } from '../../lib/contract-call';
 import Input from '../../components/ui/input';
 import Button from '../../components/ui/button';
 import Card from '../../components/ui/card';
@@ -23,7 +25,6 @@ export default function RegisterPatientPage() {
   const router = useRouter();
   const [form, setForm] = useState({ fullName: '', dob: '', bloodType: 'O+', ipfsCid: '' });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const set =
     (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -32,18 +33,15 @@ export default function RegisterPatientPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!address) return;
-    setError('');
     setLoading(true);
     try {
       const [nameHash, dobHash] = await Promise.all([
         sha256Hash(form.fullName),
         sha256Hash(form.dob),
       ]);
-
-      await openContractCall({
+      await contractCall({
         network,
-        contractAddress: Contracts.patientRegistry.split('.')[0],
-        contractName: Contracts.patientRegistry.split('.')[1],
+        contractId: Contracts.patientRegistry,
         functionName: 'register',
         functionArgs: [
           bufferCV(nameHash),
@@ -51,11 +49,14 @@ export default function RegisterPatientPage() {
           stringAsciiCV(form.bloodType),
           stringAsciiCV(form.ipfsCid || 'pending'),
         ],
-        onFinish: () => router.push('/dashboard'),
+        onSuccess: () => router.push('/dashboard'),
         onCancel: () => setLoading(false),
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Transaction failed');
+      toast.error('Transaction failed', {
+        description: err instanceof Error ? err.message : 'Unknown error',
+      });
+    } finally {
       setLoading(false);
     }
   }
@@ -63,6 +64,7 @@ export default function RegisterPatientPage() {
   if (!address) {
     return (
       <div className="flex flex-col items-center gap-4 py-24 text-center">
+        <ShieldCheck className="h-10 w-10 text-zinc-600" />
         <p className="text-zinc-400">Connect your wallet to register as a patient.</p>
         <Button onClick={connect}>Connect Wallet</Button>
       </div>
@@ -71,12 +73,14 @@ export default function RegisterPatientPage() {
 
   return (
     <div className="mx-auto max-w-lg space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Register as Patient</h1>
-        <p className="mt-1 text-sm text-zinc-400">
-          Your name and date of birth are hashed before being stored on-chain. Only the hash is
-          visible publicly.
-        </p>
+      <div className="flex items-center gap-3">
+        <ShieldCheck className="h-6 w-6 text-brand" />
+        <div>
+          <h1 className="text-2xl font-bold">Register as Patient</h1>
+          <p className="mt-0.5 text-sm text-zinc-400">
+            Name and DOB are SHA-256 hashed client-side — only the hash is stored on-chain.
+          </p>
+        </div>
       </div>
 
       <Card>
@@ -110,16 +114,13 @@ export default function RegisterPatientPage() {
             </select>
           </div>
           <Input
-            label="IPFS CID (optional — encrypted records pointer)"
+            label="IPFS CID (optional)"
             placeholder="Qm…"
             value={form.ipfsCid}
             onChange={set('ipfsCid')}
           />
-
-          {error && <p className="text-sm text-red-500">{error}</p>}
-
-          <Button type="submit" loading={loading} className="w-full">
-            Register on Stacks
+          <Button type="submit" disabled={loading} className="w-full">
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Register on Stacks'}
           </Button>
         </form>
       </Card>

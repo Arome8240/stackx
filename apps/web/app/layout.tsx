@@ -1,6 +1,7 @@
 import './globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
+import { Toaster } from 'sonner';
 import { WalletProvider } from '../components/providers/wallet-provider';
 import Navbar from '../components/layout/navbar';
 
@@ -21,6 +22,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Navbar />
           <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
         </WalletProvider>
+        <Toaster
+          theme="dark"
+          position="bottom-right"
+          toastOptions={{
+            classNames: {
+              toast: 'bg-zinc-900 border border-zinc-800 text-zinc-50',
+              description: 'text-zinc-400',
+            },
+          }}
+        />
       </body>
     </html>
   );
