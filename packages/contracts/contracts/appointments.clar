@@ -1,9 +1,10 @@
 ;; appointments.clar
 ;; Patients book appointments with doctors; doctors confirm or cancel.
 
-(define-constant ERR-NOT-FOUND    (err u300))
-(define-constant ERR-UNAUTHORIZED (err u301))
+(define-constant ERR-NOT-FOUND      (err u300))
+(define-constant ERR-UNAUTHORIZED   (err u301))
 (define-constant ERR-INVALID-STATUS (err u302))
+(define-constant ERR-LIST-FULL      (err u303))
 
 ;; status: 0=pending 1=confirmed 2=cancelled 3=completed
 (define-map appointments
@@ -11,7 +12,7 @@
   {
     patient:   principal,
     doctor:    principal,
-    slot:      uint,   ;; unix timestamp of appointment slot
+    slot:      uint,              ;; unix timestamp of appointment slot
     notes-cid: (string-ascii 64),
     status:    uint,
     created:   uint,
@@ -51,15 +52,19 @@
     (id          (var-get next-appt-id))
     (doc-current (default-to { ids: (list) } (map-get? doctor-appointments { doctor: doctor })))
     (pat-current (default-to { ids: (list) } (map-get? patient-appointments { patient: tx-sender })))
+    (new-doc-ids (as-max-len? (append (get ids doc-current) id) u200))
+    (new-pat-ids (as-max-len? (append (get ids pat-current) id) u200))
   )
+    (asserts! (is-some new-doc-ids) ERR-LIST-FULL)
+    (asserts! (is-some new-pat-ids) ERR-LIST-FULL)
     (map-set appointments
       { appt-id: id }
       { patient: tx-sender, doctor: doctor, slot: slot, notes-cid: notes-cid,
         status: u0, created: block-height, updated: block-height })
     (map-set doctor-appointments { doctor: doctor }
-      { ids: (unwrap-panic (as-max-len? (append (get ids doc-current) id) u200)) })
+      { ids: (unwrap! new-doc-ids ERR-LIST-FULL) })
     (map-set patient-appointments { patient: tx-sender }
-      { ids: (unwrap-panic (as-max-len? (append (get ids pat-current) id) u200)) })
+      { ids: (unwrap! new-pat-ids ERR-LIST-FULL) })
     (var-set next-appt-id (+ id u1))
     (ok id)
   )

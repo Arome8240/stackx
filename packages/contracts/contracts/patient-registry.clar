@@ -4,17 +4,16 @@
 
 (define-constant ERR-ALREADY-REGISTERED (err u100))
 (define-constant ERR-NOT-FOUND          (err u101))
-(define-constant ERR-UNAUTHORIZED       (err u102))
 
 (define-map patients
   { patient: principal }
   {
-    name-hash:   (buff 32),   ;; keccak256 of full name — PII stays off-chain
-    dob-hash:    (buff 32),   ;; keccak256 of date-of-birth
-    blood-type:  (string-ascii 3),
-    ipfs-cid:    (string-ascii 64), ;; encrypted off-chain record pointer
-    registered:  uint,
-    updated:     uint
+    name-hash:  (buff 32),          ;; sha256 of full name - PII stays off-chain
+    dob-hash:   (buff 32),          ;; sha256 of date-of-birth
+    blood-type: (string-ascii 3),
+    ipfs-cid:   (string-ascii 64),  ;; encrypted off-chain record pointer
+    registered: uint,
+    updated:    uint
   }
 )
 

@@ -1,0 +1,6 @@
+[network]
+name = "mainnet"
+
+[accounts.deployer]
+# Set your mainnet deployer address here
+mnemonic = "despair celery hen coconut twist join circle cabin already three try crane runway position dress ladder win uncle catch case express thunder topple picnic"

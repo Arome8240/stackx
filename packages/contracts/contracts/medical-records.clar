@@ -1,19 +1,18 @@
 ;; medical-records.clar
 ;; Doctors write encrypted record hashes; patients grant/revoke access.
 
-(define-constant ERR-UNAUTHORIZED  (err u200))
-(define-constant ERR-NOT-FOUND     (err u201))
-(define-constant ERR-ALREADY-EXISTS (err u202))
+(define-constant ERR-UNAUTHORIZED (err u200))
+(define-constant ERR-LIST-FULL    (err u201))
 
 ;; record-id -> record metadata
 (define-map records
   { record-id: uint }
   {
-    patient:    principal,
-    doctor:     principal,
-    ipfs-cid:   (string-ascii 64),  ;; encrypted record on IPFS
-    record-type: (string-ascii 32), ;; "diagnosis" | "prescription" | "lab" | "imaging"
-    created:    uint
+    patient:     principal,
+    doctor:      principal,
+    ipfs-cid:    (string-ascii 64),  ;; encrypted record on IPFS
+    record-type: (string-ascii 32),  ;; "diagnosis" | "prescription" | "lab" | "imaging"
+    created:     uint
   }
 )
 
@@ -51,16 +50,17 @@
   (let (
     (id      (var-get next-id))
     (current (default-to { ids: (list) } (map-get? patient-records { patient: patient })))
+    (new-ids (as-max-len? (append (get ids current) id) u500))
   )
-    ;; doctor must have access granted by patient
     (asserts! (has-access patient tx-sender) ERR-UNAUTHORIZED)
+    (asserts! (is-some new-ids) ERR-LIST-FULL)
     (map-set records
       { record-id: id }
       { patient: patient, doctor: tx-sender, ipfs-cid: ipfs-cid,
         record-type: record-type, created: block-height })
     (map-set patient-records
       { patient: patient }
-      { ids: (unwrap-panic (as-max-len? (append (get ids current) id) u500)) })
+      { ids: (unwrap! new-ids ERR-LIST-FULL) })
     (var-set next-id (+ id u1))
     (ok id)
   )

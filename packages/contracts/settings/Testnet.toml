@@ -1,0 +1,6 @@
+[network]
+name = "testnet"
+
+[accounts.deployer]
+# Set your testnet deployer address here
+# mnemonic = "your 24-word seed phrase here"
