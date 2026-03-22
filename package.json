@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "turbo run dev",
     "dev:web": "pnpm --filter web dev",
-    "dev:mobile": "pnpm --filter mobile start",
     "dev:contracts": "pnpm --filter contracts dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
