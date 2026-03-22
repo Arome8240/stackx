@@ -39,8 +39,8 @@
         dob-hash:   dob-hash,
         blood-type: blood-type,
         ipfs-cid:   ipfs-cid,
-        registered: block-height,
-        updated:    block-height
+        registered: stacks-block-height,
+        updated:    stacks-block-height
       })
     (ok tx-sender)
   )
@@ -50,7 +50,7 @@
   (let ((record (unwrap! (get-patient tx-sender) ERR-NOT-FOUND)))
     (map-set patients
       { patient: tx-sender }
-      (merge record { ipfs-cid: ipfs-cid, updated: block-height }))
+      (merge record { ipfs-cid: ipfs-cid, updated: stacks-block-height }))
     (ok true)
   )
 )

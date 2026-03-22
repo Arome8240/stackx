@@ -4,9 +4,15 @@ network = "devnet"
 
 [contracts.patient-registry]
 path = "contracts/patient-registry.clar"
+clarity_version = 3
+epoch = "3.0"
 
 [contracts.medical-records]
 path = "contracts/medical-records.clar"
+clarity_version = 3
+epoch = "3.0"
 
 [contracts.appointments]
 path = "contracts/appointments.clar"
+clarity_version = 3
+epoch = "3.0"

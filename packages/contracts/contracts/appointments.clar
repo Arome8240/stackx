@@ -60,7 +60,7 @@
     (map-set appointments
       { appt-id: id }
       { patient: tx-sender, doctor: doctor, slot: slot, notes-cid: notes-cid,
-        status: u0, created: block-height, updated: block-height })
+        status: u0, created: stacks-block-height, updated: stacks-block-height })
     (map-set doctor-appointments { doctor: doctor }
       { ids: (unwrap! new-doc-ids ERR-LIST-FULL) })
     (map-set patient-appointments { patient: tx-sender }
@@ -75,7 +75,7 @@
     (asserts! (is-eq tx-sender (get doctor appt)) ERR-UNAUTHORIZED)
     (asserts! (is-eq (get status appt) u0) ERR-INVALID-STATUS)
     (map-set appointments { appt-id: appt-id }
-      (merge appt { status: u1, updated: block-height }))
+      (merge appt { status: u1, updated: stacks-block-height }))
     (ok true)
   )
 )
@@ -87,7 +87,7 @@
       ERR-UNAUTHORIZED)
     (asserts! (< (get status appt) u2) ERR-INVALID-STATUS)
     (map-set appointments { appt-id: appt-id }
-      (merge appt { status: u2, updated: block-height }))
+      (merge appt { status: u2, updated: stacks-block-height }))
     (ok true)
   )
 )
@@ -97,7 +97,7 @@
     (asserts! (is-eq tx-sender (get doctor appt)) ERR-UNAUTHORIZED)
     (asserts! (is-eq (get status appt) u1) ERR-INVALID-STATUS)
     (map-set appointments { appt-id: appt-id }
-      (merge appt { status: u3, updated: block-height }))
+      (merge appt { status: u3, updated: stacks-block-height }))
     (ok true)
   )
 )

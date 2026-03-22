@@ -57,7 +57,7 @@
     (map-set records
       { record-id: id }
       { patient: patient, doctor: tx-sender, ipfs-cid: ipfs-cid,
-        record-type: record-type, created: block-height })
+        record-type: record-type, created: stacks-block-height })
     (map-set patient-records
       { patient: patient }
       { ids: (unwrap! new-ids ERR-LIST-FULL) })
