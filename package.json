@@ -1,5 +1,5 @@
 {
-  "name": "staxial",
+  "name": "healthchain",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.30.1",
@@ -7,7 +7,6 @@
     "dev": "turbo run dev",
     "dev:web": "pnpm --filter web dev",
     "dev:mobile": "pnpm --filter mobile start",
-    "dev:api": "pnpm --filter api start:dev",
     "dev:contracts": "pnpm --filter contracts dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
@@ -24,5 +23,3 @@
     "typescript": "^5.6.3"
   }
 }
-
-

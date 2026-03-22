@@ -1,8 +1,12 @@
 [project]
-name = "staxial-contracts"
+name = "healthchain-contracts"
 network = "devnet"
 
-[contracts.sample]
-path = "contracts/sample.clar"
+[contracts.patient-registry]
+path = "contracts/patient-registry.clar"
 
+[contracts.medical-records]
+path = "contracts/medical-records.clar"
 
+[contracts.appointments]
+path = "contracts/appointments.clar"
