@@ -16,4 +16,11 @@ coverage
 .env.test.local
 .env.production.local
 
+# Clarinet — sensitive settings (contain mnemonics)
+packages/contracts/settings/Mainnet.toml
+packages/contracts/settings/Testnet.toml
+
+# Clarinet deployment plans (contain deployer address + costs)
+packages/contracts/deployments/
+
 
