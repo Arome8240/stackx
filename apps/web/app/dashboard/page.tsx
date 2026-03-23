@@ -11,7 +11,7 @@ import { isRegistered, getPatientAppointments, getDoctorAppointments } from '../
 type Tab = 'patient' | 'doctor';
 
 export default function DashboardPage() {
-  const { address, network, connect } = useWallet();
+  const { address, connect } = useWallet();
   const router = useRouter();
   const [tab, setTab] = useState<Tab>('patient');
   const [registered, setRegistered] = useState<boolean | null>(null);
@@ -22,10 +22,10 @@ export default function DashboardPage() {
     if (!address) return;
     setLoading(true);
     Promise.all([
-      isRegistered(address, network),
+      isRegistered(address),
       tab === 'patient'
-        ? getPatientAppointments(address, network)
-        : getDoctorAppointments(address, network),
+        ? getPatientAppointments(address)
+        : getDoctorAppointments(address),
     ])
       .then(([reg, appts]) => {
         setRegistered(reg as boolean);

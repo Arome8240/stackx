@@ -21,7 +21,7 @@ async function sha256Hash(text: string): Promise<Uint8Array> {
 const BLOOD_TYPES = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
 export default function RegisterPatientPage() {
-  const { address, network, connect } = useWallet();
+  const { address, connect } = useWallet();
   const router = useRouter();
   const [form, setForm] = useState({ fullName: '', dob: '', bloodType: 'O+', ipfsCid: '' });
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,6 @@ export default function RegisterPatientPage() {
         sha256Hash(form.dob),
       ]);
       await contractCall({
-        network,
         contractId: Contracts.patientRegistry,
         functionName: 'register',
         functionArgs: [

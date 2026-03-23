@@ -2,14 +2,15 @@
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import { showConnect, type FinishedAuthData } from '@stacks/connect';
-import { StacksTestnet, StacksMainnet } from '@stacks/network';
 
-export const network =
-  process.env.NEXT_PUBLIC_STACKS_NETWORK === 'mainnet' ? new StacksMainnet() : new StacksTestnet();
+type NetworkName = 'mainnet' | 'testnet';
+
+const networkName: NetworkName =
+  (process.env.NEXT_PUBLIC_STACKS_NETWORK as NetworkName) ?? 'mainnet';
 
 interface WalletState {
   address: string | null;
-  network: typeof network;
+  network: NetworkName;
   connect: () => void;
   disconnect: () => void;
 }
@@ -18,7 +19,7 @@ const WalletContext = createContext<WalletState | null>(null);
 
 function resolveAddress(data: FinishedAuthData): string {
   const profile = data.userSession.loadUserData().profile;
-  return network instanceof StacksMainnet ? profile.stxAddress.mainnet : profile.stxAddress.testnet;
+  return networkName === 'mainnet' ? profile.stxAddress.mainnet : profile.stxAddress.testnet;
 }
 
 export function WalletProvider({ children }: { children: ReactNode }) {
@@ -27,6 +28,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const connect = useCallback(() => {
     showConnect({
       appDetails: { name: 'HealthChain', icon: '/icon.png' },
+      network: networkName,
       onFinish: (data: FinishedAuthData) => setAddress(resolveAddress(data)),
       onCancel: () => {},
     });
@@ -35,7 +37,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const disconnect = useCallback(() => setAddress(null), []);
 
   return (
-    <WalletContext.Provider value={{ address, network, connect, disconnect }}>
+    <WalletContext.Provider value={{ address, network: networkName, connect, disconnect }}>
       {children}
     </WalletContext.Provider>
   );

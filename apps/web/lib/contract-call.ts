@@ -1,25 +1,30 @@
 import { openContractCall } from '@stacks/connect';
 import { PostConditionMode, type ClarityValue } from '@stacks/transactions';
 import { toast } from 'sonner';
-import type { StacksNetwork } from '@stacks/network';
+
+type StacksNetworkName = 'mainnet' | 'testnet' | 'devnet';
 
 interface CallOptions {
-  network: StacksNetwork;
+  functionArgs: ClarityValue[];
   contractId: string;
   functionName: string;
-  functionArgs: ClarityValue[];
   onSuccess?: (txId: string) => void;
   onCancel?: () => void;
 }
 
+const networkName: StacksNetworkName =
+  (process.env.NEXT_PUBLIC_STACKS_NETWORK as StacksNetworkName) ?? 'mainnet';
+
+const explorerBase =
+  networkName === 'mainnet' ? 'https://explorer.hiro.so/txid' : 'https://explorer.hiro.so/txid';
+
 /**
- * Wrapper around openContractCall that:
- * - Sets PostConditionMode.Allow so wallets show the fee estimate
- * - Shows sonner toasts for pending / success / error states
- * - Returns a promise that resolves when the wallet dialog closes
+ * Wrapper around openContractCall (stacks/connect v7).
+ * - Passes network as a string — required for wallets to show fee estimates
+ * - PostConditionMode.Allow lets the wallet calculate and display the fee
+ * - Sonner toasts for loading → success / cancel
  */
 export function contractCall({
-  network,
   contractId,
   functionName,
   functionArgs,
@@ -32,11 +37,11 @@ export function contractCall({
     const toastId = toast.loading('Waiting for wallet confirmation…');
 
     openContractCall({
-      network,
       contractAddress,
       contractName,
       functionName,
       functionArgs,
+      network: networkName, // string, not StacksNetwork object
       postConditionMode: PostConditionMode.Allow,
       onFinish: (data) => {
         toast.success('Transaction submitted', {
@@ -45,7 +50,7 @@ export function contractCall({
           action: {
             label: 'View',
             onClick: () =>
-              window.open(`https://explorer.hiro.so/txid/${data.txId}?chain=mainnet`, '_blank'),
+              window.open(`${explorerBase}/${data.txId}?chain=${networkName}`, '_blank'),
           },
         });
         onSuccess?.(data.txId);

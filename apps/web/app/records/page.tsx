@@ -22,7 +22,7 @@ const typeVariant: Record<RecordType, 'info' | 'success' | 'warning' | 'default'
 };
 
 export default function RecordsPage() {
-  const { address, network, connect } = useWallet();
+  const { address, connect } = useWallet();
   const [addForm, setAddForm] = useState({
     patientAddress: '',
     ipfsCid: '',
@@ -43,7 +43,6 @@ export default function RecordsPage() {
     setAddLoading(true);
     try {
       await contractCall({
-        network,
         contractId: Contracts.medicalRecords,
         functionName: 'add-record',
         functionArgs: [
@@ -71,7 +70,6 @@ export default function RecordsPage() {
     setAccessLoading(type);
     try {
       await contractCall({
-        network,
         contractId: Contracts.medicalRecords,
         functionName: action,
         functionArgs: [principalCV(grantee)],

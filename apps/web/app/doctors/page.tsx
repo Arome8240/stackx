@@ -30,7 +30,7 @@ const SAMPLE_DOCTORS = [
 ];
 
 export default function DoctorsPage() {
-  const { address, network, connect } = useWallet();
+  const { address, connect } = useWallet();
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState<string | null>(null);
   const [granted, setGranted] = useState<Set<string>>(new Set());
@@ -46,7 +46,6 @@ export default function DoctorsPage() {
     setLoading(doctorAddress);
     try {
       await contractCall({
-        network,
         contractId: Contracts.medicalRecords,
         functionName: action,
         functionArgs: [principalCV(doctorAddress)],

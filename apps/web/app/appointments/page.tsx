@@ -41,7 +41,7 @@ const statusMeta: Record<
 };
 
 export default function AppointmentsPage() {
-  const { address, network, connect } = useWallet();
+  const { address, connect } = useWallet();
   const [form, setForm] = useState({ doctorAddress: '', slot: '', notesCid: '' });
   const [loading, setLoading] = useState(false);
 
@@ -55,7 +55,6 @@ export default function AppointmentsPage() {
     try {
       const slotTimestamp = Math.floor(new Date(form.slot).getTime() / 1000);
       await contractCall({
-        network,
         contractId: Contracts.appointments,
         functionName: 'book',
         functionArgs: [
