@@ -70,10 +70,6 @@ async function main() {
       console.error(`   Batch ${i + 1} failed:`, error.message);
     }
   }
-  const batchTx = await token.batchTransfer(randomAddresses, batchAmounts);
-  await batchTx.wait();
-  console.log(`   Batch transferred to ${randomAddresses.length} addresses`);
-  console.log(`   Tx hash: ${batchTx.hash}`);
 
   // 3. Mint tokens (10 transactions)
   console.log("\n3. Minting tokens (10 times)...");
