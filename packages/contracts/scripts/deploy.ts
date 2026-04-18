@@ -1,11 +1,17 @@
-import { ethers } from "hardhat";
+import hre from "hardhat";
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
+  const signers = await hre.ethers.getSigners();
+  
+  if (signers.length === 0) {
+    throw new Error("No signers available. Please check your PRIVATE_KEY in .env file");
+  }
+
+  const deployer = signers[0];
 
   console.log("Deploying contracts with the account:", deployer.address);
 
-  const CeloToken = await ethers.getContractFactory("CeloToken");
+  const CeloToken = await hre.ethers.getContractFactory("CeloToken");
   const token = await CeloToken.deploy(
     "My Celo Token",
     "MCT",
@@ -16,6 +22,9 @@ async function main() {
   await token.waitForDeployment();
 
   console.log("Token deployed to:", await token.getAddress());
+  console.log("\nAdd this to your .env file:");
+  console.log(`TOKEN_ADDRESS=${await token.getAddress()}`);
+  console.log(`NEXT_PUBLIC_TOKEN_ADDRESS=${await token.getAddress()}`);
 }
 
 main().catch((error) => {
