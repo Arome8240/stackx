@@ -1,240 +1,228 @@
-## Staxial
+# Staxial Health System
 
-Short GitHub description: **Social DeFi platform on Stacks that fuses social networking with on-chain financial primitives for creators, communities, and investors.**
+> Decentralized health management platform on Stacks blockchain
 
----
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Progress](https://img.shields.io/badge/Progress-45%25-blue.svg)](./PROGRESS.md)
 
-### Overview
+## 🏥 Overview
 
-**Staxial** is a monorepo for a Social DeFi platform built on the Stacks blockchain.
+Staxial Health is a comprehensive decentralized health management system that enables:
+- 🏥 **Multi-hospital registration** with on-chain verification
+- 📋 **Patient-controlled medical records** with consent management
+- 📅 **Appointment booking** with token-based payments
+- 💊 **Prescription issuance** and pharmacy fulfillment
+- 🔐 **Secure access control** and audit trails
 
-This project is a Social DeFi platform built on the Stacks blockchain that combines social networking with decentralized finance primitives. The goal is to enable creators, communities, and investors to interact financially on-chain through social actions such as posts, tipping, creator tokens, and community-driven financial primitives.
+## 🚀 Quick Start
 
-The repository is structured as a production-ready, scalable monorepo that hosts:
-- **Web application** for primary user interaction
-- **Mobile application** for on-the-go engagement
-- **Backend API** for orchestration, data access and off-chain services
-- **Smart contracts** written in Clarity for on-chain logic
+### Prerequisites
 
-No business logic is implemented yet—this repository focuses on **architecture, tooling, and developer experience**.
+- Node.js 20.x
+- pnpm 10.x
+- Clarinet (for contract deployment)
+- Stacks wallet (Hiro or Leather)
 
----
+### Installation
 
-### Architecture Overview
+```bash
+# Clone the repository
+git clone <repository-url>
+cd stackx
 
-- **Monorepo**: Managed with **pnpm workspaces** and **Turborepo** for fast, consistent workflows across all apps and packages.
-- **Applications layer**:
-  - **Web**: Next.js App Router frontend for the main user experience.
-  - **Mobile**: Expo React Native app using Expo Router and NativeWind for styling.
-  - **API**: NestJS backend providing HTTP APIs, configuration management, and integration points.
-- **Smart contracts layer**:
-  - **Clarity** contracts managed with **Clarinet** for development and testing.
-- **Shared packages**:
-  - **`config`**: Centralized ESLint, Prettier, and TypeScript configuration.
-  - **`types`**: Shared TypeScript types across apps and services.
-  - **`contracts`**: Clarinet project and Clarity contracts.
+# Install dependencies
+pnpm install
 
-The design emphasizes:
-- **Scalability**: Modular architecture in NestJS and clear separation of concerns across apps.
-- **Consistency**: Shared configs and types reduce drift between applications.
-- **DX**: Simple top-level scripts for running each part of the system.
+# Start development server
+pnpm --filter web dev
+```
 
----
+### Configuration
+
+Create `.env.local` in `apps/web/`:
+
+```env
+NEXT_PUBLIC_NETWORK=testnet
+NEXT_PUBLIC_CONTRACT_ADDRESS=your-contract-address
+NEXT_PUBLIC_DEPLOYER_ADDRESS=your-deployer-address
+NEXT_PUBLIC_STACKS_API_URL=https://api.testnet.hiro.so
+```
+
+## 📁 Project Structure
+
+```
+stackx/
+├── apps/
+│   ├── web/              # Next.js admin dashboard
+│   ├── mobile/           # React Native app (planned)
+│   └── api/              # NestJS backend (planned)
+├── packages/
+│   ├── types/            # Shared TypeScript types
+│   ├── contracts/        # Legacy contracts
+│   └── config/           # Shared configurations
+├── PROGRESS.md           # Development progress
+├── PROJECT_SUMMARY.md    # Comprehensive overview
+└── DEPLOYMENT_GUIDE.md   # Quick deployment guide
+```
+
+## 🔗 Related Repositories
+
+- **[staxial-contract](../staxial-contract)** - Smart contracts in Clarity
+- **[staxial-sdk](../staxial-sdk)** - TypeScript SDK for contract interactions
+
+## 🎯 Features
+
+### ✅ Completed
+
+- **Smart Contracts** (100%)
+  - Health token (SIP-010)
+  - Hospital registry
+  - Patient records
+  - Appointments
+  - Prescriptions
+
+- **Admin Dashboard** (70%)
+  - Wallet authentication
+  - Hospital management (CRUD)
+  - Real-time blockchain data
+  - Transaction handling
+  - Live statistics
+
+- **SDK** (100%)
+  - TypeScript SDK published
+  - Full type safety
+  - Contract interaction utilities
+
+### 🚧 In Progress
+
+- Patient management interface
+- Appointments overview
+- Prescriptions management
+- Analytics dashboard
+
+### 📋 Planned
+
+- Mobile application (React Native)
+- Backend API (NestJS)
+- IPFS integration
+- Push notifications
+
+## 🛠️ Development
+
+### Available Scripts
+
+```bash
+# Development
+pnpm dev                    # Start all apps
+pnpm --filter web dev       # Start web app only
+pnpm --filter mobile dev    # Start mobile app
+
+# Build
+pnpm build                  # Build all packages
+pnpm --filter web build     # Build web app
+
+# Testing
+pnpm test                   # Run all tests
+pnpm lint                   # Lint all packages
+
+# Types
+pnpm --filter @staxial/types build  # Build types package
+```
 
 ### Tech Stack
 
-- **Monorepo & Tooling**
-  - **pnpm workspaces**
-  - **Turborepo** for task orchestration (`dev`, `build`, `lint`, `test`)
-  - **TypeScript** across all Node/React projects
-  - **Prettier** and **ESLint** with shared configuration
+**Frontend:**
+- Next.js 15 (App Router)
+- React 18
+- TypeScript
+- TailwindCSS
+- Stacks Connect
 
-- **Web App (`apps/web`)**
-  - **Next.js (App Router, latest stable)**
-  - **React** + **TypeScript**
-  - **TailwindCSS** for utility-first styling
-  - **ESLint** + **Prettier** via shared config
+**Blockchain:**
+- Stacks Blockchain
+- Clarity 2.0
+- Clarinet
 
-- **Mobile App (`apps/mobile`)**
-  - **Expo** (React Native)
-  - **Expo Router**
-  - **TypeScript**
-  - **NativeWind** (Tailwind for React Native)
+**Tools:**
+- pnpm (monorepo)
+- Turbo (build system)
+- ESLint + Prettier
 
-- **Backend API (`apps/api`)**
-  - **NestJS** (modular architecture)
-  - **TypeScript**
-  - **`@nestjs/config`** for environment configuration
+## 📚 Documentation
 
-- **Smart Contracts (`packages/contracts`)**
-  - **Clarity** smart contracts
-  - **Clarinet** for development, testing, and local networks
+- [Progress Tracking](./PROGRESS.md) - Current development status
+- [Project Summary](./PROJECT_SUMMARY.md) - Comprehensive overview
+- [Deployment Guide](./DEPLOYMENT_GUIDE.md) - Quick start for deployment
+- [Task Breakdown](./HEALTH_SYSTEM_TASKS.md) - Detailed task list
+
+## 🚀 Deployment
+
+### Testnet Deployment
+
+1. Deploy contracts (see [staxial-contract](../staxial-contract))
+2. Update environment variables
+3. Build and deploy web app
+
+```bash
+# Build for production
+pnpm --filter web build
+
+# Start production server
+pnpm --filter web start
+```
+
+See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for detailed instructions.
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our contributing guidelines.
+
+### Development Workflow
+
+1. Create a feature branch
+2. Make your changes
+3. Run tests and linting
+4. Submit a pull request
+
+## 📊 Progress
+
+- **Overall:** 45% Complete
+- **Smart Contracts:** 100% ✅
+- **SDK:** 100% ✅
+- **Web App:** 70% 🚧
+- **Mobile App:** 0% 📋
+- **Documentation:** 40% 🚧
+
+See [PROGRESS.md](./PROGRESS.md) for detailed breakdown.
+
+## 🔐 Security
+
+- All medical data encrypted before storage
+- Patient-controlled access permissions
+- On-chain audit trails
+- Role-based access control
+- Emergency access mechanisms
+
+## 📄 License
+
+MIT License - see [LICENSE](./LICENSE) for details
+
+## 🙏 Acknowledgments
+
+- Stacks Foundation
+- Hiro Systems
+- Clarity Language Team
+
+## 📞 Support
+
+- Documentation: See `/docs` folder
+- Issues: GitHub Issues
+- Discussions: GitHub Discussions
 
 ---
 
-### Monorepo Structure
+**Status:** Active Development  
+**Version:** 0.2.0  
+**Last Updated:** January 2024
 
-Top-level layout:
-
-- **`apps/`**: Runtime applications
-  - **`apps/web`**: Next.js web frontend using the App Router and TailwindCSS.
-  - **`apps/mobile`**: Expo React Native application with Expo Router and NativeWind.
-  - **`apps/api`**: NestJS backend API with modular setup and environment configuration.
-
-- **`packages/`**: Shared libraries and tooling
-  - **`packages/contracts`**:
-    - Clarinet project configuration (`Clarinet.toml`)
-    - Clarity contracts under `contracts/`
-  - **`packages/config`**:
-    - Shared ESLint configurations (`eslint/`)
-    - Shared TypeScript configs (`tsconfig/`)
-    - Shared Prettier config (`prettier/`)
-  - **`packages/types`**:
-    - Shared TypeScript types (`src/index.ts`)
-
-- **Root configuration**
-  - **`package.json`**: Monorepo scripts and dev tooling dependencies (TypeScript, Turborepo, ESLint, Prettier).
-  - **`pnpm-workspace.yaml`**: Workspace configuration for `apps/*` and `packages/*`.
-  - **`turbo.json`**: Pipeline configuration for `dev`, `build`, `lint`, and `test`.
-  - **`tsconfig.base.json`**: Base TypeScript compiler options shared across projects.
-  - **`prettier.config.cjs`**: Root Prettier config delegating to shared style.
-  - **`env.example`**: Example environment variables.
-
----
-
-### Getting Started
-
-#### Prerequisites
-
-- **Node.js** (LTS or later)
-- **pnpm** (recommended package manager)
-- **Clarinet** (for smart contract development)
-  - Install from the official Stacks tooling distribution.
-
-#### Install dependencies
-
-From the repository root:
-
-```bash
-pnpm install
-```
-
-This will install dependencies for all apps and packages defined in `pnpm-workspace.yaml`.
-
----
-
-### Development Scripts
-
-From the repository root, you can run:
-
-- **Run all dev tasks via Turborepo**
-
-```bash
-pnpm dev
-```
-
-- **Web app (Next.js)**
-
-```bash
-pnpm dev:web
-```
-
-Runs `next dev` in `apps/web`.
-
-- **Mobile app (Expo + React Native)**
-
-```bash
-pnpm dev:mobile
-```
-
-Runs `expo start` in `apps/mobile` (use the Expo CLI UI or additional scripts for iOS/Android/web).
-
-- **Backend API (NestJS)**
-
-```bash
-pnpm dev:api
-```
-
-Runs `nest start --watch` in `apps/api` and reads configuration via `@nestjs/config`.
-
-- **Contracts (Clarinet)**
-
-```bash
-pnpm dev:contracts
-```
-
-Runs `clarinet console` in `packages/contracts`. Use this for iterating on and inspecting Clarity contracts.
-
-- **Build all**
-
-```bash
-pnpm build
-```
-
-- **Lint all**
-
-```bash
-pnpm lint
-```
-
-- **Test all**
-
-```bash
-pnpm test
-```
-
-- **Format code**
-
-```bash
-pnpm format
-```
-
----
-
-### Environment Variables
-
-Environment variables are not committed to the repo. Use the provided `env.example` as a starting point and create environment-specific files (e.g. `.env.local`, `.env.development`) in your own environment.
-
-Representative variables:
-
-- **Web (`apps/web`)**
-  - `NEXT_PUBLIC_STACKS_API_URL` – Base URL for Stacks API.
-  - `NEXT_PUBLIC_APP_URL` – Public URL for the web frontend.
-
-- **Mobile (`apps/mobile`)**
-  - `EXPO_PUBLIC_STACKS_API_URL` – Base URL for Stacks API exposed to the mobile app.
-
-- **Backend API (`apps/api`)**
-  - `API_PORT` – Port for the NestJS HTTP server (default: `4000`).
-  - `API_LOG_LEVEL` – Logging level (e.g. `debug`, `info`, `warn`, `error`).
-
-- **Contracts / Clarinet**
-  - `STACKS_NETWORK` – Target network for Clarinet (e.g. `devnet`).
-
-Each app or service should load environment variables using its own mechanism:
-- **Next.js**: `process.env` (with `NEXT_PUBLIC_` prefix for client-side variables).
-- **Expo**: `EXPO_PUBLIC_` variables.
-- **NestJS**: `@nestjs/config` with `ConfigModule.forRoot`.
-
----
-
-### Contribution Guidelines
-
-- **No business logic yet**: This repository currently focuses on **structure, tooling, and architecture**. Keep contributions within these boundaries unless there is a clear, agreed design for protocol features.
-- **Follow shared configs**:
-  - Use the existing **ESLint** and **Prettier** configurations from `packages/config`.
-  - Do not override formatting or lint rules locally without a strong reason.
-- **Type safety first**:
-  - Prefer adding or reusing types in `packages/types` for anything shared between apps.
-  - Avoid `any` unless absolutely necessary and documented.
-- **Monorepo conventions**:
-  - Place new runtime apps under `apps/`.
-  - Place reusable libraries and tools under `packages/`.
-  - Wire new workspaces into `pnpm-workspace.yaml` and, if relevant, into `turbo.json`.
-- **Git & CI hygiene**:
-  - Ensure `pnpm lint` and `pnpm test` pass before opening a PR.
-  - Keep PRs small and focused (e.g. “add new shared config”, “scaffold new module in API”).
-
-As the project evolves from foundation to full-featured Social DeFi protocol, these guidelines can be extended with domain-specific architecture, security, and audit requirements.
-
-
+Built with ❤️ on Stacks Blockchain
