@@ -1,63 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-interface Hospital {
-  id: number;
-  name: string;
-  licenseNumber: string;
-  location: string;
-  status: 'pending' | 'active' | 'suspended' | 'revoked';
-  verified: boolean;
-  stake: string;
-  rating: number;
-  registeredAt: string;
-}
+import { useState } from 'react';
+import { useHospitals } from '@/lib/hooks/use-hospitals';
+import type { Hospital } from '@/lib/types/sdk';
 
 export default function HospitalsPage() {
-  const [hospitals, setHospitals] = useState<Hospital[]>([]);
+  // For demo, we'll fetch hospitals with IDs 1-10
+  // In production, you'd have a way to get all hospital IDs
+  const hospitalIds = Array.from({ length: 10 }, (_, i) => i + 1);
+  const { hospitals, loading, error } = useHospitals(hospitalIds);
+  
   const [filter, setFilter] = useState<'all' | 'pending' | 'active' | 'suspended'>('all');
   const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(null);
-
-  useEffect(() => {
-    // TODO: Fetch hospitals from contract
-    // Placeholder data
-    setHospitals([
-      {
-        id: 1,
-        name: 'City General Hospital',
-        licenseNumber: 'LIC-2024-001',
-        location: 'New York, NY',
-        status: 'pending',
-        verified: false,
-        stake: '10000',
-        rating: 0,
-        registeredAt: '2024-01-15',
-      },
-      {
-        id: 2,
-        name: 'Metro Medical Center',
-        licenseNumber: 'LIC-2024-002',
-        location: 'Los Angeles, CA',
-        status: 'active',
-        verified: true,
-        stake: '10000',
-        rating: 4.5,
-        registeredAt: '2024-01-10',
-      },
-      {
-        id: 3,
-        name: 'Sunrise Clinic',
-        licenseNumber: 'LIC-2024-003',
-        location: 'Chicago, IL',
-        status: 'active',
-        verified: true,
-        stake: '10000',
-        rating: 4.8,
-        registeredAt: '2024-01-05',
-      },
-    ]);
-  }, []);
 
   const filteredHospitals = hospitals.filter((h) => {
     if (filter === 'all') return true;
@@ -97,121 +51,152 @@ export default function HospitalsPage() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading hospitals...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-900/20 border border-red-600 rounded-lg p-6">
+        <h3 className="text-red-400 font-semibold mb-2">Error Loading Hospitals</h3>
+        <p className="text-gray-300">{error}</p>
+        <p className="text-sm text-gray-400 mt-2">
+          Make sure contracts are deployed and NEXT_PUBLIC_CONTRACT_ADDRESS is set in .env
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Hospital Management</h1>
-        <p className="text-gray-400">Manage hospital registrations and verifications</p>
+        <p className="text-gray-400">
+          {hospitals.length > 0 
+            ? `Managing ${hospitals.length} registered hospitals`
+            : 'No hospitals found. Contracts may not be deployed yet.'}
+        </p>
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-2 mb-6">
-        {['all', 'pending', 'active', 'suspended'].map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f as any)}
-            className={`px-4 py-2 rounded-lg capitalize transition-colors ${
-              filter === f
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-            }`}
-          >
-            {f}
-          </button>
-        ))}
-      </div>
-
-      {/* Hospitals Table */}
-      <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-900">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
-                Hospital
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
-                License
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
-                Location
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
-                Rating
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-700">
-            {filteredHospitals.map((hospital) => (
-              <tr key={hospital.id} className="hover:bg-gray-750">
-                <td className="px-6 py-4">
-                  <div>
-                    <p className="font-medium">{hospital.name}</p>
-                    <p className="text-sm text-gray-400">ID: {hospital.id}</p>
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-sm">{hospital.licenseNumber}</td>
-                <td className="px-6 py-4 text-sm">{hospital.location}</td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-2 py-1 text-xs rounded-full ${getStatusColor(
-                      hospital.status
-                    )}`}
-                  >
-                    {hospital.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm">
-                  {hospital.rating > 0 ? `⭐ ${hospital.rating}` : 'N/A'}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex gap-2">
-                    {hospital.status === 'pending' && (
-                      <>
-                        <button
-                          onClick={() => handleApprove(hospital.id)}
-                          className="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-sm"
-                        >
-                          Approve
-                        </button>
-                        <button
-                          onClick={() => handleReject(hospital.id)}
-                          className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm"
-                        >
-                          Reject
-                        </button>
-                      </>
-                    )}
-                    {hospital.status === 'active' && (
-                      <button
-                        onClick={() => handleSuspend(hospital.id)}
-                        className="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 rounded text-sm"
-                      >
-                        Suspend
-                      </button>
-                    )}
-                    <button
-                      onClick={() => setSelectedHospital(hospital)}
-                      className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm"
-                    >
-                      View
-                    </button>
-                  </div>
-                </td>
-              </tr>
+      {hospitals.length > 0 && (
+        <>
+          {/* Filters */}
+          <div className="flex gap-2 mb-6">
+            {['all', 'pending', 'active', 'suspended'].map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f as any)}
+                className={`px-4 py-2 rounded-lg capitalize transition-colors ${
+                  filter === f
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                }`}
+              >
+                {f} ({hospitals.filter(h => f === 'all' || h.status === f).length})
+              </button>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </div>
+
+          {/* Hospitals Table */}
+          <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+            <table className="w-full">
+              <thead className="bg-gray-900">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
+                    Hospital
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
+                    License
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
+                    Location
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
+                    Rating
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-700">
+                {filteredHospitals.map((hospital) => (
+                  <tr key={hospital.id} className="hover:bg-gray-750">
+                    <td className="px-6 py-4">
+                      <div>
+                        <p className="font-medium">{hospital.name}</p>
+                        <p className="text-sm text-gray-400">ID: {hospital.id}</p>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm">{hospital.licenseNumber}</td>
+                    <td className="px-6 py-4 text-sm">{hospital.location}</td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${getStatusColor(
+                          hospital.status
+                        )}`}
+                      >
+                        {hospital.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm">
+                      {hospital.rating > 0 ? `⭐ ${hospital.rating}` : 'N/A'}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2">
+                        {hospital.status === 'pending' && (
+                          <>
+                            <button
+                              onClick={() => handleApprove(hospital.id)}
+                              className="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-sm"
+                            >
+                              Approve
+                            </button>
+                            <button
+                              onClick={() => handleReject(hospital.id)}
+                              className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm"
+                            >
+                              Reject
+                            </button>
+                          </>
+                        )}
+                        {hospital.status === 'active' && (
+                          <button
+                            onClick={() => handleSuspend(hospital.id)}
+                            className="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 rounded text-sm"
+                          >
+                            Suspend
+                          </button>
+                        )}
+                        <button
+                          onClick={() => setSelectedHospital(hospital)}
+                          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm"
+                        >
+                          View
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
 
       {/* Hospital Details Modal */}
       {selectedHospital && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-2xl font-bold">{selectedHospital.name}</h2>
@@ -223,6 +208,14 @@ export default function HospitalsPage() {
               </button>
             </div>
             <div className="space-y-4">
+              <div>
+                <label className="text-sm text-gray-400">Hospital ID</label>
+                <p className="font-medium">{selectedHospital.id}</p>
+              </div>
+              <div>
+                <label className="text-sm text-gray-400">Owner Address</label>
+                <p className="font-medium text-sm break-all">{selectedHospital.owner}</p>
+              </div>
               <div>
                 <label className="text-sm text-gray-400">License Number</label>
                 <p className="font-medium">{selectedHospital.licenseNumber}</p>
@@ -236,11 +229,23 @@ export default function HospitalsPage() {
                 <p className="font-medium capitalize">{selectedHospital.status}</p>
               </div>
               <div>
-                <label className="text-sm text-gray-400">Stake Amount</label>
-                <p className="font-medium">{selectedHospital.stake} tokens</p>
+                <label className="text-sm text-gray-400">Verified</label>
+                <p className="font-medium">{selectedHospital.verified ? 'Yes' : 'No'}</p>
               </div>
               <div>
-                <label className="text-sm text-gray-400">Registered At</label>
+                <label className="text-sm text-gray-400">Stake Amount</label>
+                <p className="font-medium">{selectedHospital.stake.toString()} tokens</p>
+              </div>
+              <div>
+                <label className="text-sm text-gray-400">Rating</label>
+                <p className="font-medium">
+                  {selectedHospital.rating > 0 
+                    ? `${selectedHospital.rating}/5 (${selectedHospital.totalRatings} ratings)`
+                    : 'No ratings yet'}
+                </p>
+              </div>
+              <div>
+                <label className="text-sm text-gray-400">Registered At Block</label>
                 <p className="font-medium">{selectedHospital.registeredAt}</p>
               </div>
             </div>
