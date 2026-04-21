@@ -1,6 +1,23 @@
 // Shared types for the Staxial monorepo.
-// Add domain-level and cross-app types here as the project evolves.
 
 export type BrandId = string;
+
+// Hospital types
+export * from "./hospital";
+
+// Patient types
+export * from "./patient";
+
+// Appointment types
+export * from "./appointment";
+
+// Prescription types
+export * from "./prescription";
+
+// Token types
+export * from "./token";
+
+// Common types
+export * from "./common";
 
 
