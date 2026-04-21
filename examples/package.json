@@ -1,0 +1,9 @@
+{
+  "name": "staxial-sdk-examples",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "staxial-sdk": "^0.2.1"
+  }
+}
