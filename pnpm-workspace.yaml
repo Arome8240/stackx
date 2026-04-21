@@ -1,5 +1,6 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
 
-
+overrides:
+  staxial-sdk: link:staxial-sdk
