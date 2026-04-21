@@ -5,4 +5,7 @@ network = "devnet"
 [contracts.sample]
 path = "contracts/sample.clar"
 
+[contracts.patient-records]
+path = "contracts/patient-records.clar"
+
 
