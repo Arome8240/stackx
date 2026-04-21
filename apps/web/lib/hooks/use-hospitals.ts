@@ -11,34 +11,34 @@ export function useHospitals(hospitalIds: number[]) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchHospitals() {
-      if (!config.contractAddress || hospitalIds.length === 0) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        setError(null);
-
-        const hospitalPromises = hospitalIds.map((id) => getHospital(config, id));
-        const results = await Promise.all(hospitalPromises);
-        
-        const validHospitals = results.filter((h): h is Hospital => h !== null);
-        setHospitals(validHospitals);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch hospitals');
-        console.error('Error fetching hospitals:', err);
-      } finally {
-        setLoading(false);
-      }
+  const fetchHospitals = async () => {
+    if (!config.contractAddress || hospitalIds.length === 0) {
+      setLoading(false);
+      return;
     }
 
+    try {
+      setLoading(true);
+      setError(null);
+
+      const hospitalPromises = hospitalIds.map((id) => getHospital(config, id));
+      const results = await Promise.all(hospitalPromises);
+      
+      const validHospitals = results.filter((h): h is Hospital => h !== null);
+      setHospitals(validHospitals);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch hospitals');
+      console.error('Error fetching hospitals:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchHospitals();
   }, [config, hospitalIds.join(',')]);
 
-  return { hospitals, loading, error };
+  return { hospitals, loading, error, refetch: fetchHospitals };
 }
 
 export function useHospital(hospitalId: number | null) {

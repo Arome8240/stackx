@@ -2,16 +2,30 @@
 
 import { useState } from 'react';
 import { useHospitals } from '@/lib/hooks/use-hospitals';
+import { useContractCall } from '@/lib/hooks/use-contract-call';
+import { TransactionModal } from '@/components/transaction-modal';
 import type { Hospital } from '@/lib/types/sdk';
 
 export default function HospitalsPage() {
   // For demo, we'll fetch hospitals with IDs 1-10
   // In production, you'd have a way to get all hospital IDs
   const hospitalIds = Array.from({ length: 10 }, (_, i) => i + 1);
-  const { hospitals, loading, error } = useHospitals(hospitalIds);
+  const { hospitals, loading, error, refetch } = useHospitals(hospitalIds);
+  const {
+    approveHospital,
+    suspendHospital,
+    reactivateHospital,
+    rejectHospital,
+    loading: txLoading,
+    error: txError,
+    txId,
+    reset: resetTx,
+  } = useContractCall();
   
   const [filter, setFilter] = useState<'all' | 'pending' | 'active' | 'suspended'>('all');
   const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(null);
+  const [txModalOpen, setTxModalOpen] = useState(false);
+  const [txTitle, setTxTitle] = useState('');
 
   const filteredHospitals = hospitals.filter((h) => {
     if (filter === 'all') return true;
@@ -19,21 +33,42 @@ export default function HospitalsPage() {
   });
 
   const handleApprove = async (hospitalId: number) => {
-    // TODO: Call contract to verify hospital
-    console.log('Approving hospital:', hospitalId);
-    alert('Hospital approved! (Contract call not implemented yet)');
+    setTxTitle('Approve Hospital');
+    setTxModalOpen(true);
+    resetTx();
+    await approveHospital(hospitalId);
+    // Refetch hospitals after transaction
+    setTimeout(() => refetch?.(), 3000);
   };
 
   const handleReject = async (hospitalId: number) => {
-    // TODO: Call contract to reject hospital
-    console.log('Rejecting hospital:', hospitalId);
-    alert('Hospital rejected! (Contract call not implemented yet)');
+    if (!confirm('Are you sure you want to reject this hospital? This action cannot be undone.')) {
+      return;
+    }
+    setTxTitle('Reject Hospital');
+    setTxModalOpen(true);
+    resetTx();
+    await rejectHospital(hospitalId);
+    setTimeout(() => refetch?.(), 3000);
   };
 
   const handleSuspend = async (hospitalId: number) => {
-    // TODO: Call contract to suspend hospital
-    console.log('Suspending hospital:', hospitalId);
-    alert('Hospital suspended! (Contract call not implemented yet)');
+    if (!confirm('Are you sure you want to suspend this hospital?')) {
+      return;
+    }
+    setTxTitle('Suspend Hospital');
+    setTxModalOpen(true);
+    resetTx();
+    await suspendHospital(hospitalId);
+    setTimeout(() => refetch?.(), 3000);
+  };
+
+  const handleReactivate = async (hospitalId: number) => {
+    setTxTitle('Reactivate Hospital');
+    setTxModalOpen(true);
+    resetTx();
+    await reactivateHospital(hospitalId);
+    setTimeout(() => refetch?.(), 3000);
   };
 
   const getStatusColor = (status: string) => {
@@ -158,13 +193,15 @@ export default function HospitalsPage() {
                           <>
                             <button
                               onClick={() => handleApprove(hospital.id)}
-                              className="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-sm"
+                              disabled={txLoading}
+                              className="px-3 py-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed rounded text-sm transition-colors"
                             >
                               Approve
                             </button>
                             <button
                               onClick={() => handleReject(hospital.id)}
-                              className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm"
+                              disabled={txLoading}
+                              className="px-3 py-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed rounded text-sm transition-colors"
                             >
                               Reject
                             </button>
@@ -173,14 +210,24 @@ export default function HospitalsPage() {
                         {hospital.status === 'active' && (
                           <button
                             onClick={() => handleSuspend(hospital.id)}
-                            className="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 rounded text-sm"
+                            disabled={txLoading}
+                            className="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-600 disabled:cursor-not-allowed rounded text-sm transition-colors"
                           >
                             Suspend
                           </button>
                         )}
+                        {hospital.status === 'suspended' && (
+                          <button
+                            onClick={() => handleReactivate(hospital.id)}
+                            disabled={txLoading}
+                            className="px-3 py-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed rounded text-sm transition-colors"
+                          >
+                            Reactivate
+                          </button>
+                        )}
                         <button
                           onClick={() => setSelectedHospital(hospital)}
-                          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm"
+                          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm transition-colors"
                         >
                           View
                         </button>
@@ -252,6 +299,16 @@ export default function HospitalsPage() {
           </div>
         </div>
       )}
+
+      {/* Transaction Modal */}
+      <TransactionModal
+        isOpen={txModalOpen}
+        onClose={() => setTxModalOpen(false)}
+        loading={txLoading}
+        error={txError}
+        txId={txId}
+        title={txTitle}
+      />
     </div>
   );
 }
