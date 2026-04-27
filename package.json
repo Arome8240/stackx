@@ -24,6 +24,6 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "staxial-sdk": "link:staxial-sdk"
+    "staxial-sdk": "^0.2.1"
   }
 }
