@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Staxial",
-    "slug": "staxial",
+    "name": "Staxial Health",
+    "slug": "staxial-health",
     "scheme": "staxial",
     "version": "0.1.0",
     "orientation": "portrait",
@@ -14,17 +14,44 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.staxial.health",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Use Face ID to securely access your health records",
+        "NSCameraUsageDescription": "Take photos for medical records",
+        "NSPhotoLibraryUsageDescription": "Upload medical documents"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#020617"
-      }
+      },
+      "package": "com.staxial.health",
+      "permissions": [
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow Staxial Health to use Face ID for secure authentication"
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "staxial-health"
+      }
     }
   }
 }
