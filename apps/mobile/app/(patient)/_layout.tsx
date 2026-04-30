@@ -39,14 +39,14 @@ export default function PatientLayout() {
         name="records"
         options={{
           title: 'Records',
-          tabBarIcon: ({ color }} => <Text style={{ color }}>📄</Text>,
+          tabBarIcon: ({ color }) => <Text style={{ color }}>📄</Text>,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }} => <Text style={{ color }}>👤</Text>,
+          tabBarIcon: ({ color }) => <Text style={{ color }}>👤</Text>,
         }}
       />
     </Tabs>
