@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { HospitalGrowthChart } from '@/components/charts/hospital-growth-chart';
 import { AppointmentVolumeChart } from '@/components/charts/appointment-volume-chart';
 import { TokenCirculationChart } from '@/components/charts/token-circulation-chart';
+import { exportToCSV, exportToJSON, formatAnalyticsForExport } from '@/lib/utils/export';
 
 // Mock data - will be replaced with real data from blockchain
 const generateMockHospitalData = () => {
@@ -38,10 +39,30 @@ const generateMockTokenData = () => {
 
 export default function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
+  const [showExportMenu, setShowExportMenu] = useState(false);
 
   const hospitalData = generateMockHospitalData();
   const appointmentData = generateMockAppointmentData();
   const tokenData = generateMockTokenData();
+
+  const handleExport = (format: 'csv' | 'json') => {
+    const analyticsData = formatAnalyticsForExport({
+      hospitals: hospitalData,
+      appointments: appointmentData,
+      tokens: tokenData,
+    });
+
+    if (format === 'csv') {
+      // Export each dataset separately for CSV
+      exportToCSV(hospitalData, 'hospital-growth');
+      exportToCSV(appointmentData, 'appointment-volume');
+      exportToCSV(tokenData, 'token-circulation');
+    } else {
+      exportToJSON([analyticsData], 'analytics-report');
+    }
+
+    setShowExportMenu(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -53,6 +74,31 @@ export default function AnalyticsPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <div className="relative">
+            <button
+              onClick={() => setShowExportMenu(!showExportMenu)}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+            >
+              <span>📥</span>
+              Export
+            </button>
+            {showExportMenu && (
+              <div className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-10">
+                <button
+                  onClick={() => handleExport('csv')}
+                  className="w-full px-4 py-2 text-left hover:bg-gray-700 rounded-t-lg"
+                >
+                  Export as CSV
+                </button>
+                <button
+                  onClick={() => handleExport('json')}
+                  className="w-full px-4 py-2 text-left hover:bg-gray-700 rounded-b-lg"
+                >
+                  Export as JSON
+                </button>
+              </div>
+            )}
+          </div>
           {(['7d', '30d', '90d', '1y'] as const).map((range) => (
             <button
               key={range}
