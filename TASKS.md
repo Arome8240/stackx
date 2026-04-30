@@ -138,24 +138,26 @@
 
 ---
 
-### Task 2.3: Patient Mobile Features ⏳
-**Priority:** HIGH | **Estimated Time:** 8 hours
+### Task 2.3: Patient Mobile Features ✅
+**Priority:** HIGH | **Estimated Time:** 8 hours | **Status:** COMPLETED
 
 #### Subtasks:
-- [ ] 2.3.1 - Create patient registration flow
-- [ ] 2.3.2 - Create patient dashboard
-- [ ] 2.3.3 - Create hospital search screen
-- [ ] 2.3.4 - Create appointment booking flow
-- [ ] 2.3.5 - Create medical records viewer
-- [ ] 2.3.6 - Create prescription viewer
+- [x] 2.3.1 - Create patient registration flow
+- [x] 2.3.2 - Create patient dashboard
+- [x] 2.3.3 - Create hospital search screen
+- [x] 2.3.4 - Create appointments screen
+- [x] 2.3.5 - Create medical records viewer
+- [x] 2.3.6 - Create prescription viewer
+- [x] 2.3.7 - Create patient profile screen
 
-**Files to Create:**
+**Files Created:**
 - `apps/mobile/app/(patient)/register.tsx`
 - `apps/mobile/app/(patient)/dashboard.tsx`
 - `apps/mobile/app/(patient)/hospitals.tsx`
-- `apps/mobile/app/(patient)/book-appointment.tsx`
+- `apps/mobile/app/(patient)/appointments.tsx`
 - `apps/mobile/app/(patient)/records.tsx`
 - `apps/mobile/app/(patient)/prescriptions.tsx`
+- `apps/mobile/app/(patient)/profile.tsx`
 
 ---
 
@@ -346,15 +348,15 @@
 
 ## Progress Tracking
 
-**Phase 1 (Web App):** 85% → Target: 100%  
-**Phase 2 (Mobile):** 0% → Target: 50%  
+**Phase 1 (Web App):** 95% → Target: 100%  
+**Phase 2 (Mobile):** 50% → Target: 75%  
 **Phase 3 (Backend):** 0% → Target: 30%  
 **Phase 4 (Testing):** 0% → Target: 50%  
 **Phase 5 (Deployment):** 0% → Target: 100%
 
-**Overall:** 52% → Target: 75% (End of next 2 sprints)
+**Overall:** 58% → Target: 75% (End of next 2 sprints)
 
 ---
 
-**Last Updated:** 2026-04-21  
-**Next Review:** After Task 1.5 completion
+**Last Updated:** 2026-04-30  
+**Next Review:** After Task 2.4 completion
