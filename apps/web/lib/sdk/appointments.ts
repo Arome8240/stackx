@@ -1,5 +1,4 @@
 import { getAppointment } from 'staxial-sdk';
-import type { StacksNetworkName } from '@stacks/network';
 
 export interface Appointment {
   id: number;
@@ -14,16 +13,16 @@ export interface Appointment {
 }
 
 export async function fetchAppointment(
-  network: StacksNetworkName,
+  network: 'mainnet' | 'testnet' | 'devnet' | 'mocknet',
   contractAddress: string,
   contractName: string,
   appointmentId: number
 ): Promise<Appointment | null> {
   try {
     const appointment = await getAppointment(
-      { network, contractAddress, contractName },
+      { network: network as any, contractAddress, contractName },
       appointmentId
-    );
+    ) as any;
     return appointment;
   } catch (error) {
     console.error('Error fetching appointment:', error);

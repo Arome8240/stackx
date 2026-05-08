@@ -1,5 +1,4 @@
 import { getPatient, isPatientRegistered, getMedicalRecord } from 'staxial-sdk';
-import type { StacksNetworkName } from '@stacks/network';
 
 export interface Patient {
   principal: string;
@@ -33,7 +32,7 @@ export interface AccessGrant {
 }
 
 export async function fetchPatient(
-  network: StacksNetworkName,
+  network: any,
   contractAddress: string,
   contractName: string,
   patientAddress: string
@@ -43,7 +42,7 @@ export async function fetchPatient(
       { network, contractAddress, contractName },
       patientAddress
     );
-    return patient;
+    return patient as any;
   } catch (error) {
     console.error('Error fetching patient:', error);
     return null;
@@ -51,7 +50,7 @@ export async function fetchPatient(
 }
 
 export async function checkPatientRegistration(
-  network: StacksNetworkName,
+  network: any,
   contractAddress: string,
   contractName: string,
   patientAddress: string
@@ -68,7 +67,7 @@ export async function checkPatientRegistration(
 }
 
 export async function fetchMedicalRecord(
-  network: StacksNetworkName,
+  network: any,
   contractAddress: string,
   contractName: string,
   recordId: number
@@ -78,7 +77,7 @@ export async function fetchMedicalRecord(
       { network, contractAddress, contractName },
       recordId
     );
-    return record;
+    return record as any;
   } catch (error) {
     console.error('Error fetching medical record:', error);
     return null;

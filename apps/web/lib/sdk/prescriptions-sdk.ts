@@ -1,5 +1,4 @@
 import { getPrescription, isPrescriptionValid } from 'staxial-sdk';
-import type { StacksNetworkName } from '@stacks/network';
 
 export interface Prescription {
   id: number;
@@ -14,7 +13,7 @@ export interface Prescription {
 }
 
 export async function fetchPrescription(
-  network: StacksNetworkName,
+  network: any,
   contractAddress: string,
   contractName: string,
   prescriptionId: number
@@ -24,7 +23,7 @@ export async function fetchPrescription(
       { network, contractAddress, contractName },
       prescriptionId
     );
-    return prescription;
+    return prescription as any;
   } catch (error) {
     console.error('Error fetching prescription:', error);
     return null;
@@ -32,7 +31,7 @@ export async function fetchPrescription(
 }
 
 export async function checkPrescriptionValidity(
-  network: StacksNetworkName,
+  network: any,
   contractAddress: string,
   contractName: string,
   prescriptionId: number

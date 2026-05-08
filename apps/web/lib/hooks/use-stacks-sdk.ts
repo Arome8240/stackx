@@ -1,14 +1,14 @@
 'use client';
 
 import { useMemo } from 'react';
-import { StacksTestnet, StacksMainnet } from '@stacks/network';
+import { STACKS_TESTNET, STACKS_MAINNET } from '@stacks/network';
 import type { StaxialConfig } from '@/lib/types/sdk';
 
 export function useStacksSDK() {
   const config: StaxialConfig = useMemo(() => {
     const network = process.env.NEXT_PUBLIC_NETWORK === 'mainnet' 
-      ? new StacksMainnet() 
-      : new StacksTestnet();
+      ? STACKS_MAINNET 
+      : STACKS_TESTNET;
     
     return {
       network,

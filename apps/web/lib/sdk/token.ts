@@ -1,6 +1,3 @@
-import type { StacksNetworkName } from '@stacks/network';
-import { callContract } from 'staxial-sdk/dist/helpers';
-import { uintCV, principalCV } from '@stacks/transactions';
 
 export interface TokenStats {
   totalSupply: number;
@@ -32,9 +29,9 @@ export interface TokenTransaction {
  * Fetch token statistics
  */
 export async function fetchTokenStats(
-  network: StacksNetworkName,
-  contractAddress: string,
-  contractName: string
+  _network: any,
+  _contractAddress: string,
+  _contractName: string
 ): Promise<TokenStats | null> {
   try {
     // This would call the actual contract functions
@@ -57,9 +54,9 @@ export async function fetchTokenStats(
  * Fetch token holders
  */
 export async function fetchTokenHolders(
-  network: StacksNetworkName,
-  contractAddress: string,
-  contractName: string
+  _network: any,
+  _contractAddress: string,
+  _contractName: string
 ): Promise<TokenHolder[]> {
   try {
     // This would fetch from blockchain events or indexer
@@ -75,9 +72,9 @@ export async function fetchTokenHolders(
  * Fetch token transactions
  */
 export async function fetchTokenTransactions(
-  network: StacksNetworkName,
-  contractAddress: string,
-  contractName: string
+  _network: any,
+  _contractAddress: string,
+  _contractName: string
 ): Promise<TokenTransaction[]> {
   try {
     // This would fetch from blockchain events or indexer
@@ -93,9 +90,9 @@ export async function fetchTokenTransactions(
  * Mint tokens (admin only)
  */
 export async function mintTokens(
-  network: StacksNetworkName,
-  contractAddress: string,
-  contractName: string,
+  _network: any,
+  _contractAddress: string,
+  _contractName: string,
   amount: number,
   recipient: string
 ): Promise<{ success: boolean; txId?: string; error?: string }> {
@@ -122,9 +119,9 @@ export async function mintTokens(
  * Burn tokens (admin only)
  */
 export async function burnTokens(
-  network: StacksNetworkName,
-  contractAddress: string,
-  contractName: string,
+  _network: any,
+  _contractAddress: string,
+  _contractName: string,
   amount: number
 ): Promise<{ success: boolean; txId?: string; error?: string }> {
   try {

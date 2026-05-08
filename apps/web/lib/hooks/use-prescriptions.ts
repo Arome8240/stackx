@@ -64,7 +64,7 @@ export function usePrescription(prescriptionId: number) {
       setError(null);
 
       const prescriptionData = await fetchPrescription(
-        network,
+        'testnet',
         contractAddress,
         'prescriptions',
         prescriptionId

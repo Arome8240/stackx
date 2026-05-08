@@ -1,4 +1,4 @@
-import { callReadOnlyFunction, cvToJSON, uintCV, principalCV } from '@stacks/transactions';
+import { fetchCallReadOnlyFunction, cvToJSON, uintCV, principalCV } from '@stacks/transactions';
 import type { StaxialConfig, Hospital } from '../types/sdk';
 
 export async function getHospital(
@@ -6,7 +6,7 @@ export async function getHospital(
   hospitalId: number
 ): Promise<Hospital | null> {
   try {
-    const result = await callReadOnlyFunction({
+    const result = await fetchCallReadOnlyFunction({
       contractAddress: config.contractAddress,
       contractName: 'hospital-registry',
       functionName: 'get-hospital',
@@ -45,7 +45,7 @@ export async function getHospitalByPrincipal(
   owner: string
 ): Promise<Hospital | null> {
   try {
-    const result = await callReadOnlyFunction({
+    const result = await fetchCallReadOnlyFunction({
       contractAddress: config.contractAddress,
       contractName: 'hospital-registry',
       functionName: 'get-hospital-by-principal',
@@ -84,7 +84,7 @@ export async function isHospitalVerified(
   hospitalId: number
 ): Promise<boolean> {
   try {
-    const result = await callReadOnlyFunction({
+    const result = await fetchCallReadOnlyFunction({
       contractAddress: config.contractAddress,
       contractName: 'hospital-registry',
       functionName: 'is-hospital-verified',

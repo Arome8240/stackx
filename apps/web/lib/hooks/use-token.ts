@@ -26,7 +26,7 @@ export function useTokenStats() {
       setLoading(true);
       setError(null);
 
-      const tokenStats = await fetchTokenStats(network, contractAddress, 'health-token');
+      const tokenStats = await fetchTokenStats('testnet', contractAddress, 'health-token');
       setStats(tokenStats);
     } catch (err) {
       console.error('Error fetching token stats:', err);
@@ -65,7 +65,7 @@ export function useTokenHolders() {
       setLoading(true);
       setError(null);
 
-      const tokenHolders = await fetchTokenHolders(network, contractAddress, 'health-token');
+      const tokenHolders = await fetchTokenHolders('testnet', contractAddress, 'health-token');
       setHolders(tokenHolders);
     } catch (err) {
       console.error('Error fetching token holders:', err);
@@ -104,7 +104,7 @@ export function useTokenTransactions() {
       setLoading(true);
       setError(null);
 
-      const tokenTxs = await fetchTokenTransactions(network, contractAddress, 'health-token');
+      const tokenTxs = await fetchTokenTransactions('testnet', contractAddress, 'health-token');
       setTransactions(tokenTxs);
     } catch (err) {
       console.error('Error fetching token transactions:', err);
@@ -137,7 +137,7 @@ export function useTokenOperations() {
 
     setLoading(true);
     try {
-      const result = await mintTokens(network, contractAddress, 'health-token', amount, recipient);
+      const result = await mintTokens('testnet', contractAddress, 'health-token', amount, recipient);
       return result;
     } finally {
       setLoading(false);
@@ -151,7 +151,7 @@ export function useTokenOperations() {
 
     setLoading(true);
     try {
-      const result = await burnTokens(network, contractAddress, 'health-token', amount);
+      const result = await burnTokens('testnet', contractAddress, 'health-token', amount);
       return result;
     } finally {
       setLoading(false);
