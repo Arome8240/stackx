@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
-  variant?: 'primary' | 'outline';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
 }
 
 export default function Button({
@@ -14,11 +14,13 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const base =
-    'w-full rounded-full py-3 text-sm font-bold transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black disabled:cursor-not-allowed disabled:opacity-50';
+    'inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50';
 
   const variants = {
-    primary: 'bg-white text-black hover:bg-zinc-200 focus:ring-white',
-    outline: 'border border-zinc-600 text-white hover:bg-zinc-900 focus:ring-zinc-500',
+    primary: 'bg-primary text-primary-foreground hover:opacity-90',
+    secondary: 'bg-secondary text-secondary-foreground hover:bg-accent',
+    outline: 'border border-border bg-transparent text-foreground hover:bg-accent',
+    ghost: 'bg-transparent text-foreground hover:bg-accent',
   };
 
   return (
