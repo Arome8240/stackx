@@ -2,9 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
-    ui-sans-serif, sans-serif;
+@layer base {
+  :root {
+    /* Light mode — Mint Confetti (StackX) */
+    --background: oklch(0.980 0.010 165);
+    --foreground: oklch(0.180 0.020 165);
+
+    --card: oklch(1.000 0.000 0);
+    --card-foreground: oklch(0.180 0.020 165);
+
+    --popover: oklch(1.000 0.000 0);
+    --popover-foreground: oklch(0.180 0.020 165);
+
+    --primary: oklch(0.520 0.180 165);
+    --primary-foreground: oklch(0.980 0 0);
+
+    --secondary: oklch(0.940 0.015 165);
+    --secondary-foreground: oklch(0.180 0.020 165);
+
+    --muted: oklch(0.950 0.010 165);
+    --muted-foreground: oklch(0.450 0.020 165);
+
+    --accent: oklch(0.930 0.020 165);
+    --accent-foreground: oklch(0.180 0.020 165);
+
+    --destructive: oklch(0.550 0.220 25);
+    --destructive-foreground: oklch(0.980 0 0);
+
+    --border: oklch(0.900 0.010 165);
+    --input: oklch(0.960 0.010 165);
+    --ring: oklch(0.520 0.180 165);
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Dark mode — Mint Confetti (StackX) */
+    --background: oklch(0.120 0.020 165);
+    --foreground: oklch(0.960 0.010 165);
+
+    --card: oklch(0.170 0.025 165);
+    --card-foreground: oklch(0.960 0.010 165);
+
+    --popover: oklch(0.190 0.025 165);
+    --popover-foreground: oklch(0.960 0.010 165);
+
+    --primary: oklch(0.720 0.180 165);
+    --primary-foreground: oklch(0.100 0 0);
+
+    --secondary: oklch(0.210 0.035 165);
+    --secondary-foreground: oklch(0.960 0.010 165);
+
+    --muted: oklch(0.190 0.025 165);
+    --muted-foreground: oklch(0.660 0.010 165);
+
+    --accent: oklch(0.230 0.035 165);
+    --accent-foreground: oklch(0.960 0.010 165);
+
+    --destructive: oklch(0.650 0.220 25);
+    --destructive-foreground: oklch(0.980 0 0);
+
+    --border: oklch(0.250 0.025 165);
+    --input: oklch(0.170 0.025 165);
+    --ring: oklch(0.720 0.180 165);
+
+    --radius: 0.75rem;
+  }
 }
 
 
