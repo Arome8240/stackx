@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { mockUsers } from '@/lib/mock-data/users';
 import { mockCasts } from '@/lib/mock-data/casts';
 import { CastCard } from '@/components/cast/cast-card';
+import { Search, CheckCircle } from 'lucide-react';
 
 export default function SearchPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,7 +39,7 @@ export default function SearchPage() {
             autoFocus
           />
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-            🔍
+            <Search className="w-5 h-5" />
           </span>
         </div>
 
@@ -72,7 +73,7 @@ export default function SearchPage() {
       {/* Results */}
       {!searchQuery && (
         <div className="p-8 text-center text-muted-foreground">
-          <p className="text-4xl mb-4">🔍</p>
+          <Search className="w-12 h-12 mx-auto mb-4" />
           <p>Search for users and casts</p>
         </div>
       )}
@@ -94,7 +95,7 @@ export default function SearchPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1">
                     <p className="font-semibold truncate">{user.displayName}</p>
-                    {user.verified && <span className="text-primary">✓</span>}
+                    {user.verified && <CheckCircle className="w-4 h-4 text-primary fill-primary" />}
                   </div>
                   <p className="text-sm text-muted-foreground truncate">@{user.username}</p>
                   <p className="text-sm text-muted-foreground truncate">{user.bio}</p>

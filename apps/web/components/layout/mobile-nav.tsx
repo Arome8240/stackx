@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Home, Tv, Bell, User } from 'lucide-react';
 
 const navigation = [
-  { name: 'Home', href: '/', icon: '🏠' },
-  { name: 'Channels', href: '/channels', icon: '📺' },
-  { name: 'Notifications', href: '/notifications', icon: '🔔' },
-  { name: 'Profile', href: '/profile/alice', icon: '👤' },
+  { name: 'Home', href: '/', icon: Home },
+  { name: 'Channels', href: '/channels', icon: Tv },
+  { name: 'Notifications', href: '/notifications', icon: Bell },
+  { name: 'Profile', href: '/profile/alice', icon: User },
 ];
 
 export function MobileNav() {
@@ -20,6 +21,7 @@ export function MobileNav() {
           const isActive = item.href === '/' 
             ? pathname === '/' 
             : pathname === item.href || pathname?.startsWith(item.href + '/');
+          const Icon = item.icon;
           return (
             <Link
               key={item.name}
@@ -28,7 +30,7 @@ export function MobileNav() {
                 isActive ? 'text-primary' : 'text-muted-foreground'
               }`}
             >
-              <span className="text-xl">{item.icon}</span>
+              <Icon className="w-6 h-6" />
               <span className="text-xs">{item.name}</span>
             </Link>
           );

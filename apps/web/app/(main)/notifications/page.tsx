@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { mockUsers } from '@/lib/mock-data/users';
+import { UserPlus, Heart, Repeat2, MessageCircle, AtSign, Bell, CheckCircle } from 'lucide-react';
 
 // Mock notifications
 const mockNotifications = [
@@ -63,17 +64,17 @@ export default function NotificationsPage() {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'follow':
-        return '👤';
+        return UserPlus;
       case 'like':
-        return '❤️';
+        return Heart;
       case 'recast':
-        return '🔁';
+        return Repeat2;
       case 'reply':
-        return '💬';
+        return MessageCircle;
       case 'mention':
-        return '@';
+        return AtSign;
       default:
-        return '🔔';
+        return Bell;
     }
   };
 
@@ -94,7 +95,10 @@ export default function NotificationsPage() {
             }`}
           >
             <div className="flex gap-3">
-              <div className="text-2xl">{getNotificationIcon(notification.type)}</div>
+              {(() => {
+                const Icon = getNotificationIcon(notification.type);
+                return <Icon className="w-6 h-6 text-primary" />;
+              })()}
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <Link href={`/profile/${notification.from.username}`}>
@@ -112,7 +116,7 @@ export default function NotificationsPage() {
                       {notification.from.displayName}
                     </Link>
                     {notification.from.verified && (
-                      <span className="text-primary ml-1">✓</span>
+                      <CheckCircle className="w-4 h-4 text-primary fill-primary ml-1" />
                     )}
                     <p className="text-sm text-muted-foreground">
                       {getNotificationText(notification.type)}
@@ -130,7 +134,7 @@ export default function NotificationsPage() {
 
       {mockNotifications.length === 0 && (
         <div className="p-8 text-center text-muted-foreground">
-          <p className="text-4xl mb-4">🔔</p>
+          <Bell className="w-12 h-12 mx-auto mb-4" />
           <p>No notifications yet</p>
         </div>
       )}

@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getCurrentUser } from '@/lib/mock-data/users';
+import { Home, Tv, Bell, User, Search } from 'lucide-react';
 
 const navigation = [
-  { name: 'Home', href: '/', icon: '🏠' },
-  { name: 'Channels', href: '/channels', icon: '📺' },
-  { name: 'Notifications', href: '/notifications', icon: '🔔' },
-  { name: 'Profile', href: '/profile/alice', icon: '👤' },
-  { name: 'Search', href: '/search', icon: '🔍' },
+  { name: 'Home', href: '/', icon: Home },
+  { name: 'Channels', href: '/channels', icon: Tv },
+  { name: 'Notifications', href: '/notifications', icon: Bell },
+  { name: 'Profile', href: '/profile/alice', icon: User },
+  { name: 'Search', href: '/search', icon: Search },
 ];
 
 export function Sidebar() {
@@ -30,6 +31,7 @@ export function Sidebar() {
             const isActive = item.href === '/' 
               ? pathname === '/' 
               : pathname === item.href || pathname?.startsWith(item.href + '/');
+            const Icon = item.icon;
             return (
               <Link
                 key={item.name}
@@ -40,7 +42,7 @@ export function Sidebar() {
                     : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
                 }`}
               >
-                <span className="text-xl">{item.icon}</span>
+                <Icon className="w-6 h-6" />
                 <span>{item.name}</span>
               </Link>
             );

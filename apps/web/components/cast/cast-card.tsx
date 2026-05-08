@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Cast } from '@/lib/types/social';
+import { MessageCircle, Repeat2, Heart, Share2, CheckCircle } from 'lucide-react';
 
 interface CastCardProps {
   cast: Cast;
@@ -62,7 +63,7 @@ export function CastCard({ cast }: CastCardProps) {
               {cast.author.displayName}
             </Link>
             {cast.author.verified && (
-              <span className="text-primary text-sm">✓</span>
+              <CheckCircle className="w-4 h-4 text-primary fill-primary" />
             )}
             <Link
               href={`/profile/${cast.author.username}`}
@@ -95,7 +96,7 @@ export function CastCard({ cast }: CastCardProps) {
             {/* Reply */}
             <button className="flex items-center gap-2 hover:text-primary transition-colors group">
               <span className="group-hover:bg-primary/10 p-2 rounded-full transition-colors">
-                💬
+                <MessageCircle className="w-5 h-5" />
               </span>
               <span className="text-sm">{cast.repliesCount}</span>
             </button>
@@ -108,7 +109,7 @@ export function CastCard({ cast }: CastCardProps) {
               }`}
             >
               <span className="group-hover:bg-green-500/10 p-2 rounded-full transition-colors">
-                🔁
+                <Repeat2 className="w-5 h-5" />
               </span>
               <span className="text-sm">{recastsCount}</span>
             </button>
@@ -121,7 +122,7 @@ export function CastCard({ cast }: CastCardProps) {
               }`}
             >
               <span className="group-hover:bg-red-500/10 p-2 rounded-full transition-colors">
-                {isLiked ? '❤️' : '🤍'}
+                <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
               </span>
               <span className="text-sm">{likesCount}</span>
             </button>
@@ -129,7 +130,7 @@ export function CastCard({ cast }: CastCardProps) {
             {/* Share */}
             <button className="flex items-center gap-2 hover:text-primary transition-colors group">
               <span className="group-hover:bg-primary/10 p-2 rounded-full transition-colors">
-                📤
+                <Share2 className="w-5 h-5" />
               </span>
             </button>
           </div>

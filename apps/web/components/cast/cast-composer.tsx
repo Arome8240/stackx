@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { getCurrentUser } from '@/lib/mock-data/users';
+import { Image, Smile } from 'lucide-react';
 
 export function CastComposer() {
   const [content, setContent] = useState('');
@@ -48,24 +49,17 @@ export function CastComposer() {
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    className="p-2 hover:bg-accent rounded-full transition-colors"
+                    className="p-2 hover:bg-accent rounded-full transition-colors text-primary"
                     title="Add image"
                   >
-                    🖼️
+                    <Image className="w-5 h-5" />
                   </button>
                   <button
                     type="button"
-                    className="p-2 hover:bg-accent rounded-full transition-colors"
-                    title="Add GIF"
-                  >
-                    GIF
-                  </button>
-                  <button
-                    type="button"
-                    className="p-2 hover:bg-accent rounded-full transition-colors"
+                    className="p-2 hover:bg-accent rounded-full transition-colors text-primary"
                     title="Add emoji"
                   >
-                    😊
+                    <Smile className="w-5 h-5" />
                   </button>
                 </div>
 
