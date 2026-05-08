@@ -27,6 +27,9 @@ export function CastCard({ cast }: CastCardProps) {
   const [isRecasted, setIsRecasted] = useState(cast.isRecasted);
   const [likesCount, setLikesCount] = useState(cast.likesCount);
   const [recastsCount, setRecastsCount] = useState(cast.recastsCount);
+  const [showTokenizeModal, setShowTokenizeModal] = useState(false);
+  const [tokenSupply, setTokenSupply] = useState('');
+  const [tokenPrice, setTokenPrice] = useState('');
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -36,6 +39,16 @@ export function CastCard({ cast }: CastCardProps) {
   const handleRecast = () => {
     setIsRecasted(!isRecasted);
     setRecastsCount(isRecasted ? recastsCount - 1 : recastsCount + 1);
+  };
+
+  const handleTokenize = () => {
+    if (tokenSupply && tokenPrice) {
+      // TODO: Create NFT/token for this post
+      console.log('Tokenizing post:', { supply: tokenSupply, price: tokenPrice });
+      setShowTokenizeModal(false);
+      setTokenSupply('');
+      setTokenPrice('');
+    }
   };
 
   const timeAgo = formatTimeAgo(cast.timestamp);
@@ -133,9 +146,90 @@ export function CastCard({ cast }: CastCardProps) {
                 <Share2 className="w-5 h-5" />
               </span>
             </button>
+
+            {/* Tokenize */}
+            <button
+              onClick={() => setShowTokenizeModal(true)}
+              className="flex items-center gap-2 hover:text-yellow-500 transition-colors group ml-auto"
+            >
+              <span className="group-hover:bg-yellow-500/10 p-2 rounded-full transition-colors">
+                💎
+              </span>
+              <span className="text-xs">Tokenize</span>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Tokenize Modal */}
+      {showTokenizeModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50" onClick={() => setShowTokenizeModal(false)}>
+          <div className="bg-card border border-border rounded-xl p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">Tokenize Post</h2>
+              <button
+                onClick={() => setShowTokenizeModal(false)}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-sm text-muted-foreground mb-4">
+                Create collectible tokens for this post. Holders can trade and own a piece of this content.
+              </p>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Total Supply</label>
+                  <input
+                    type="number"
+                    value={tokenSupply}
+                    onChange={(e) => setTokenSupply(e.target.value)}
+                    placeholder="100"
+                    className="w-full bg-input border border-border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Price per Token (STX)</label>
+                  <input
+                    type="number"
+                    value={tokenPrice}
+                    onChange={(e) => setTokenPrice(e.target.value)}
+                    placeholder="0.1"
+                    step="0.01"
+                    className="w-full bg-input border border-border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+                <div className="bg-accent rounded-lg p-3">
+                  <p className="text-sm">
+                    <span className="text-muted-foreground">Total Value:</span>{' '}
+                    <span className="font-semibold">
+                      {tokenSupply && tokenPrice ? (parseFloat(tokenSupply) * parseFloat(tokenPrice)).toFixed(2) : '0.00'} STX
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowTokenizeModal(false)}
+                className="flex-1 py-2 bg-accent hover:bg-accent/80 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleTokenize}
+                disabled={!tokenSupply || !tokenPrice || parseFloat(tokenSupply) <= 0 || parseFloat(tokenPrice) <= 0}
+                className="flex-1 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
+              >
+                Create Tokens
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </article>
   );
 }
