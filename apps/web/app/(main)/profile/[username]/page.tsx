@@ -6,6 +6,7 @@ import { mockUsers } from '@/lib/mock-data/users';
 import { mockCasts } from '@/lib/mock-data/casts';
 import { getCurrentUser } from '@/lib/mock-data/users';
 import { useState } from 'react';
+import { CheckCircle, Calendar } from 'lucide-react';
 
 export default function ProfilePage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = use(params);
@@ -74,13 +75,14 @@ export default function ProfilePage({ params }: { params: Promise<{ username: st
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-1">
             <h2 className="text-2xl font-bold">{user.displayName}</h2>
-            {user.verified && <span className="text-primary text-xl">✓</span>}
+            {user.verified && <CheckCircle className="w-6 h-6 text-primary fill-primary" />}
           </div>
           <p className="text-muted-foreground mb-3">@{user.username}</p>
           <p className="mb-3">{user.bio}</p>
-          <p className="text-muted-foreground text-sm">
-            📅 Joined {new Date(user.joinedAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-          </p>
+          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+            <Calendar className="w-4 h-4" />
+            <span>Joined {new Date(user.joinedAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+          </div>
         </div>
 
         <div className="flex gap-6 mb-4">
