@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { getCurrentUser } from '@/lib/mock-data/users';
 
 const navigation = [
-  { name: 'Home', href: '/feed', icon: '🏠' },
+  { name: 'Home', href: '/', icon: '🏠' },
   { name: 'Channels', href: '/channels', icon: '📺' },
   { name: 'Notifications', href: '/notifications', icon: '🔔' },
   { name: 'Profile', href: '/profile/alice', icon: '👤' },
@@ -20,14 +20,16 @@ export function Sidebar() {
     <aside className="fixed left-0 top-0 h-screen w-64 border-r border-border bg-card p-4 hidden lg:block">
       <div className="flex flex-col h-full">
         {/* Logo */}
-        <Link href="/feed" className="mb-8">
+        <Link href="/" className="mb-8">
           <h1 className="text-2xl font-bold text-primary">StackX</h1>
         </Link>
 
         {/* Navigation */}
         <nav className="flex-1 space-y-2">
           {navigation.map((item) => {
-            const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
+            const isActive = item.href === '/' 
+              ? pathname === '/' 
+              : pathname === item.href || pathname?.startsWith(item.href + '/');
             return (
               <Link
                 key={item.name}
