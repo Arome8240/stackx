@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Typography picker — StackX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: oklch(0.120 0.020 165);
+      --fg: oklch(0.960 0.010 165);
+      --card: oklch(0.170 0.025 165);
+      --card-fg: oklch(0.960 0.010 165);
+      --primary: oklch(0.720 0.180 165);
+      --primary-fg: oklch(0.100 0 0);
+      --muted: oklch(0.190 0.025 165);
+      --muted-fg: oklch(0.660 0.010 165);
+      --border: oklch(0.250 0.025 165);
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(12px);
+      background: color-mix(in oklch, var(--bg) 85%, transparent);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .topbar h1 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+    .topbar .hint { font-size: 13px; opacity: 0.66; margin: 0; }
+    .topbar .toggle {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--fg);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .topbar .toggle:hover { background: color-mix(in oklch, var(--fg) 6%, transparent); }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .pair {
+      border-radius: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 28px 32px;
+      color: var(--card-fg);
+    }
+
+    .pair-header {
+      display: flex; align-items: baseline; gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .pair-number {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 999px;
+      background: var(--primary); color: var(--primary-fg);
+      font-weight: 700; font-size: 13px;
+      flex-shrink: 0;
+    }
+    .pair-name { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+    .pair-fonts { margin-left: auto; font-size: 12px; opacity: 0.66; font-variant: all-small-caps; letter-spacing: 0.06em; }
+
+    .sample-display {
+      font-family: var(--pair-serif, var(--pair-sans));
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 16px;
+    }
+    .sample-h1 {
+      font-family: var(--pair-sans);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 0 0 8px;
+    }
+    .sample-body {
+      font-family: var(--pair-sans);
+      font-size: 14px;
+      line-height: 1.55;
+      margin: 0 0 16px;
+      opacity: 0.88;
+    }
+    .sample-caption {
+      font-family: var(--pair-sans);
+      font-size: 11px;
+      opacity: 0.62;
+      letter-spacing: 0.08em;
+      margin: 0 0 12px;
+    }
+    .sample-number {
+      font-family: var(--pair-mono);
+      font-size: 24px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      margin: 0;
+    }
+    .sample-mono {
+      font-family: var(--pair-mono);
+      font-size: 12px;
+      opacity: 0.78;
+      margin: 6px 0 0;
+      letter-spacing: 0;
+    }
+
+    .sample-button {
+      font-family: var(--pair-sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 16px;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .sample-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 720px) { .sample-grid { grid-template-columns: 1fr; } }
+
+    .sample-card {
+      padding: 14px 16px;
+      background: color-mix(in oklch, var(--fg) 6%, transparent);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .footer-cta {
+      text-align: center;
+      padding: 24px;
+      opacity: 0.72;
+      font-size: 14px;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--fg);
+    }
+    .footer-cta code {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      background: color-mix(in oklch, var(--fg) 10%, transparent);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div>
+      <h1>Typography picker — StackX</h1>
+      <p class="hint">Rendered on your chosen palette: Mint Confetti</p>
+    </div>
+    <button class="toggle" id="theme-toggle">Switch to Light</button>
+  </div>
+
+  <div class="container">
+    
+<article class="pair" style="--pair-sans: 'Inter', system-ui, sans-serif; --pair-mono: 'JetBrains Mono', ui-monospace, monospace; --pair-serif: 'Instrument Serif', Georgia, serif;">
+  <header class="pair-header">
+    <span class="pair-number">1</span>
+    <h2 class="pair-name">Instrument Serif + Inter + JetBrains Mono</h2>
+    <span class="pair-fonts">premium · editorial · credible</span>
+  </header>
+
+  <h1 class="sample-display">Post faster.</h1>
+  <h2 class="sample-h1">StackX</h2>
+  <p class="sample-body">A wallet-first social feed like Farcaster — casts, replies, channels, and notifications.</p>
+
+  <div class="sample-grid">
+    <div>
+      <p class="sample-caption">NOTIFICATIONS</p>
+      <p class="sample-number">18</p>
+      <p class="sample-mono">@stackx.aria · 2m</p>
+      <button class="sample-button">Compose</button>
+    </div>
+    <div class="sample-card">
+      <p class="sample-caption">CHANNEL</p>
+      <p class="sample-number" style="font-size: 18px;">#builders</p>
+      <p class="sample-mono">142 likes · 4 recasts</p>
+    </div>
+  </div>
+</article>
+
+<article class="pair" style="--pair-sans: 'Space Grotesk', system-ui, sans-serif; --pair-mono: 'Space Mono', ui-monospace, monospace;">
+  <header class="pair-header">
+    <span class="pair-number">2</span>
+    <h2 class="pair-name">Space Grotesk + Space Mono</h2>
+    <span class="pair-fonts">playful · distinctive · modern</span>
+  </header>
+
+  <h1 class="sample-display">Post faster.</h1>
+  <h2 class="sample-h1">StackX</h2>
+  <p class="sample-body">A wallet-first social feed like Farcaster — casts, replies, channels, and notifications.</p>
+
+  <div class="sample-grid">
+    <div>
+      <p class="sample-caption">NOTIFICATIONS</p>
+      <p class="sample-number">18</p>
+      <p class="sample-mono">@stackx.aria · 2m</p>
+      <button class="sample-button">Compose</button>
+    </div>
+    <div class="sample-card">
+      <p class="sample-caption">CHANNEL</p>
+      <p class="sample-number" style="font-size: 18px;">#builders</p>
+      <p class="sample-mono">142 likes · 4 recasts</p>
+    </div>
+  </div>
+</article>
+
+<article class="pair" style="--pair-sans: 'Manrope', system-ui, sans-serif; --pair-mono: 'JetBrains Mono', ui-monospace, monospace;">
+  <header class="pair-header">
+    <span class="pair-number">3</span>
+    <h2 class="pair-name">Manrope + JetBrains Mono</h2>
+    <span class="pair-fonts">premium · modern · clean</span>
+  </header>
+
+  <h1 class="sample-display">Post faster.</h1>
+  <h2 class="sample-h1">StackX</h2>
+  <p class="sample-body">A wallet-first social feed like Farcaster — casts, replies, channels, and notifications.</p>
+
+  <div class="sample-grid">
+    <div>
+      <p class="sample-caption">NOTIFICATIONS</p>
+      <p class="sample-number">18</p>
+      <p class="sample-mono">@stackx.aria · 2m</p>
+      <button class="sample-button">Compose</button>
+    </div>
+    <div class="sample-card">
+      <p class="sample-caption">CHANNEL</p>
+      <p class="sample-number" style="font-size: 18px;">#builders</p>
+      <p class="sample-mono">142 likes · 4 recasts</p>
+    </div>
+  </div>
+</article>
+
+<article class="pair" style="--pair-sans: 'Inter', system-ui, sans-serif; --pair-mono: 'IBM Plex Mono', ui-monospace, monospace; --pair-serif: 'Fraunces', Georgia, serif;">
+  <header class="pair-header">
+    <span class="pair-number">4</span>
+    <h2 class="pair-name">Fraunces + Inter + IBM Plex Mono</h2>
+    <span class="pair-fonts">warm · premium · expressive</span>
+  </header>
+
+  <h1 class="sample-display">Post faster.</h1>
+  <h2 class="sample-h1">StackX</h2>
+  <p class="sample-body">A wallet-first social feed like Farcaster — casts, replies, channels, and notifications.</p>
+
+  <div class="sample-grid">
+    <div>
+      <p class="sample-caption">NOTIFICATIONS</p>
+      <p class="sample-number">18</p>
+      <p class="sample-mono">@stackx.aria · 2m</p>
+      <button class="sample-button">Compose</button>
+    </div>
+    <div class="sample-card">
+      <p class="sample-caption">CHANNEL</p>
+      <p class="sample-number" style="font-size: 18px;">#builders</p>
+      <p class="sample-mono">142 likes · 4 recasts</p>
+    </div>
+  </div>
+</article>
+
+<article class="pair" style="--pair-sans: 'DM Sans', system-ui, sans-serif; --pair-mono: 'DM Mono', ui-monospace, monospace;">
+  <header class="pair-header">
+    <span class="pair-number">5</span>
+    <h2 class="pair-name">DM Sans + DM Mono</h2>
+    <span class="pair-fonts">friendly · playful · calm</span>
+  </header>
+
+  <h1 class="sample-display">Post faster.</h1>
+  <h2 class="sample-h1">StackX</h2>
+  <p class="sample-body">A wallet-first social feed like Farcaster — casts, replies, channels, and notifications.</p>
+
+  <div class="sample-grid">
+    <div>
+      <p class="sample-caption">NOTIFICATIONS</p>
+      <p class="sample-number">18</p>
+      <p class="sample-mono">@stackx.aria · 2m</p>
+      <button class="sample-button">Compose</button>
+    </div>
+    <div class="sample-card">
+      <p class="sample-caption">CHANNEL</p>
+      <p class="sample-number" style="font-size: 18px;">#builders</p>
+      <p class="sample-mono">142 likes · 4 recasts</p>
+    </div>
+  </div>
+</article>
+
+<article class="pair" style="--pair-sans: 'Plus Jakarta Sans', system-ui, sans-serif; --pair-mono: 'JetBrains Mono', ui-monospace, monospace;">
+  <header class="pair-header">
+    <span class="pair-number">6</span>
+    <h2 class="pair-name">Plus Jakarta Sans + JetBrains Mono</h2>
+    <span class="pair-fonts">crypto-native · friendly · bold</span>
+  </header>
+
+  <h1 class="sample-display">Post faster.</h1>
+  <h2 class="sample-h1">StackX</h2>
+  <p class="sample-body">A wallet-first social feed like Farcaster — casts, replies, channels, and notifications.</p>
+
+  <div class="sample-grid">
+    <div>
+      <p class="sample-caption">NOTIFICATIONS</p>
+      <p class="sample-number">18</p>
+      <p class="sample-mono">@stackx.aria · 2m</p>
+      <button class="sample-button">Compose</button>
+    </div>
+    <div class="sample-card">
+      <p class="sample-caption">CHANNEL</p>
+      <p class="sample-number" style="font-size: 18px;">#builders</p>
+      <p class="sample-mono">142 likes · 4 recasts</p>
+    </div>
+  </div>
+</article>
+
+    <div class="footer-cta">
+      Pick one: type <code>1</code> through <code>6</code>.<br />
+      Not sure? Type <code>skip</code> — I’ll default to <strong>Inter + JetBrains Mono</strong>.
+    </div>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const btn = document.getElementById('theme-toggle');
+    const darkTokens = "--bg: oklch(0.120 0.020 165); --fg: oklch(0.960 0.010 165); --card: oklch(0.170 0.025 165); --card-fg: oklch(0.960 0.010 165); --primary: oklch(0.720 0.180 165); --primary-fg: oklch(0.100 0 0); --muted: oklch(0.190 0.025 165); --muted-fg: oklch(0.660 0.010 165); --border: oklch(0.250 0.025 165);";
+    const lightTokens = "--bg: oklch(0.980 0.010 165); --fg: oklch(0.180 0.020 165); --card: oklch(1.000 0.000 0); --card-fg: oklch(0.180 0.020 165); --primary: oklch(0.520 0.180 165); --primary-fg: oklch(0.980 0 0); --muted: oklch(0.950 0.010 165); --muted-fg: oklch(0.450 0.020 165); --border: oklch(0.900 0.010 165);";
+
+    function applyTokens(theme) {
+      const tokens = theme === 'dark' ? darkTokens : lightTokens;
+      tokens.split(';').forEach((pair) => {
+        const p = pair.trim();
+        if (!p) return;
+        const idx = p.indexOf(':');
+        if (idx === -1) return;
+        const k = p.slice(0, idx).trim();
+        const v = p.slice(idx + 1).trim();
+        document.documentElement.style.setProperty(k, v);
+      });
+    }
+
+    applyTokens('dark');
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      btn.textContent = next === 'dark' ? 'Switch to Light' : 'Switch to Dark';
+      applyTokens(next);
+    });
+  </script>
+</body>
+</html>
