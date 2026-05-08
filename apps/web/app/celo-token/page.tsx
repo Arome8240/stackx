@@ -45,7 +45,7 @@ export default function CeloTokenPage() {
     functionName: 'maxSupply',
   });
 
-  const { data: balance, refetch: refetchBalance } = useReadContract({
+  const { data: balance } = useReadContract({
     address: TOKEN_ADDRESS,
     abi: CELO_TOKEN_ABI,
     functionName: 'balanceOf',

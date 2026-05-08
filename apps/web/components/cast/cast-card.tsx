@@ -3,14 +3,25 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Cast } from '@/lib/types/social';
-import { formatDistanceToNow } from 'date-fns';
 
 interface CastCardProps {
   cast: Cast;
   showThread?: boolean;
 }
 
-export function CastCard({ cast, showThread = false }: CastCardProps) {
+function formatTimeAgo(timestamp: string): string {
+  const now = new Date();
+  const past = new Date(timestamp);
+  const diffInSeconds = Math.floor((now.getTime() - past.getTime()) / 1000);
+
+  if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+  if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  return past.toLocaleDateString();
+}
+
+export function CastCard({ cast }: CastCardProps) {
   const [isLiked, setIsLiked] = useState(cast.isLiked);
   const [isRecasted, setIsRecasted] = useState(cast.isRecasted);
   const [likesCount, setLikesCount] = useState(cast.likesCount);
@@ -26,7 +37,7 @@ export function CastCard({ cast, showThread = false }: CastCardProps) {
     setRecastsCount(isRecasted ? recastsCount - 1 : recastsCount + 1);
   };
 
-  const timeAgo = formatDistanceToNow(new Date(cast.timestamp), { addSuffix: true });
+  const timeAgo = formatTimeAgo(cast.timestamp);
 
   return (
     <article className="border-b border-border p-4 hover:bg-accent/50 transition-colors">

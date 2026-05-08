@@ -30,7 +30,7 @@ export function ConnectWallet() {
 
   return (
     <button
-      onClick={() => authenticate()}
+      onClick={() => authenticate({ appDetails: { name: 'StackX', icon: '' } })}
       className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors"
     >
       Connect Wallet

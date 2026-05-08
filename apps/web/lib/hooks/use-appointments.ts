@@ -64,7 +64,7 @@ export function useAppointment(appointmentId: number) {
       setError(null);
 
       const appointmentData = await fetchAppointment(
-        network,
+        'testnet',
         contractAddress,
         'appointments',
         appointmentId

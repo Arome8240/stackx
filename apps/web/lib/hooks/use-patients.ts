@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useStacksSDK } from './use-stacks-sdk';
-import { fetchPatient, checkPatientRegistration } from '../sdk/patient-records';
+import { fetchPatient } from '../sdk/patient-records';
 import type { Patient } from '../sdk/patient-records';
 
 export function usePatients() {
@@ -73,7 +73,7 @@ export function usePatient(patientAddress: string) {
       setError(null);
 
       const patientData = await fetchPatient(
-        network,
+        'testnet',
         contractAddress,
         'patient-records',
         patientAddress

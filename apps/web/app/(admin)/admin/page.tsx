@@ -191,6 +191,5 @@ export default function AdminDashboard() {
   );
 }
 
-// Import config at the top level for system status
-import { useStacksSDK } from '@/lib/hooks/use-stacks-sdk';
+// Config for system status
 const config = { contractAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS };

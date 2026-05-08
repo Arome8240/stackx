@@ -6,11 +6,11 @@ import type { AuditLog, AuditLogFilter, AuditLogStats, AuditActionType, AuditSev
  * Fetch audit logs from blockchain events
  * In production, this would query an indexer or backend API
  */
-async function fetchAuditLogsFromBlockchain(): Promise<AuditLog[]> {
-  // Placeholder - would fetch from blockchain events or indexer
-  // For now, returning empty array
-  return [];
-}
+// async function fetchAuditLogsFromBlockchain(): Promise<AuditLog[]> {
+//   // Placeholder - would fetch from blockchain events or indexer
+//   // For now, returning empty array
+//   return [];
+// }
 
 /**
  * Generate mock audit logs for demonstration
