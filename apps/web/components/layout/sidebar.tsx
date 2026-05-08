@@ -3,10 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getCurrentUser } from '@/lib/mock-data/users';
-import { Home, Tv, Bell, User, Search } from 'lucide-react';
+import { Home, Tv, Bell, User, Search, MessageCircle, Wallet, Smartphone } from 'lucide-react';
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
+  { name: 'Messages', href: '/messages', icon: MessageCircle },
+  { name: 'Wallet', href: '/wallet', icon: Wallet },
+  { name: 'Mini Apps', href: '/mini-apps', icon: Smartphone },
   { name: 'Channels', href: '/channels', icon: Tv },
   { name: 'Notifications', href: '/notifications', icon: Bell },
   { name: 'Profile', href: '/profile/alice', icon: User },
