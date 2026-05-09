@@ -1,0 +1,17 @@
+[project]
+name = "stackx-social"
+description = "Decentralized social media platform on Stacks"
+authors = []
+telemetry = false
+cache_dir = "./.cache"
+requirements = []
+boot_contracts = []
+
+[contracts.social-platform]
+path = "social-platform.clar"
+clarity_version = 2
+epoch = 2.4
+
+[repl]
+costs_version = 2
+parser_version = 2

@@ -1,0 +1,21 @@
+{
+  "name": "stackx-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for StackX social platform",
+  "scripts": {
+    "test": "clarinet test",
+    "check": "clarinet check",
+    "deploy:testnet": "ts-node deploy.ts testnet",
+    "deploy:mainnet": "ts-node deploy.ts mainnet",
+    "console": "clarinet console"
+  },
+  "dependencies": {
+    "@stacks/transactions": "^6.13.0",
+    "@stacks/network": "^6.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  }
+}
