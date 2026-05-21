@@ -2,9 +2,11 @@
 
 import { CastComposer } from '@/components/cast/cast-composer';
 import { CastCard } from '@/components/cast/cast-card';
-import { mockCasts } from '@/lib/mock-data/casts';
+import { useCasts } from '@/lib/hooks/use-casts';
 
 export default function HomePage() {
+  const { casts, loading, error } = useCasts();
+
   return (
     <div className="max-w-2xl mx-auto border-x border-border min-h-screen">
       {/* Header */}
@@ -27,15 +29,25 @@ export default function HomePage() {
 
       {/* Feed */}
       <div>
-        {mockCasts.map((cast) => (
-          <CastCard key={cast.id} cast={cast} />
-        ))}
+        {loading ? (
+          <div className="p-8 text-center text-muted-foreground">Loading casts from blockchain...</div>
+        ) : error ? (
+          <div className="p-8 text-center text-destructive">Failed to load casts. Check contract configuration.</div>
+        ) : casts.length === 0 ? (
+          <div className="p-8 text-center text-muted-foreground">No casts found. Be the first to post!</div>
+        ) : (
+          casts.map((cast) => (
+            <CastCard key={cast.id} cast={cast} />
+          ))
+        )}
       </div>
 
       {/* Load More */}
-      <div className="p-8 text-center">
-        <button className="text-primary hover:underline">Load more casts</button>
-      </div>
+      {!loading && casts.length > 0 && (
+        <div className="p-8 text-center">
+          <button className="text-primary hover:underline">Load more casts</button>
+        </div>
+      )}
     </div>
   );
 }
