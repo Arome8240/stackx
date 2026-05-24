@@ -1,35 +1,56 @@
-import { ButtonHTMLAttributes } from 'react';
+'use client';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+import * as React from 'react';
+import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline' | 'destructive' | 'success';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'icon';
   loading?: boolean;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
 }
 
-export default function Button({
-  children,
-  loading,
-  variant = 'primary',
-  className = '',
-  disabled,
-  ...props
-}: ButtonProps) {
-  const base =
-    'inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50';
+const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
+  primary:     'bg-primary text-primary-foreground hover:opacity-90 hover:shadow-glow-sm active:scale-[0.97]',
+  secondary:   'bg-secondary text-secondary-foreground hover:bg-secondary/80 active:scale-[0.97]',
+  ghost:       'hover:bg-accent hover:text-accent-foreground active:scale-[0.97]',
+  outline:     'border border-border hover:bg-accent hover:text-accent-foreground active:scale-[0.97]',
+  destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.97]',
+  success:     'bg-success text-success-foreground hover:bg-success/90 active:scale-[0.97]',
+};
 
-  const variants = {
-    primary: 'bg-primary text-primary-foreground hover:opacity-90',
-    secondary: 'bg-secondary text-secondary-foreground hover:bg-accent',
-    outline: 'border border-border bg-transparent text-foreground hover:bg-accent',
-    ghost: 'bg-transparent text-foreground hover:bg-accent',
-  };
+const sizeClasses: Record<NonNullable<ButtonProps['size']>, string> = {
+  xs:   'h-7 px-3 text-xs rounded-full gap-1',
+  sm:   'h-8 px-3.5 text-sm rounded-full gap-1.5',
+  md:   'h-10 px-5 text-sm rounded-full gap-2',
+  lg:   'h-11 px-6 text-base rounded-full gap-2',
+  icon: 'h-9 w-9 rounded-full p-0',
+};
 
-  return (
-    <button
-      className={`${base} ${variants[variant]} ${className}`}
-      disabled={disabled ?? loading}
-      {...props}
-    >
-      {loading ? 'Please wait…' : children}
-    </button>
-  );
-}
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = 'primary', size = 'md', loading = false, disabled, icon, iconPosition = 'left', children, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        disabled={disabled || loading}
+        className={cn(
+          'inline-flex items-center justify-center font-semibold transition-all duration-150 select-none',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+          'disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none',
+          variantClasses[variant],
+          sizeClasses[size],
+          className,
+        )}
+        {...props}
+      >
+        {loading && <Loader2 className="w-4 h-4 animate-spin shrink-0" />}
+        {!loading && icon && iconPosition === 'left' && <span className="shrink-0">{icon}</span>}
+        {children}
+        {!loading && icon && iconPosition === 'right' && <span className="shrink-0">{icon}</span>}
+      </button>
+    );
+  }
+);
+Button.displayName = 'Button';
