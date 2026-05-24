@@ -14,6 +14,7 @@ import { HealthModule } from './health/health.module';
 import { NftsModule } from './nfts/nfts.module';
 import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { PollsModule } from './polls/polls.module';
+import { TipsModule } from './tips/tips.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { PollsModule } from './polls/polls.module';
     NftsModule,
     BookmarksModule,
     PollsModule,
+    TipsModule,
   ],
 })
 export class AppModule {}
