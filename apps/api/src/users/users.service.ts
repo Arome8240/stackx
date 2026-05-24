@@ -1,19 +1,26 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User, UserDocument } from './schemas/user.schema';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) {}
 
   findByEmail(email: string) {
-    return this.userModel.findOne({ email: email.toLowerCase() }).exec();
+    return this.userModel.findOne({ email: email.toLowerCase() }).select('+passwordHash').exec();
   }
 
   findById(id: string) {
     return this.userModel.findById(id).exec();
+  }
+
+  async findByUsername(username: string): Promise<UserDocument> {
+    const user = await this.userModel.findOne({ username: username.toLowerCase() }).exec();
+    if (!user) throw new NotFoundException(`User @${username} not found`);
+    return user;
   }
 
   async create(username: string, email: string, password: string): Promise<UserDocument> {
@@ -21,6 +28,45 @@ export class UsersService {
     if (exists) throw new ConflictException('Email already in use');
 
     const passwordHash = await bcrypt.hash(password, 10);
-    return this.userModel.create({ username, email, passwordHash });
+    return this.userModel.create({ username, email, passwordHash, displayName: username });
+  }
+
+  async updateProfile(id: string, dto: UpdateProfileDto): Promise<UserDocument> {
+    const user = await this.userModel.findByIdAndUpdate(id, { $set: dto }, { new: true }).exec();
+    if (!user) throw new NotFoundException('User not found');
+    return user;
+  }
+
+  async search(query: string, limit = 10): Promise<UserDocument[]> {
+    return this.userModel
+      .find({
+        $or: [
+          { username: { $regex: query, $options: 'i' } },
+          { displayName: { $regex: query, $options: 'i' } },
+        ],
+        isSuspended: false,
+      })
+      .limit(limit)
+      .exec();
+  }
+
+  async getSuggested(excludeId: string, limit = 5): Promise<UserDocument[]> {
+    return this.userModel
+      .find({ _id: { $ne: excludeId }, isSuspended: false })
+      .sort({ followersCount: -1 })
+      .limit(limit)
+      .exec();
+  }
+
+  async incrementFollowers(id: string, delta: 1 | -1) {
+    return this.userModel.findByIdAndUpdate(id, { $inc: { followersCount: delta } }).exec();
+  }
+
+  async incrementFollowing(id: string, delta: 1 | -1) {
+    return this.userModel.findByIdAndUpdate(id, { $inc: { followingCount: delta } }).exec();
+  }
+
+  async incrementCastsCount(id: string, delta: 1 | -1) {
+    return this.userModel.findByIdAndUpdate(id, { $inc: { castsCount: delta } }).exec();
   }
 }
