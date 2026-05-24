@@ -12,6 +12,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { HealthModule } from './health/health.module';
 import { NftsModule } from './nfts/nfts.module';
+import { BookmarksModule } from './bookmarks/bookmarks.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { NftsModule } from './nfts/nfts.module';
     AnalyticsModule,
     HealthModule,
     NftsModule,
+    BookmarksModule,
   ],
 })
 export class AppModule {}
