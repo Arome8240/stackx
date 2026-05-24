@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
   Home, Search, Bell, User, Hash, Bookmark,
   Wallet, MessageCircle, Settings, Zap, LayoutGrid,
-  PenSquare,
+  PenSquare, ShoppingBag,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ConnectWallet } from '../wallet/connect-wallet';
@@ -19,6 +19,7 @@ const navItems = [
   { label: 'Messages',      href: '/messages',       icon: MessageCircle },
   { label: 'Bookmarks',     href: '/bookmarks',      icon: Bookmark },
   { label: 'Channels',      href: '/channels',       icon: LayoutGrid },
+  { label: 'Marketplace',   href: '/marketplace',    icon: ShoppingBag },
   { label: 'Wallet',        href: '/wallet',         icon: Wallet },
   { label: 'Profile',       href: '/profile',        icon: User },
   { label: 'Settings',      href: '/settings',       icon: Settings },
