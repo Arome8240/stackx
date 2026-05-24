@@ -6,6 +6,11 @@ import type { RegisterDto } from './dto/register.dto';
 import type { LoginDto } from './dto/login.dto';
 import type { UserDocument } from '../users/schemas/user.schema';
 
+export interface AuthResponse {
+  accessToken: string;
+  user: { id: string; email: string; username: string; stxAddress?: string };
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -13,26 +18,29 @@ export class AuthService {
     private readonly jwt: JwtService,
   ) {}
 
-  async register(dto: RegisterDto) {
+  async register(dto: RegisterDto): Promise<AuthResponse> {
     const user = await this.users.create(dto.username, dto.email, dto.password);
-    return this.signToken(user._id.toString(), user.email, user.username);
+    return this.buildResponse(user);
   }
 
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto): Promise<AuthResponse> {
     const user = (await this.users.findByEmail(dto.email)) as UserDocument | null;
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
     const valid = await bcrypt.compare(dto.password, user.passwordHash);
     if (!valid) throw new UnauthorizedException('Invalid credentials');
 
-    return this.signToken(user._id.toString(), user.email, user.username);
+    if (user.isSuspended) throw new UnauthorizedException('Account suspended');
+
+    return this.buildResponse(user);
   }
 
-  private signToken(sub: string, email: string, username: string) {
-    const payload = { sub, email, username };
+  private buildResponse(user: UserDocument): AuthResponse {
+    const sub = (user._id as { toString(): string }).toString();
+    const payload = { sub, email: user.email, username: user.username };
     return {
-      access_token: this.jwt.sign(payload),
-      user: { id: sub, email, username },
+      accessToken: this.jwt.sign(payload),
+      user: { id: sub, email: user.email, username: user.username, stxAddress: user.stxAddress || undefined },
     };
   }
 }
