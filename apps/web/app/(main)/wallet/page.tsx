@@ -1,239 +1,224 @@
 'use client';
 
-import { useState } from 'react';
-import { getCurrentUser } from '@/lib/mock-data/users';
+import * as React from 'react';
+import { Wallet, ArrowUpRight, ArrowDownLeft, RefreshCw, Gem, Coins, TrendingUp, Copy, ExternalLink, Send } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Tabs } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Avatar } from '@/components/ui/avatar';
+import { EmptyState } from '@/components/ui/empty-state';
+import { formatSTX, formatNumber, formatTimeAgo, shortenAddress, copyToClipboard } from '@/lib/utils';
+import { useToast } from '@/components/ui/toast';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+
+const TABS = [
+  { id: 'overview',  label: 'Overview' },
+  { id: 'activity',  label: 'Activity' },
+  { id: 'nfts',      label: 'NFTs' },
+  { id: 'tips',      label: 'Tips' },
+];
+
+const STX_BALANCE   = 1_284_500_000; // microSTX
+const TIPS_RECEIVED = 24_750_000;
+const TIPS_SENT     = 8_000_000;
+
+const TX_HISTORY = [
+  { id: 'tx1', type: 'tip-received', from: 'punk6529',     amount: 5_000_000, timestamp: new Date(Date.now() - 300_000).toISOString(),   status: 'confirmed' },
+  { id: 'tx2', type: 'channel-join', to:   'nft-alpha',    amount: 10_000_000, timestamp: new Date(Date.now() - 3_600_000).toISOString(), status: 'confirmed' },
+  { id: 'tx3', type: 'tip-sent',     to:   'muneeb',       amount: 2_000_000, timestamp: new Date(Date.now() - 7_200_000).toISOString(),  status: 'confirmed' },
+  { id: 'tx4', type: 'nft-sale',     buyer:'satoshi_hiro', amount: 12_000_000, timestamp: new Date(Date.now() - 86_400_000).toISOString(), status: 'confirmed' },
+  { id: 'tx5', type: 'tip-received', from: 'dave',         amount: 1_000_000, timestamp: new Date(Date.now() - 172_800_000).toISOString(), status: 'confirmed' },
+];
+
+const NFT_HOLDINGS = [
+  { id: '7',  name: 'Cast #7 by @muneeb',  edition: '1/1',  value: 50_000_000 },
+  { id: '23', name: 'Cast #23 by @hiro',   edition: '2/5',  value: 8_000_000  },
+  { id: '89', name: 'Cast #89 by @alice',  edition: '1/10', value: 3_000_000  },
+];
+
+const WALLET_ADDR = 'SP2J6ZY48GV1EZ5V2V5RB9MP66SW86PYKKNRV9EJ';
 
 export default function WalletPage() {
-  const [activeTab, setActiveTab] = useState<'assets' | 'activity' | 'send' | 'receive'>('assets');
-  const [sendAmount, setSendAmount] = useState('');
-  const [sendAddress, setSendAddress] = useState('');
-  const currentUser = getCurrentUser();
+  const { toast } = useToast();
+  const [tab, setTab] = React.useState('overview');
 
-  // Mock wallet data
-  const walletData = {
-    address: currentUser.walletAddress,
-    balance: {
-      stx: 1250.50,
-      usd: 625.25,
-    },
-    tokens: [
-      { symbol: 'STX', name: 'Stacks', balance: 1250.50, usdValue: 625.25, icon: '🟣' },
-      { symbol: 'ALEX', name: 'Alex', balance: 5000, usdValue: 150.00, icon: '🔷' },
-      { symbol: 'DIKO', name: 'Arkadiko', balance: 2500, usdValue: 75.00, icon: '🔶' },
-    ],
-    recentActivity: [
-      { id: '1', type: 'receive', amount: 10, token: 'STX', from: 'SP2J6ZY...', timestamp: '2024-01-20T10:30:00Z', status: 'completed' },
-      { id: '2', type: 'send', amount: 5, token: 'STX', to: 'SP3FBR2A...', timestamp: '2024-01-19T15:20:00Z', status: 'completed' },
-      { id: '3', type: 'swap', amount: 100, token: 'ALEX', timestamp: '2024-01-19T12:10:00Z', status: 'completed' },
-      { id: '4', type: 'receive', amount: 25, token: 'STX', from: 'SP1HTBVD...', timestamp: '2024-01-18T09:45:00Z', status: 'completed' },
-    ],
-  };
-
-  const handleSend = () => {
-    if (sendAmount && sendAddress) {
-      // TODO: Send transaction
-      console.log('Sending:', sendAmount, 'to', sendAddress);
-      setSendAmount('');
-      setSendAddress('');
-    }
-  };
-
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
-
-  const formatTime = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  const copyAddr = () => {
+    copyToClipboard(WALLET_ADDR);
+    toast({ type: 'success', title: 'Address copied!' });
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-[640px] mx-auto border-x border-border min-h-screen">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Wallet</h1>
-        <p className="text-muted-foreground">Manage your crypto assets</p>
-      </div>
+      <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border px-4 py-3">
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-bold">Wallet</h1>
+          <Button variant="ghost" size="icon" aria-label="Refresh">
+            <RefreshCw className="w-4 h-4" />
+          </Button>
+        </div>
+      </header>
 
-      {/* Balance Card */}
-      <div className="bg-gradient-to-br from-primary to-purple-500 rounded-xl p-6 mb-6 text-white">
-        <p className="text-sm opacity-80 mb-2">Total Balance</p>
-        <h2 className="text-4xl font-bold mb-4">${walletData.balance.usd.toFixed(2)}</h2>
-        <div className="flex items-center gap-2 text-sm opacity-90">
-          <span>{walletData.balance.stx.toFixed(2)} STX</span>
-          <span>•</span>
-          <span className="font-mono">{formatAddress(walletData.address)}</span>
+      {/* Balance hero */}
+      <div className="bg-gradient-to-br from-violet-950/60 via-purple-950/40 to-fuchsia-950/60 border-b border-border p-6">
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <p className="text-sm text-muted-foreground mb-1">Total Balance</p>
+            <p className="text-4xl font-bold tracking-tight">{formatSTX(STX_BALANCE)}</p>
+            <p className="text-sm text-muted-foreground mt-1">≈ ${((STX_BALANCE / 1_000_000) * 2.14).toFixed(2)} USD</p>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center">
+            <Wallet className="w-6 h-6 text-primary" />
+          </div>
+        </div>
+
+        {/* Wallet address */}
+        <div className="flex items-center gap-2 rounded-xl bg-black/20 px-3 py-2 mb-5">
+          <code className="flex-1 text-xs font-mono text-muted-foreground truncate">{shortenAddress(WALLET_ADDR, 8)}</code>
+          <button onClick={copyAddr} className="text-muted-foreground hover:text-foreground transition-colors">
+            <Copy className="w-3.5 h-3.5" />
+          </button>
+          <a href={`https://explorer.stacks.co/address/${WALLET_ADDR}?chain=testnet`} target="_blank" rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors">
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+
+        {/* Quick actions */}
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { icon: <Send className="w-5 h-5" />,          label: 'Send',    color: 'bg-primary/20 text-primary' },
+            { icon: <ArrowDownLeft className="w-5 h-5" />, label: 'Receive', color: 'bg-green-500/20 text-green-500' },
+            { icon: <TrendingUp className="w-5 h-5" />,    label: 'Earn',    color: 'bg-yellow-500/20 text-yellow-500' },
+          ].map(({ icon, label, color }) => (
+            <button key={label} className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+              <span className={cn('w-10 h-10 rounded-full flex items-center justify-center', color)}>{icon}</span>
+              <span className="text-xs font-medium">{label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
-        <button
-          onClick={() => setActiveTab('send')}
-          className="flex flex-col items-center gap-2 p-4 bg-card border border-border rounded-xl hover:bg-accent transition-colors"
-        >
-          <span className="text-2xl">📤</span>
-          <span className="text-sm font-medium">Send</span>
-        </button>
-        <button
-          onClick={() => setActiveTab('receive')}
-          className="flex flex-col items-center gap-2 p-4 bg-card border border-border rounded-xl hover:bg-accent transition-colors"
-        >
-          <span className="text-2xl">📥</span>
-          <span className="text-sm font-medium">Receive</span>
-        </button>
-        <button className="flex flex-col items-center gap-2 p-4 bg-card border border-border rounded-xl hover:bg-accent transition-colors">
-          <span className="text-2xl">🔄</span>
-          <span className="text-sm font-medium">Swap</span>
-        </button>
-        <button className="flex flex-col items-center gap-2 p-4 bg-card border border-border rounded-xl hover:bg-accent transition-colors">
-          <span className="text-2xl">💰</span>
-          <span className="text-sm font-medium">Stake</span>
-        </button>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-border">
-        {(['assets', 'activity', 'send', 'receive'] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 font-medium capitalize transition-colors ${
-              activeTab === tab
-                ? 'border-b-2 border-primary text-primary'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            {tab}
-          </button>
+      {/* Stats strip */}
+      <div className="grid grid-cols-3 divide-x divide-border border-b border-border">
+        {[
+          { label: 'Tips Received', value: formatSTX(TIPS_RECEIVED), icon: <ArrowDownLeft className="w-3.5 h-3.5 text-green-500" /> },
+          { label: 'Tips Sent',     value: formatSTX(TIPS_SENT),     icon: <ArrowUpRight  className="w-3.5 h-3.5 text-red-500" /> },
+          { label: 'NFTs Held',     value: formatNumber(NFT_HOLDINGS.length), icon: <Gem className="w-3.5 h-3.5 text-fuchsia-400" /> },
+        ].map(({ label, value, icon }) => (
+          <div key={label} className="flex flex-col items-center gap-1 py-4 px-2">
+            <div className="flex items-center gap-1">{icon}<span className="text-base font-bold">{value}</span></div>
+            <span className="text-xs text-muted-foreground text-center">{label}</span>
+          </div>
         ))}
       </div>
 
-      {/* Assets Tab */}
-      {activeTab === 'assets' && (
-        <div className="space-y-3">
-          {walletData.tokens.map((token) => (
-            <div
-              key={token.symbol}
-              className="bg-card border border-border rounded-xl p-4 flex items-center justify-between hover:bg-accent transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-2xl">
-                  {token.icon}
-                </div>
-                <div>
-                  <p className="font-semibold">{token.name}</p>
-                  <p className="text-sm text-muted-foreground">{token.symbol}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="font-semibold">{token.balance.toLocaleString()}</p>
-                <p className="text-sm text-muted-foreground">${token.usdValue.toFixed(2)}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {/* Tabs */}
+      <Tabs tabs={TABS} activeTab={tab} onChange={setTab} />
 
-      {/* Activity Tab */}
-      {activeTab === 'activity' && (
-        <div className="space-y-3">
-          {walletData.recentActivity.map((activity) => (
-            <div
-              key={activity.id}
-              className="bg-card border border-border rounded-xl p-4 flex items-center justify-between"
-            >
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  activity.type === 'receive' ? 'bg-green-500/20 text-green-500' :
-                  activity.type === 'send' ? 'bg-red-500/20 text-red-500' :
-                  'bg-blue-500/20 text-blue-500'
-                }`}>
-                  {activity.type === 'receive' ? '↓' : activity.type === 'send' ? '↑' : '↔'}
-                </div>
-                <div>
-                  <p className="font-semibold capitalize">{activity.type}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {formatTime(activity.timestamp)}
-                  </p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="font-semibold">
-                  {activity.type === 'send' ? '-' : '+'}{activity.amount} {activity.token}
-                </p>
-                <p className="text-sm text-green-500">{activity.status}</p>
-              </div>
+      {/* Tab content */}
+      <div>
+        {tab === 'overview' && (
+          <div className="p-4 space-y-4">
+            <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">Recent Activity</h3>
+            <div className="space-y-1">
+              {TX_HISTORY.slice(0, 3).map(tx => <TxItem key={tx.id} tx={tx} />)}
             </div>
-          ))}
-        </div>
-      )}
-
-      {/* Send Tab */}
-      {activeTab === 'send' && (
-        <div className="bg-card border border-border rounded-xl p-6">
-          <h3 className="text-lg font-bold mb-4">Send Tokens</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Recipient Address</label>
-              <input
-                type="text"
-                value={sendAddress}
-                onChange={(e) => setSendAddress(e.target.value)}
-                placeholder="SP2J6ZY48GV1EZ5V2V5RB9MP66SW86PYKKNRV9EJ7"
-                className="w-full bg-input border border-border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-ring"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">Amount</label>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={sendAmount}
-                  onChange={(e) => setSendAmount(e.target.value)}
-                  placeholder="0.00"
-                  className="w-full bg-input border border-border rounded-lg px-4 py-2 pr-16 outline-none focus:ring-2 focus:ring-ring"
-                />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  STX
-                </span>
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                Balance: {walletData.balance.stx} STX
-              </p>
-            </div>
-            <button
-              onClick={handleSend}
-              disabled={!sendAmount || !sendAddress}
-              className="w-full py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity font-semibold"
-            >
-              Send
-            </button>
+            <Button variant="outline" className="w-full" onClick={() => setTab('activity')}>
+              View all activity
+            </Button>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Receive Tab */}
-      {activeTab === 'receive' && (
-        <div className="bg-card border border-border rounded-xl p-6">
-          <h3 className="text-lg font-bold mb-4">Receive Tokens</h3>
-          <div className="flex flex-col items-center">
-            <div className="w-64 h-64 bg-white rounded-xl p-4 mb-4">
-              {/* QR Code placeholder */}
-              <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-400">QR Code</span>
+        {tab === 'activity' && (
+          <div className="divide-y divide-border">
+            {TX_HISTORY.map(tx => <TxItem key={tx.id} tx={tx} padded />)}
+          </div>
+        )}
+
+        {tab === 'nfts' && (
+          <div>
+            {NFT_HOLDINGS.length === 0 ? (
+              <EmptyState icon={<Gem className="w-8 h-8" />} title="No NFTs yet" description="Buy or collect cast NFTs from the marketplace." />
+            ) : (
+              <div className="grid grid-cols-2 gap-3 p-4">
+                {NFT_HOLDINGS.map(nft => (
+                  <div key={nft.id} className="rounded-xl border border-border bg-card overflow-hidden hover:border-fuchsia-500/30 transition-colors">
+                    <div className="aspect-square bg-gradient-to-br from-violet-600/20 to-fuchsia-600/20 flex items-center justify-center">
+                      <Gem className="w-12 h-12 text-fuchsia-400 opacity-60" />
+                    </div>
+                    <div className="p-3 space-y-1">
+                      <p className="text-xs font-semibold line-clamp-1">{nft.name}</p>
+                      <div className="flex items-center justify-between">
+                        <Badge variant="nft">{nft.edition}</Badge>
+                        <span className="text-xs font-semibold text-yellow-500">{formatSTX(nft.value)}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {tab === 'tips' && (
+          <div className="p-4 space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-xl border border-border bg-card p-4">
+                <Coins className="w-5 h-5 text-green-500 mb-2" />
+                <p className="text-xl font-bold">{formatSTX(TIPS_RECEIVED)}</p>
+                <p className="text-xs text-muted-foreground">Total received</p>
+              </div>
+              <div className="rounded-xl border border-border bg-card p-4">
+                <Send className="w-5 h-5 text-red-500 mb-2" />
+                <p className="text-xl font-bold">{formatSTX(TIPS_SENT)}</p>
+                <p className="text-xs text-muted-foreground">Total sent</p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mb-2">Your Wallet Address</p>
-            <div className="flex items-center gap-2 bg-accent px-4 py-2 rounded-lg">
-              <code className="font-mono text-sm">{walletData.address}</code>
-              <button className="text-primary hover:opacity-80">
-                📋
-              </button>
+            <div className="divide-y divide-border rounded-xl border border-border overflow-hidden">
+              {TX_HISTORY.filter(tx => tx.type.startsWith('tip')).map(tx => <TxItem key={tx.id} tx={tx} padded />)}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+    </div>
+  );
+}
+
+type TxData = typeof TX_HISTORY[number];
+
+function TxItem({ tx, padded }: { tx: TxData; padded?: boolean }) {
+  const isIn = tx.type === 'tip-received' || tx.type === 'nft-sale';
+  const label = {
+    'tip-received': `Tip from @${(tx as { from?: string }).from}`,
+    'tip-sent':     `Tip to @${(tx as { to?: string }).to}`,
+    'channel-join': `Joined /${(tx as { to?: string }).to}`,
+    'nft-sale':     `NFT sold to @${(tx as { buyer?: string }).buyer}`,
+  }[tx.type] ?? tx.type;
+
+  return (
+    <div className={cn('flex items-center gap-3 hover:bg-accent/30 transition-colors', padded ? 'px-4 py-3.5' : 'py-2')}>
+      <div className={cn('w-9 h-9 rounded-full flex items-center justify-center shrink-0',
+        isIn ? 'bg-green-500/10' : 'bg-red-500/10'
+      )}>
+        {isIn
+          ? <ArrowDownLeft className="w-4 h-4 text-green-500" />
+          : <ArrowUpRight  className="w-4 h-4 text-red-500" />
+        }
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium truncate">{label}</p>
+        <p className="text-xs text-muted-foreground">{formatTimeAgo(tx.timestamp)}</p>
+      </div>
+      <div className="text-right">
+        <p className={cn('text-sm font-semibold', isIn ? 'text-green-500' : 'text-red-500')}>
+          {isIn ? '+' : '-'}{formatSTX(tx.amount)}
+        </p>
+        <Badge variant={tx.status === 'confirmed' ? 'success' : 'warning'} className="text-[10px]">
+          {tx.status}
+        </Badge>
+      </div>
     </div>
   );
 }

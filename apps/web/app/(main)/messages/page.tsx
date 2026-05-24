@@ -1,243 +1,150 @@
 'use client';
 
-import { useState } from 'react';
-import { mockConversations, mockMessages } from '@/lib/mock-data/messages';
-import { mockUsers } from '@/lib/mock-data/users';
+import * as React from 'react';
+import { Search, Plus, Send, ArrowLeft, MoreHorizontal } from 'lucide-react';
+import { Avatar } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/ui/empty-state';
+import { formatTimeAgo, cn } from '@/lib/utils';
+
+const CONVERSATIONS = [
+  { id: '1', user: { username: 'muneeb',      displayName: 'Muneeb Ali',    avatar: '', verified: true  }, lastMessage: 'Great point about Clarity!',      time: new Date(Date.now() - 600_000).toISOString(),    unread: 2 },
+  { id: '2', user: { username: 'satoshi_hiro',displayName: 'Hiro Systems',  avatar: '', verified: true  }, lastMessage: 'Check out our new devnet release.', time: new Date(Date.now() - 3_600_000).toISOString(),  unread: 0 },
+  { id: '3', user: { username: 'alice',        displayName: 'Alice',         avatar: '', verified: false }, lastMessage: 'Thanks for the tip! 🙏',           time: new Date(Date.now() - 7_200_000).toISOString(),  unread: 0 },
+  { id: '4', user: { username: 'bob',          displayName: 'Bob',           avatar: '', verified: false }, lastMessage: 'When are you posting next?',       time: new Date(Date.now() - 86_400_000).toISOString(), unread: 0 },
+];
+
+const MESSAGES_BY_CONV: Record<string, Array<{ id: string; text: string; from: 'me' | 'them'; time: string }>> = {
+  '1': [
+    { id: 'm1', text: 'Hey! Loved your last cast about Bitcoin L2s.',                           from: 'them', time: new Date(Date.now() - 700_000).toISOString() },
+    { id: 'm2', text: 'Thanks! The ecosystem is really picking up.',                            from: 'me',   time: new Date(Date.now() - 680_000).toISOString() },
+    { id: 'm3', text: 'Great point about Clarity!',                                             from: 'them', time: new Date(Date.now() - 600_000).toISOString() },
+  ],
+};
 
 export default function MessagesPage() {
-  const [selectedConversation, setSelectedConversation] = useState(mockConversations[0]);
-  const [messageText, setMessageText] = useState('');
-  const [showTipModal, setShowTipModal] = useState(false);
-  const [tipAmount, setTipAmount] = useState('');
+  const [selected, setSelected] = React.useState<string | null>(null);
+  const [input, setInput] = React.useState('');
+  const [messages, setMessages] = React.useState(MESSAGES_BY_CONV['1'] ?? []);
 
-  const currentUser = mockUsers[6]; // Alice
-  const otherParticipant = mockUsers.find(
-    (u) => selectedConversation.participants.includes(u.id) && u.id !== currentUser.id
-  );
+  const conv = CONVERSATIONS.find(c => c.id === selected);
 
-  const conversationMessages = mockMessages.filter(
-    (m) => m.conversationId === selectedConversation.id
-  );
-
-  const handleSendMessage = () => {
-    if (messageText.trim()) {
-      // TODO: Send message to blockchain
-      console.log('Sending message:', messageText);
-      setMessageText('');
-    }
-  };
-
-  const handleSendTip = () => {
-    if (tipAmount && parseFloat(tipAmount) > 0) {
-      // TODO: Send tip transaction
-      console.log('Sending tip:', tipAmount);
-      setShowTipModal(false);
-      setTipAmount('');
-    }
-  };
-
-  const formatTime = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const sendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    setMessages(prev => [...prev, { id: String(Date.now()), text: input, from: 'me', time: new Date().toISOString() }]);
+    setInput('');
   };
 
   return (
-    <div className="flex h-screen max-h-screen">
-      {/* Conversations List */}
-      <div className="w-80 border-r border-border flex flex-col">
-        <div className="p-4 border-b border-border">
-          <h1 className="text-xl font-bold">Messages</h1>
-        </div>
-        <div className="flex-1 overflow-y-auto">
-          {mockConversations.map((conversation) => {
-            const participant = mockUsers.find(
-              (u) => conversation.participants.includes(u.id) && u.id !== currentUser.id
-            );
-            if (!participant) return null;
-
-            return (
-              <button
-                key={conversation.id}
-                onClick={() => setSelectedConversation(conversation)}
-                className={`w-full p-4 flex items-center gap-3 hover:bg-accent transition-colors border-b border-border ${
-                  selectedConversation.id === conversation.id ? 'bg-accent' : ''
-                }`}
-              >
-                <img
-                  src={participant.avatar}
-                  alt={participant.displayName}
-                  className="w-12 h-12 rounded-full"
-                />
-                <div className="flex-1 text-left min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <p className="font-semibold truncate">{participant.displayName}</p>
-                    {conversation.unreadCount > 0 && (
-                      <span className="bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
-                        {conversation.unreadCount}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground truncate">
-                    {conversation.lastMessage.content}
-                  </p>
-                </div>
+    <div className="max-w-[640px] mx-auto border-x border-border min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border px-4 py-3 flex items-center justify-between">
+        {selected ? (
+          <>
+            <div className="flex items-center gap-3">
+              <button onClick={() => setSelected(null)} className="p-1.5 rounded-full hover:bg-accent transition-colors">
+                <ArrowLeft className="w-5 h-5" />
               </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Chat Header */}
-        <div className="p-4 border-b border-border flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img
-              src={otherParticipant?.avatar}
-              alt={otherParticipant?.displayName}
-              className="w-10 h-10 rounded-full"
-            />
-            <div>
-              <p className="font-semibold">{otherParticipant?.displayName}</p>
-              <p className="text-sm text-muted-foreground">@{otherParticipant?.username}</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setShowTipModal(true)}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
-          >
-            💰 Send Tip
-          </button>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {conversationMessages.map((message) => {
-            const isCurrentUser = message.senderId === currentUser.id;
-            const sender = mockUsers.find((u) => u.id === message.senderId);
-
-            return (
-              <div
-                key={message.id}
-                className={`flex gap-3 ${isCurrentUser ? 'flex-row-reverse' : ''}`}
-              >
-                <img
-                  src={sender?.avatar}
-                  alt={sender?.displayName}
-                  className="w-8 h-8 rounded-full"
-                />
-                <div className={`flex flex-col ${isCurrentUser ? 'items-end' : ''}`}>
-                  <div
-                    className={`max-w-md px-4 py-2 rounded-2xl ${
-                      isCurrentUser
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-accent text-accent-foreground'
-                    }`}
-                  >
-                    <p>{message.content}</p>
-                    {message.tip && (
-                      <div className="mt-2 pt-2 border-t border-current/20">
-                        <p className="text-sm font-semibold">
-                          💰 Tip: {message.tip.amount} {message.tip.token}
-                        </p>
-                        {message.tip.txHash && (
-                          <p className="text-xs opacity-70 truncate">
-                            Tx: {message.tip.txHash}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {formatTime(message.timestamp)}
-                  </p>
-                </div>
+              <Avatar src={conv?.user.avatar} alt={conv?.user.displayName ?? ''} size="sm" verified={conv?.user.verified} />
+              <div>
+                <p className="font-semibold text-sm leading-tight">{conv?.user.displayName}</p>
+                <p className="text-xs text-muted-foreground">@{conv?.user.username}</p>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Message Input */}
-        <div className="p-4 border-t border-border">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={messageText}
-              onChange={(e) => setMessageText(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder="Type a message..."
-              className="flex-1 bg-input border border-border rounded-full px-4 py-2 outline-none focus:ring-2 focus:ring-ring"
-            />
-            <button
-              onClick={handleSendMessage}
-              disabled={!messageText.trim()}
-              className="px-6 py-2 bg-primary text-primary-foreground rounded-full hover:opacity-90 disabled:opacity-50 transition-opacity"
-            >
-              Send
+            </div>
+            <button className="p-1.5 rounded-full hover:bg-accent transition-colors text-muted-foreground">
+              <MoreHorizontal className="w-5 h-5" />
             </button>
-          </div>
-        </div>
-      </div>
+          </>
+        ) : (
+          <>
+            <h1 className="text-lg font-bold">Messages</h1>
+            <Button size="icon" variant="ghost" aria-label="New message">
+              <Plus className="w-5 h-5" />
+            </Button>
+          </>
+        )}
+      </header>
 
-      {/* Tip Modal */}
-      {showTipModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-          <div className="bg-card border border-border rounded-xl p-6 max-w-md w-full mx-4">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold">Send Tip</h2>
-              <button
-                onClick={() => setShowTipModal(false)}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="mb-6">
-              <p className="text-sm text-muted-foreground mb-4">
-                Send a tip to @{otherParticipant?.username}
-              </p>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Amount (STX)</label>
-                  <input
-                    type="number"
-                    value={tipAmount}
-                    onChange={(e) => setTipAmount(e.target.value)}
-                    placeholder="0.00"
-                    className="w-full bg-input border border-border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-ring"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  {[1, 5, 10, 25].map((amount) => (
-                    <button
-                      key={amount}
-                      onClick={() => setTipAmount(amount.toString())}
-                      className="flex-1 py-2 bg-accent hover:bg-accent/80 rounded-lg transition-colors"
-                    >
-                      {amount} STX
-                    </button>
-                  ))}
+      {selected ? (
+        /* Chat view */
+        <div className="flex flex-col flex-1">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {(MESSAGES_BY_CONV[selected] ?? messages).map(msg => (
+              <div key={msg.id} className={cn('flex', msg.from === 'me' ? 'justify-end' : 'justify-start')}>
+                <div className={cn(
+                  'max-w-[75%] rounded-2xl px-4 py-2.5 text-sm',
+                  msg.from === 'me'
+                    ? 'bg-primary text-primary-foreground rounded-br-sm'
+                    : 'bg-muted text-foreground rounded-bl-sm',
+                )}>
+                  <p>{msg.text}</p>
+                  <p className={cn('text-[10px] mt-1', msg.from === 'me' ? 'text-primary-foreground/60' : 'text-muted-foreground')}>
+                    {formatTimeAgo(msg.time)}
+                  </p>
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
 
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowTipModal(false)}
-                className="flex-1 py-2 bg-accent hover:bg-accent/80 rounded-lg transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSendTip}
-                disabled={!tipAmount || parseFloat(tipAmount) <= 0}
-                className="flex-1 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
-              >
-                Send Tip
-              </button>
+          {/* Input */}
+          <div className="border-t border-border p-3">
+            <form onSubmit={sendMessage} className="flex items-end gap-2">
+              <input
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder="Send a message…"
+                className="flex-1 rounded-2xl border border-border bg-muted px-4 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-colors resize-none"
+              />
+              <Button type="submit" size="icon" disabled={!input.trim()} aria-label="Send">
+                <Send className="w-4 h-4" />
+              </Button>
+            </form>
+          </div>
+        </div>
+      ) : (
+        /* Conversation list */
+        <div className="flex-1">
+          {/* Search */}
+          <div className="p-3 border-b border-border">
+            <div className="relative">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                placeholder="Search conversations"
+                className="w-full rounded-full border border-border bg-muted pl-10 pr-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
+              />
             </div>
           </div>
+
+          {CONVERSATIONS.length === 0 ? (
+            <EmptyState title="No messages yet" description="Start a conversation with someone you follow." />
+          ) : (
+            <div className="divide-y divide-border">
+              {CONVERSATIONS.map(c => (
+                <button
+                  key={c.id}
+                  onClick={() => { setSelected(c.id); setMessages(MESSAGES_BY_CONV[c.id] ?? []); }}
+                  className="w-full flex items-start gap-3 px-4 py-4 hover:bg-accent/30 transition-colors text-left"
+                >
+                  <Avatar src={c.user.avatar} alt={c.user.displayName} size="md" verified={c.user.verified} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className="font-semibold text-sm">{c.user.displayName}</span>
+                      <span className="text-xs text-muted-foreground">{formatTimeAgo(c.time)}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-muted-foreground truncate">{c.lastMessage}</p>
+                      {c.unread > 0 && (
+                        <span className="ml-2 bg-primary text-primary-foreground text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center shrink-0">
+                          {c.unread}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
