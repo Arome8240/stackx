@@ -2,7 +2,7 @@
 ;; Complete rewrite with: STX tipping, SIP-009 NFT minting, polls, paid channels,
 ;; bookmarks, content moderation, governance, and creator monetization.
 
-;;  ── Traits ──────────────────────────────────────────────────────────────────
+;;  -- Traits ------------------------------------------------------------------
 
 (define-trait sip009-nft-trait
   (
@@ -13,7 +13,7 @@
   )
 )
 
-;;  ── Constants ───────────────────────────────────────────────────────────────
+;;  -- Constants --------------------------------------------------------------
 
 (define-constant contract-owner tx-sender)
 
@@ -42,7 +42,7 @@
 (define-constant MIN-TIP-AMOUNT   u1000)    ;; 0.001 STX in microSTX
 (define-constant PLATFORM-FEE-BPS u250)     ;; 2.5% in basis points
 
-;;  ── Data Variables ──────────────────────────────────────────────────────────
+;;  -- Data Variables ----------------------------------------------------------
 
 (define-data-var platform-fee-bps       uint PLATFORM-FEE-BPS)
 (define-data-var total-users            uint u0)
@@ -53,13 +53,13 @@
 (define-data-var platform-treasury      uint u0)
 (define-data-var governance-proposal-id uint u0)
 
-;;  ── NFT Token Definition ─────────────────────────────────────────────────────
+;;  -- NFT Token Definition ----------------------------------------------------
 
 (define-non-fungible-token cast-nft uint)
 
-;;  ── Data Maps ───────────────────────────────────────────────────────────────
+;;  -- Data Maps --------------------------------------------------------------
 
-;; ── Users ──
+;; -- Users --
 
 (define-map users principal
   {
@@ -86,7 +86,7 @@
 
 (define-map username-to-principal (string-ascii 50) principal)
 
-;; ── Casts ──
+;; -- Casts --
 
 (define-map casts uint
   {
@@ -111,14 +111,14 @@
   }
 )
 
-;; ── Social Interactions ──
+;; -- Social Interactions --
 
 (define-map cast-likes    { cast-id: uint, user: principal } bool)
 (define-map cast-recasts  { cast-id: uint, user: principal } bool)
 (define-map cast-bookmarks { cast-id: uint, user: principal } bool)
 (define-map follows       { follower: principal, following: principal } bool)
 
-;; ── Channels ──
+;; -- Channels --
 
 (define-map channels uint
   {
@@ -140,7 +140,7 @@
 (define-map channel-members { channel-id: uint, user: principal } bool)
 (define-map channel-name-to-id (string-ascii 50) uint)
 
-;; ── NFT Marketplace ──
+;; -- NFT Marketplace --
 
 (define-map nft-metadata uint
   {
@@ -163,7 +163,7 @@
 
 (define-map cast-nft-id uint uint)    ;; cast-id -> nft-id (first/canonical NFT)
 
-;; ── Polls ──
+;; -- Polls --
 
 (define-map polls uint
   {
@@ -186,7 +186,7 @@
 
 (define-map poll-votes { poll-id: uint, user: principal } uint)  ;; 1-4 = option voted
 
-;; ── Notifications ──
+;; -- Notifications --
 
 (define-map notifications { user: principal, notif-id: uint }
   {
@@ -201,7 +201,7 @@
 
 (define-map user-notif-count principal uint)
 
-;; ── Reports ──
+;; -- Reports --
 
 (define-map content-reports { cast-id: uint, reporter: principal }
   {
@@ -212,7 +212,7 @@
 
 (define-map cast-report-count uint uint)
 
-;; ── Governance ──
+;; -- Governance --
 
 (define-map governance-proposals uint
   {
@@ -229,11 +229,11 @@
 
 (define-map governance-votes { proposal-id: uint, voter: principal } bool)
 
-;; ── User pins ──
+;; -- User pins --
 
 (define-map user-pinned-cast principal uint)
 
-;;  ── Read-Only Functions ──────────────────────────────────────────────────────
+;;  -- Read-Only Functions ------------------------------------------------------
 
 (define-read-only (get-user (user principal))
   (map-get? users user)
@@ -331,9 +331,9 @@
   (ok (nft-get-owner? cast-nft nft-id))
 )
 
-;;  ── Public Functions ─────────────────────────────────────────────────────────
+;;  -- Public Functions --------------------------------------------------------
 
-;; ── User Management ──
+;; -- User Management --
 
 (define-public (register-user
   (username     (string-ascii 50))
@@ -398,7 +398,7 @@
   )
 )
 
-;; ── Cast Management ──
+;; -- Cast Management --
 
 (define-public (create-cast
   (content        (string-utf8 560))
@@ -520,7 +520,7 @@
   )
 )
 
-;; ── Social Interactions ──
+;; -- Social Interactions --
 
 (define-public (like-cast (cast-id uint))
   (let (
@@ -632,7 +632,7 @@
   )
 )
 
-;; ── Follows ──
+;; -- Follows --
 
 (define-public (follow-user (user-to-follow principal))
   (let (
@@ -684,7 +684,7 @@
   )
 )
 
-;; ── STX Tipping ──
+;; -- STX Tipping --
 
 (define-public (tip-cast (cast-id uint) (amount uint))
   (let (
@@ -734,7 +734,7 @@
   )
 )
 
-;; ── Channels ──
+;; -- Channels --
 
 (define-public (create-channel
   (name        (string-ascii 50))
@@ -821,7 +821,7 @@
   )
 )
 
-;; ── NFT Minting (SIP-009) ──
+;; -- NFT Minting (SIP-009) --
 
 (define-public (mint-cast-nft
   (cast-id     uint)
@@ -924,7 +924,7 @@
   )
 )
 
-;; ── Polls ──
+;; -- Polls --
 
 (define-public (create-poll
   (cast-id    uint)
@@ -1004,7 +1004,7 @@
   )
 )
 
-;; ── Content Reporting ──
+;; -- Content Reporting --
 
 (define-public (report-cast (cast-id uint) (reason (string-ascii 30)))
   (let ((caller tx-sender))
@@ -1020,7 +1020,7 @@
   )
 )
 
-;; ── Governance ──
+;; -- Governance --
 
 (define-public (create-proposal
   (title       (string-utf8 100))
@@ -1068,7 +1068,7 @@
   )
 )
 
-;; ── Admin Functions ──
+;; -- Admin Functions --
 
 (define-public (verify-user (user principal))
   (let ((user-data (unwrap! (map-get? users user) ERR-NOT-FOUND)))

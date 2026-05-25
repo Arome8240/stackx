@@ -21,5 +21,6 @@ coverage
 # Deployment artifacts (contain contract addresses and tx IDs, safe to commit)
 # but exclude any env snapshots that may contain secrets
 deployments/latest-*.env
+scripts/extract-key.mjs
 
 
