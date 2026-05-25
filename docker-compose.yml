@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: stackx
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.runCommand({ping:1})']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    environment:
+      NODE_ENV: production
+      MONGODB_URI: mongodb://mongo:27017/stackx
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ORIGINS: http://localhost:3000
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      NEXT_PUBLIC_API_URL: http://api:3001/api/v1
+      NEXT_PUBLIC_STACKS_NETWORK: ${STACKS_NETWORK:-testnet}
+    depends_on:
+      - api
+
+volumes:
+  mongo_data:
