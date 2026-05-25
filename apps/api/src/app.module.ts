@@ -17,6 +17,7 @@ import { PollsModule } from './polls/polls.module';
 import { TipsModule } from './tips/tips.module';
 import { MessagesModule } from './messages/messages.module';
 import { ReportsModule } from './reports/reports.module';
+import { GovernanceModule } from './governance/governance.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { ReportsModule } from './reports/reports.module';
     TipsModule,
     MessagesModule,
     ReportsModule,
+    GovernanceModule,
   ],
 })
 export class AppModule {}
