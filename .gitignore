@@ -10,17 +10,24 @@ expo-dist
 *.log
 *.tmp
 coverage
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.testnet
-.env.mainnet
 
-# Deployment artifacts (contain contract addresses and tx IDs, safe to commit)
-# but exclude any env snapshots that may contain secrets
+# ── Environment / secrets (never commit these) ────────────────────────────────
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.sample
+!.env.*.sample
+
+# ── Deployment env snapshots ──────────────────────────────────────────────────
 deployments/latest-*.env
+
+# ── Key extraction script (contains instructions that could be misused) ───────
 scripts/extract-key.mjs
+scripts/extract-key.js
+
+# ── Compiled TypeScript deploy artifacts (use .mjs versions instead) ─────────
+scripts/deploy-contract.js
+scripts/rollback-contract.js
 
 
