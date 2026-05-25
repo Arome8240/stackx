@@ -16,6 +16,7 @@ import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { PollsModule } from './polls/polls.module';
 import { TipsModule } from './tips/tips.module';
 import { MessagesModule } from './messages/messages.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { MessagesModule } from './messages/messages.module';
     PollsModule,
     TipsModule,
     MessagesModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}
