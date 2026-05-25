@@ -15,5 +15,11 @@ coverage
 .env.development.local
 .env.test.local
 .env.production.local
+.env.testnet
+.env.mainnet
+
+# Deployment artifacts (contain contract addresses and tx IDs, safe to commit)
+# but exclude any env snapshots that may contain secrets
+deployments/latest-*.env
 
 
