@@ -53,8 +53,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: dark)',  color: '#09090b' },
-    { media: '(prefers-color-scheme: light)', color: '#f4f4f5' },
+    { media: '(prefers-color-scheme: dark)',  color: '#0a1410' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
   ],
   width: 'device-width',
   initialScale: 1,
@@ -62,27 +62,29 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`} suppressHydrationWarning>
+    <html lang="en" className={`${dmSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased font-sans selection:bg-primary/20">
-        <StacksProvider>
-          <ToastProvider>
-            <div className="relative flex min-h-screen">
-              {/* Left sidebar — hidden on mobile */}
-              <Sidebar />
+        <ThemeProvider>
+          <StacksProvider>
+            <ToastProvider>
+              <div className="relative flex min-h-screen">
+                {/* Left sidebar — hidden on mobile */}
+                <Sidebar />
 
-              {/* Main content */}
-              <main className="flex-1 min-w-0 lg:ml-64 xl:mr-80">
-                {children}
-              </main>
+                {/* Main content */}
+                <main className="flex-1 min-w-0 lg:ml-64 xl:mr-80">
+                  {children}
+                </main>
 
-              {/* Right sidebar — hidden below xl */}
-              <RightSidebar />
-            </div>
+                {/* Right sidebar — hidden below xl */}
+                <RightSidebar />
+              </div>
 
-            {/* Mobile bottom nav */}
-            <MobileNav />
-          </ToastProvider>
-        </StacksProvider>
+              {/* Mobile bottom nav */}
+              <MobileNav />
+            </ToastProvider>
+          </StacksProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

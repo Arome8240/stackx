@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 import { User, Settings, Wallet, LogOut, Moon, Sun, Zap } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
 import { Dropdown } from '@/components/ui/dropdown';
@@ -13,6 +14,7 @@ export function UserMenu() {
   const { data: user } = useCurrentUser();
   const { mutate: logout } = useLogout();
   const { balance } = useWallet();
+  const { resolvedTheme, setTheme } = useTheme();
 
   if (!user) return null;
 
@@ -35,6 +37,12 @@ export function UserMenu() {
       label: 'Settings',
       icon: <Settings className="w-4 h-4" />,
       href: '/settings',
+    },
+    {
+      id: 'theme',
+      label: resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode',
+      icon: resolvedTheme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />,
+      action: () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark'),
     },
     { id: 'sep2', separator: true },
     {

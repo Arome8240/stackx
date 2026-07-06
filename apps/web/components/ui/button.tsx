@@ -13,7 +13,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
-  primary:     'bg-primary text-primary-foreground hover:opacity-90 hover:shadow-glow-sm active:scale-[0.97]',
+  primary:     'bg-primary text-primary-foreground hover:opacity-90 active:scale-[0.97]',
   secondary:   'bg-secondary text-secondary-foreground hover:bg-secondary/80 active:scale-[0.97]',
   ghost:       'hover:bg-accent hover:text-accent-foreground active:scale-[0.97]',
   outline:     'border border-border hover:bg-accent hover:text-accent-foreground active:scale-[0.97]',
@@ -22,11 +22,11 @@ const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
 };
 
 const sizeClasses: Record<NonNullable<ButtonProps['size']>, string> = {
-  xs:   'h-7 px-3 text-xs rounded-full gap-1',
-  sm:   'h-8 px-3.5 text-sm rounded-full gap-1.5',
-  md:   'h-10 px-5 text-sm rounded-full gap-2',
-  lg:   'h-11 px-6 text-base rounded-full gap-2',
-  icon: 'h-9 w-9 rounded-full p-0',
+  xs:   'h-7 px-3 text-xs rounded-lg gap-1',
+  sm:   'h-8 px-3.5 text-sm rounded-lg gap-1.5',
+  md:   'h-10 px-5 text-sm rounded-xl gap-2',
+  lg:   'h-11 px-6 text-base rounded-xl gap-2',
+  icon: 'h-9 w-9 rounded-xl p-0',
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
