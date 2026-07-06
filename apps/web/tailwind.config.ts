@@ -16,6 +16,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        heading: ['var(--font-heading)', ...fontFamily.sans],
         mono: ['var(--font-mono)', ...fontFamily.mono],
       },
       colors: {
@@ -30,6 +31,7 @@ const config: Config = {
         destructive:          { DEFAULT: 'hsl(var(--destructive))',foreground: 'hsl(var(--destructive-foreground))' },
         success:              { DEFAULT: 'hsl(var(--success))',    foreground: 'hsl(var(--success-foreground))' },
         warning:              { DEFAULT: 'hsl(var(--warning))',    foreground: 'hsl(var(--warning-foreground))' },
+        nft:                  { DEFAULT: 'hsl(var(--nft))',        foreground: 'hsl(var(--nft-foreground))' },
         border:               'hsl(var(--border))',
         input:                'hsl(var(--input))',
         ring:                 'hsl(var(--ring))',
@@ -42,9 +44,6 @@ const config: Config = {
         sm:    'calc(var(--radius) - 4px)',
       },
       boxShadow: {
-        'glow-sm':  '0 0 8px hsl(var(--primary) / 0.25)',
-        'glow':     '0 0 20px hsl(var(--primary) / 0.25), 0 0 40px hsl(var(--primary) / 0.10)',
-        'glow-lg':  '0 0 40px hsl(var(--primary) / 0.35), 0 0 80px hsl(var(--primary) / 0.15)',
         'card':     '0 1px 3px hsl(0 0% 0% / 0.12), 0 1px 2px hsl(0 0% 0% / 0.08)',
         'card-lg':  '0 4px 16px hsl(0 0% 0% / 0.20)',
         'modal':    '0 25px 50px hsl(0 0% 0% / 0.50)',
@@ -58,7 +57,6 @@ const config: Config = {
         'shimmer':        'shimmer 1.5s infinite',
         'heartbeat':      'heartbeat 0.4s ease',
         'spin-slow':      'spin-slow 3s linear infinite',
-        'pulse-glow':     'pulse-glow 2s ease-in-out infinite',
       },
       keyframes: {
         fadeIn:        { from: { opacity: '0' }, to: { opacity: '1' } },
@@ -69,7 +67,6 @@ const config: Config = {
         shimmer:       { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
         heartbeat:     { '0%': { transform: 'scale(1)' }, '25%': { transform: 'scale(1.3)' }, '50%': { transform: 'scale(1)' }, '75%': { transform: 'scale(1.15)' }, '100%': { transform: 'scale(1)' } },
         'spin-slow':   { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } },
-        'pulse-glow':  { '0%, 100%': { boxShadow: '0 0 8px hsl(263 70% 65% / 0.3)' }, '50%': { boxShadow: '0 0 20px hsl(263 70% 65% / 0.6)' } },
       },
       transitionTimingFunction: {
         'spring': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',

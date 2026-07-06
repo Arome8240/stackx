@@ -4,91 +4,89 @@
 
 @layer base {
   :root {
-    /* ── Light mode ── */
-    --background:        220 14% 96%;
-    --foreground:        224 71% 4%;
+    /* ── Light mode (Anchor-inspired: deep green + royal blue) ── */
+    --background:        0 0% 100%;
+    --foreground:        160 15% 10%;
 
     --card:              0 0% 100%;
-    --card-foreground:   224 71% 4%;
+    --card-foreground:   160 15% 10%;
 
     --popover:           0 0% 100%;
-    --popover-foreground:224 71% 4%;
+    --popover-foreground:160 15% 10%;
 
-    --primary:           262 83% 58%;
-    --primary-foreground:0 0% 100%;
+    --primary:           160 91% 17%;
+    --primary-foreground:159 39% 97%;
 
-    --secondary:         220 13% 91%;
-    --secondary-foreground:224 71% 4%;
+    --secondary:         159 20% 93%;
+    --secondary-foreground:160 30% 10%;
 
-    --muted:             220 13% 91%;
-    --muted-foreground:  220 9% 46%;
+    --muted:             159 39% 96%;
+    --muted-foreground:  160 5% 40%;
 
-    --accent:            262 83% 96%;
-    --accent-foreground: 262 83% 30%;
+    --accent:            220 100% 96%;
+    --accent-foreground: 220 100% 55%;
 
-    --destructive:       0 84% 60%;
+    --destructive:       3 68% 55%;
     --destructive-foreground:0 0% 100%;
 
-    --success:           142 76% 36%;
+    --success:           160 90% 25%;
     --success-foreground:0 0% 100%;
 
-    --warning:           38 92% 50%;
+    --warning:           25 85% 45%;
     --warning-foreground:0 0% 100%;
 
-    --border:            220 13% 86%;
-    --input:             220 13% 91%;
-    --ring:              262 83% 58%;
+    --border:            160 8% 90%;
+    --input:             160 8% 93%;
+    --ring:              220 100% 55%;
 
-    --radius:            0.75rem;
+    --radius:            1rem;
 
     /* Custom */
-    --violet:            262 83% 58%;
-    --violet-glow:       262 83% 58% / 0.25;
     --tip-color:         45 96% 64%;
-    --nft-color:         292 84% 61%;
+    --nft:               190 85% 50%;
+    --nft-foreground:    190 20% 10%;
   }
 
   .dark {
-    /* ── Dark / premium mode ── */
-    --background:        240 10% 3.9%;
-    --foreground:        0 0% 95%;
+    /* ── Dark mode (Anchor-inspired) ── */
+    --background:        160 20% 6%;
+    --foreground:        159 30% 95%;
 
-    --card:              240 10% 6%;
-    --card-foreground:   0 0% 95%;
+    --card:              160 18% 9%;
+    --card-foreground:   159 30% 95%;
 
-    --popover:           240 10% 7%;
-    --popover-foreground:0 0% 95%;
+    --popover:           160 18% 10%;
+    --popover-foreground:159 30% 95%;
 
-    --primary:           263 70% 65%;
-    --primary-foreground:240 10% 4%;
+    --primary:           160 91% 47%;
+    --primary-foreground:160 30% 8%;
 
-    --secondary:         240 4% 16%;
-    --secondary-foreground:0 0% 95%;
+    --secondary:         160 15% 16%;
+    --secondary-foreground:159 30% 95%;
 
-    --muted:             240 4% 16%;
-    --muted-foreground:  240 5% 55%;
+    --muted:             160 15% 14%;
+    --muted-foreground:  160 8% 60%;
 
-    --accent:            240 4% 12%;
-    --accent-foreground: 0 0% 95%;
+    --accent:            220 60% 18%;
+    --accent-foreground: 220 100% 65%;
 
-    --destructive:       0 72% 51%;
+    --destructive:       3 75% 60%;
     --destructive-foreground:0 0% 100%;
 
-    --success:           142 69% 45%;
+    --success:           160 80% 45%;
     --success-foreground:0 0% 100%;
 
-    --warning:           38 92% 50%;
+    --warning:           25 85% 55%;
     --warning-foreground:0 0% 10%;
 
-    --border:            240 4% 14%;
-    --input:             240 4% 12%;
-    --ring:              263 70% 65%;
+    --border:            160 12% 18%;
+    --input:             160 12% 16%;
+    --ring:              220 100% 60%;
 
     /* Custom */
-    --violet:            263 70% 65%;
-    --violet-glow:       263 70% 65% / 0.20;
     --tip-color:         45 96% 64%;
-    --nft-color:         292 84% 61%;
+    --nft:               190 85% 50%;
+    --nft-foreground:    190 20% 10%;
   }
 }
 
@@ -138,36 +136,6 @@
     @apply bg-card/80 backdrop-blur-md border border-border/50;
   }
 
-  /* Gradient text */
-  .gradient-text {
-    @apply bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent;
-  }
-
-  /* Glow effect */
-  .glow-violet {
-    box-shadow: 0 0 20px hsl(var(--violet-glow)), 0 0 40px hsl(var(--violet-glow) / 0.10);
-  }
-  .glow-violet-sm {
-    box-shadow: 0 0 8px hsl(var(--violet-glow));
-  }
-
-  /* Gradient border */
-  .gradient-border {
-    position: relative;
-  }
-  .gradient-border::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, hsl(263 70% 65% / 0.6), hsl(292 84% 61% / 0.4), transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-
   /* Shimmer skeleton */
   .shimmer {
     background: linear-gradient(
@@ -206,9 +174,9 @@
 
   /* Primary button */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground font-semibold
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-semibold
            px-5 py-2.5 text-sm transition-all duration-150
-           hover:opacity-90 hover:glow-violet-sm
+           hover:opacity-90
            disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none;
   }
 
@@ -304,11 +272,6 @@
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 8px hsl(263 70% 65% / 0.3); }
-  50%       { box-shadow: 0 0 20px hsl(263 70% 65% / 0.6), 0 0 40px hsl(263 70% 65% / 0.2); }
 }
 
 /* Reduced motion */

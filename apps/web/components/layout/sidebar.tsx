@@ -57,7 +57,7 @@ export function Sidebar() {
               <Icon className={cn('w-5 h-5 shrink-0 transition-transform duration-150', 'group-hover:scale-110')} />
               <span className="text-sm">{label}</span>
               {label === 'Notifications' && (
-                <span className="ml-auto w-2 h-2 rounded-full bg-primary animate-pulse-glow" />
+                <span className="ml-auto w-2 h-2 rounded-full bg-primary animate-pulse" />
               )}
             </Link>
           );

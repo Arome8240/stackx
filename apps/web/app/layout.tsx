@@ -1,16 +1,23 @@
 import './globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { DM_Sans, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 import { StacksProvider } from '@/components/providers/stacks-provider';
 import { ToastProvider } from '@/components/ui/toast';
 import { Sidebar } from '@/components/layout/sidebar';
 import { MobileNav } from '@/components/layout/mobile-nav';
 import { RightSidebar } from '@/components/layout/right-sidebar';
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-heading',
   display: 'swap',
 });
 
