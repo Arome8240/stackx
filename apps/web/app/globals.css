@@ -212,7 +212,7 @@
   .badge-success   { @apply badge bg-green-500/15 text-green-500; }
   .badge-warning   { @apply badge bg-yellow-500/15 text-yellow-500; }
   .badge-error     { @apply badge bg-destructive/15 text-destructive; }
-  .badge-nft       { @apply badge bg-fuchsia-500/15 text-fuchsia-400; }
+  .badge-nft       { @apply badge bg-nft/15 text-nft; }
   .badge-tip       { @apply badge bg-yellow-500/15 text-yellow-400; }
 }
 
