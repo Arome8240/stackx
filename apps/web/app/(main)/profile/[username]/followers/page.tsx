@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Users } from 'lucide-react';
 import { useFollowers, useFollowing } from '@/lib/hooks/use-follow';
@@ -31,7 +31,7 @@ export default function FollowersPage() {
       </div>
 
       <div className="px-4 pt-3">
-        <Tabs tabs={TABS} activeTab={tab} onTabChange={setTab} />
+        <Tabs tabs={TABS} activeTab={tab} onChange={setTab} />
       </div>
 
       <div className="mt-2">
@@ -66,7 +66,7 @@ function UserList({ username, type }: { username: string; type: 'followers' | 'f
   if (!users.length) {
     return (
       <EmptyState
-        icon={Users}
+        icon={<Users className="w-8 h-8" />}
         title={type === 'followers' ? 'No followers yet' : 'Not following anyone'}
         description={type === 'followers' ? 'When people follow this account, they\'ll appear here' : 'Accounts this user follows will appear here'}
         className="py-16"

@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import Input from '../../../components/ui/input';
-import Button from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
+import { Button } from '../../../components/ui/button';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
           type="email"
           autoComplete="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           required
         />
         <Button type="submit" loading={loading}>

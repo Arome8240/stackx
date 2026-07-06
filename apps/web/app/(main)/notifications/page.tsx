@@ -8,6 +8,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Skeleton } from '@/components/ui/skeleton';
 import { NotificationItem } from '@/components/notifications/notification-item';
 import { useNotifications, useMarkAllRead } from '@/lib/hooks/use-notifications';
+import { useCurrentUser } from '@/lib/hooks/use-auth';
 
 const TABS = [
   { id: 'all', label: 'All' },
@@ -16,9 +17,12 @@ const TABS = [
 
 export default function NotificationsPage() {
   const [tab, setTab] = React.useState('all');
-  const { data, isLoading } = useNotifications({ unreadOnly: tab === 'unread' });
+  const { data: user } = useCurrentUser();
+  const address = user?.stxAddress ?? null;
+  const { data, isLoading } = useNotifications(address);
   const markAllRead = useMarkAllRead();
-  const notifications = data?.items ?? [];
+  const allNotifications = data ?? [];
+  const notifications = tab === 'unread' ? allNotifications.filter((n) => !n.read) : allNotifications;
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -30,9 +34,9 @@ export default function NotificationsPage() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => markAllRead.mutate()}
+          onClick={() => address && markAllRead.mutate(address)}
           loading={markAllRead.isPending}
-          disabled={notifications.every((n) => n.read)}
+          disabled={!address || notifications.every((n) => n.read)}
         >
           <Check className="w-4 h-4" />
           Mark all read
@@ -40,7 +44,7 @@ export default function NotificationsPage() {
       </div>
 
       <div className="px-4 pt-3 pb-1">
-        <Tabs tabs={TABS} activeTab={tab} onTabChange={setTab} />
+        <Tabs tabs={TABS} activeTab={tab} onChange={setTab} />
       </div>
 
       <div className="divide-y divide-border/20">
@@ -56,13 +60,13 @@ export default function NotificationsPage() {
           ))
         ) : notifications.length === 0 ? (
           <EmptyState
-            icon={Bell}
+            icon={<Bell className="w-8 h-8" />}
             title="No notifications"
             description={tab === 'unread' ? "You're all caught up!" : "When people interact with your casts, you'll see it here"}
             className="py-16"
           />
         ) : (
-          notifications.map((n) => <NotificationItem key={n._id} notification={n} />)
+          notifications.map((n) => <NotificationItem key={n.id} notification={n} />)
         )}
       </div>
     </div>

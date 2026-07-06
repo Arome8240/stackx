@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { User, Settings, Wallet, LogOut, Moon, Sun, Zap } from 'lucide-react';
+import { User, Settings, Wallet, LogOut, Moon, Sun } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
 import { Dropdown } from '@/components/ui/dropdown';
 import { useCurrentUser, useLogout } from '@/lib/hooks/use-auth';
@@ -12,45 +12,41 @@ import { useWallet } from '@/lib/hooks/use-wallet';
 
 export function UserMenu() {
   const { data: user } = useCurrentUser();
-  const { mutate: logout } = useLogout();
-  const { balance } = useWallet();
+  const logout = useLogout();
+  const { stxBalance } = useWallet();
   const { resolvedTheme, setTheme } = useTheme();
+  const router = useRouter();
 
   if (!user) return null;
 
   const items = [
     {
-      id: 'profile',
       label: 'View profile',
       icon: <User className="w-4 h-4" />,
-      href: `/profile/${user.username}`,
+      onClick: () => router.push(`/profile/${user.username}`),
     },
     {
-      id: 'wallet',
-      label: balance?.stx ? formatSTX(parseInt(balance.stx.balance ?? '0') / 1_000_000) + ' STX' : 'Wallet',
-      icon: <Zap className="w-4 h-4" />,
-      href: '/wallet',
+      label: stxBalance ? `${formatSTX(stxBalance)} STX` : 'Wallet',
+      icon: <Wallet className="w-4 h-4" />,
+      onClick: () => router.push('/wallet'),
     },
-    { id: 'sep', separator: true },
+    { label: '', separator: true },
     {
-      id: 'settings',
       label: 'Settings',
       icon: <Settings className="w-4 h-4" />,
-      href: '/settings',
+      onClick: () => router.push('/settings'),
     },
     {
-      id: 'theme',
       label: resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode',
       icon: resolvedTheme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />,
-      action: () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark'),
+      onClick: () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark'),
     },
-    { id: 'sep2', separator: true },
+    { label: '', separator: true },
     {
-      id: 'logout',
       label: 'Log out',
       icon: <LogOut className="w-4 h-4" />,
-      action: () => logout(),
-      className: 'text-red-400',
+      onClick: () => logout(),
+      destructive: true,
     },
   ];
 

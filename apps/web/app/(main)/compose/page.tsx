@@ -21,7 +21,7 @@ export default function ComposePage() {
       </div>
       <div className="p-4">
         <CastComposer
-          onCastCreated={() => router.back()}
+          onSuccess={() => router.back()}
           placeholder="What's on-chain today?"
           autoFocus
         />

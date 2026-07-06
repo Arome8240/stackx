@@ -46,7 +46,7 @@ export default function MessagesPage() {
               <button onClick={() => setSelected(null)} className="p-1.5 rounded-full hover:bg-accent transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <Avatar src={conv?.user.avatar} alt={conv?.user.displayName ?? ''} size="sm" verified={conv?.user.verified} />
+              <Avatar src={conv?.user.avatar} fallback={conv?.user.displayName ?? ''} size="sm" verified={conv?.user.verified} />
               <div>
                 <p className="font-semibold text-sm leading-tight">{conv?.user.displayName}</p>
                 <p className="text-xs text-muted-foreground">@{conv?.user.username}</p>
@@ -126,7 +126,7 @@ export default function MessagesPage() {
                   onClick={() => { setSelected(c.id); setMessages(MESSAGES_BY_CONV[c.id] ?? []); }}
                   className="w-full flex items-start gap-3 px-4 py-4 hover:bg-accent/30 transition-colors text-left"
                 >
-                  <Avatar src={c.user.avatar} alt={c.user.displayName} size="md" verified={c.user.verified} />
+                  <Avatar src={c.user.avatar} fallback={c.user.displayName} size="md" verified={c.user.verified} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-0.5">
                       <span className="font-semibold text-sm">{c.user.displayName}</span>

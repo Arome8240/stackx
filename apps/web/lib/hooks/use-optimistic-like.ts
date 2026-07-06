@@ -11,7 +11,7 @@ export function useOptimisticLike(cast: Cast) {
   const [optimisticCount, setOptimisticCount] = React.useState(cast.likesCount ?? 0);
 
   const likeMutation = useMutation({
-    mutationFn: () => api.post(`/casts/${cast._id}/like`, {}),
+    mutationFn: () => api.post(`/casts/${cast.id}/like`, {}),
     onMutate: () => {
       setOptimisticLiked(true);
       setOptimisticCount((n) => n + 1);
@@ -21,13 +21,13 @@ export function useOptimisticLike(cast: Cast) {
       setOptimisticCount((n) => n - 1);
     },
     onSettled: () => {
-      qc.invalidateQueries({ queryKey: ['cast', cast._id] });
+      qc.invalidateQueries({ queryKey: ['cast', cast.id] });
       qc.invalidateQueries({ queryKey: ['feed'] });
     },
   });
 
   const unlikeMutation = useMutation({
-    mutationFn: () => api.delete(`/casts/${cast._id}/like`),
+    mutationFn: () => api.delete(`/casts/${cast.id}/like`),
     onMutate: () => {
       setOptimisticLiked(false);
       setOptimisticCount((n) => Math.max(0, n - 1));
@@ -37,7 +37,7 @@ export function useOptimisticLike(cast: Cast) {
       setOptimisticCount((n) => n + 1);
     },
     onSettled: () => {
-      qc.invalidateQueries({ queryKey: ['cast', cast._id] });
+      qc.invalidateQueries({ queryKey: ['cast', cast.id] });
       qc.invalidateQueries({ queryKey: ['feed'] });
     },
   });

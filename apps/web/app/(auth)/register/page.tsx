@@ -107,7 +107,7 @@ export default function RegisterPage() {
             </div>
             <div className="flex justify-center">
               <div className="relative">
-                <Avatar src={null} alt={form.displayName || 'You'} size="2xl" />
+                <Avatar src={null} fallback={form.displayName || 'You'} size="2xl" />
                 <button className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">+</button>
               </div>
             </div>
@@ -148,7 +148,7 @@ export default function RegisterPage() {
             <div className="space-y-2">
               {SUGGESTED.map(u => (
                 <div key={u} className="flex items-center gap-3 p-3 rounded-xl border border-border">
-                  <Avatar src={null} alt={u} size="sm" />
+                  <Avatar src={null} fallback={u} size="sm" />
                   <div className="flex-1">
                     <p className="text-sm font-semibold">@{u}</p>
                   </div>

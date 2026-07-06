@@ -9,32 +9,38 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { formatTimeAgo, formatNumber, formatSTX } from '@/lib/utils';
 import type { Cast, User } from '@/lib/types/social';
 
-const MOCK_CAST: Cast & { authorData: User } = {
-  id: '1',
-  authorId: 'u1',
-  authorData: {
+function makeMockAuthor(overrides: Partial<User>): User {
+  return {
     id: 'u1',
     username: 'satoshi',
     displayName: 'Satoshi Nakamoto',
-    avatarUrl: '',
     bio: 'Building on Bitcoin',
+    avatarUrl: '',
+    walletAddress: 'SP1H1733V72HXPTVJXXPQFR7XVX0RJ4B9WKQFMHZP',
     followersCount: 120_000,
     followingCount: 89,
     castsCount: 1_420,
-    isVerified: true,
-    createdAt: '2021-01-01',
     tipsReceived: 500_000,
     nftsMinted: 42,
+    isVerified: true,
     tier: 2,
-  },
+    joinedAt: '2021-01-01',
+    ...overrides,
+  };
+}
+
+const MOCK_CAST: Cast = {
+  id: '1',
+  author: makeMockAuthor({}),
   content: 'Just minted my first Cast NFT on StackX! The SIP-009 standard makes it seamless — one transaction and your cast becomes a collectible. #StackX #NFT #Stacks',
   images: [],
+  timestamp: new Date(Date.now() - 3600_000 * 2).toISOString(),
+  blockHeight: 154_231,
   likesCount: 842,
   recastsCount: 234,
   repliesCount: 56,
   tipsCount: 18,
   tipsTotal: 2_400_000,
-  createdAt: new Date(Date.now() - 3600_000 * 2).toISOString(),
   isLiked: false,
   isRecasted: false,
   isBookmarked: false,
@@ -42,9 +48,18 @@ const MOCK_CAST: Cast & { authorData: User } = {
   pinned: false,
 };
 
+const REPLY_AUTHORS: Array<Partial<User>> = [
+  { id: 'u2', username: 'clarity_dev', displayName: 'Clarity Dev', tier: 1, isVerified: false },
+  { id: 'u3', username: 'stx_maxi', displayName: 'STX Maxi', tier: 0, isVerified: false },
+  { id: 'u4', username: 'onchain_grapher', displayName: 'Onchain Grapher', tier: 1, isVerified: true },
+  { id: 'u5', username: 'royalty_hunter', displayName: 'Royalty Hunter', tier: 0, isVerified: false },
+  { id: 'u6', username: 'sip009_fan', displayName: 'SIP-009 Fan', tier: 2, isVerified: true },
+  { id: 'u7', username: 'degen_stacker', displayName: 'Degen Stacker', tier: 0, isVerified: false },
+];
+
 const MOCK_REPLIES: Cast[] = Array.from({ length: 6 }, (_, i) => ({
   id: `r${i}`,
-  authorId: `u${i + 2}`,
+  author: makeMockAuthor(REPLY_AUTHORS[i]),
   content: [
     'This is groundbreaking! The integration with Clarity contracts is flawless.',
     'Just followed! The tipping mechanic with 2.5% platform fee is genius.',
@@ -54,13 +69,14 @@ const MOCK_REPLIES: Cast[] = Array.from({ length: 6 }, (_, i) => ({
     'Insane engagement on this cast. The community is growing fast 🔥',
   ][i],
   images: [],
+  timestamp: new Date(Date.now() - 3600_000 * (i + 1)).toISOString(),
+  blockHeight: 154_231 - (i + 1) * 3,
   likesCount: Math.floor(Math.random() * 120),
   recastsCount: Math.floor(Math.random() * 30),
   repliesCount: Math.floor(Math.random() * 10),
   tipsCount: 0,
   tipsTotal: 0,
-  replyTo: '1',
-  createdAt: new Date(Date.now() - 3600_000 * (i + 1)).toISOString(),
+  parentCastId: '1',
   isLiked: false,
   isRecasted: false,
   isBookmarked: false,
@@ -72,11 +88,11 @@ function ReplyCard({ cast }: { cast: Cast }) {
   return (
     <div className="px-4 py-3 border-b border-border/40 hover:bg-white/[0.02] transition-colors">
       <div className="flex gap-3">
-        <Avatar size="sm" src="" fallback={`U${cast.authorId}`} />
+        <Avatar size="sm" src={cast.author.avatarUrl} fallback={cast.author.displayName} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <span className="font-semibold text-sm text-foreground">@{cast.authorId}</span>
-            <span className="text-xs text-muted-foreground">{formatTimeAgo(cast.createdAt)}</span>
+            <span className="font-semibold text-sm text-foreground">@{cast.author.username}</span>
+            <span className="text-xs text-muted-foreground">{formatTimeAgo(cast.timestamp)}</span>
           </div>
           <p className="text-sm text-foreground/90 leading-relaxed">{cast.content}</p>
           <div className="flex gap-4 mt-2">
@@ -94,7 +110,7 @@ function ReplyCard({ cast }: { cast: Cast }) {
 }
 
 export default function CastDetailPage() {
-  const { id } = useParams<{ id: string }>();
+  useParams<{ id: string }>();
   const router = useRouter();
   const [loading] = React.useState(false);
   const cast = MOCK_CAST;
@@ -139,18 +155,18 @@ export default function CastDetailPage() {
           <div className="flex items-center gap-3">
             <Avatar
               size="md"
-              src={cast.authorData.avatarUrl}
-              fallback={cast.authorData.displayName}
-              verified={cast.authorData.isVerified}
+              src={cast.author.avatarUrl}
+              fallback={cast.author.displayName}
+              verified={cast.author.isVerified}
             />
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-foreground">{cast.authorData.displayName}</span>
-                {cast.authorData.tier === 2 && (
+                <span className="font-bold text-foreground">{cast.author.displayName}</span>
+                {cast.author.tier === 2 && (
                   <Badge variant="nft" className="text-xs px-1.5 py-0">Pro</Badge>
                 )}
               </div>
-              <span className="text-sm text-muted-foreground">@{cast.authorData.username}</span>
+              <span className="text-sm text-muted-foreground">@{cast.author.username}</span>
             </div>
           </div>
           <button className="p-2 rounded-full hover:bg-white/10 text-muted-foreground hover:text-foreground transition-colors">
@@ -163,7 +179,7 @@ export default function CastDetailPage() {
 
         {/* Timestamp */}
         <div className="text-sm text-muted-foreground mb-3">
-          {new Date(cast.createdAt).toLocaleString('en-US', {
+          {new Date(cast.timestamp).toLocaleString('en-US', {
             hour: 'numeric',
             minute: '2-digit',
             hour12: true,
@@ -236,7 +252,7 @@ export default function CastDetailPage() {
       <div className="px-4 py-3 border-b border-border/40 flex gap-3">
         <Avatar size="sm" src="" fallback="Me" />
         <input
-          placeholder={`Reply to @${cast.authorData.username}…`}
+          placeholder={`Reply to @${cast.author.username}…`}
           className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
         />
         <button className="btn-primary px-4 py-1.5 text-sm rounded-full">Reply</button>

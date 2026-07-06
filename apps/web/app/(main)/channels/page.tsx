@@ -9,7 +9,6 @@ import { Tabs } from '@/components/ui/tabs';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from '@/components/ui/modal';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Avatar } from '@/components/ui/avatar';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatNumber, formatSTX } from '@/lib/utils';
 import type { Channel } from '@/lib/types/social';

@@ -7,11 +7,13 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   hint?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  suffix?: React.ReactNode;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, hint, leftIcon, rightIcon, id, ...props }, ref) => {
+  ({ className, label, error, hint, leftIcon, rightIcon, suffix, id, ...props }, ref) => {
     const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-');
+    const hasRightContent = Boolean(rightIcon || suffix);
     return (
       <div className="w-full space-y-1.5">
         {label && (
@@ -32,14 +34,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               'focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               error ? 'border-destructive focus:ring-destructive' : 'border-border',
-              leftIcon  && 'pl-10',
-              rightIcon && 'pr-10',
+              leftIcon        && 'pl-10',
+              hasRightContent && 'pr-10',
               className,
             )}
             {...props}
           />
           {rightIcon && (
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">{rightIcon}</span>
+          )}
+          {!rightIcon && suffix && (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">{suffix}</span>
           )}
         </div>
         {error && <p className="text-xs text-destructive">{error}</p>}

@@ -10,6 +10,7 @@ interface ModalProps {
   children: React.ReactNode;
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  title?: string;
 }
 
 const sizeMap = {
@@ -20,7 +21,7 @@ const sizeMap = {
   full: 'max-w-full h-full rounded-none',
 };
 
-export function Modal({ open, onClose, children, className, size = 'md' }: ModalProps) {
+export function Modal({ open, onClose, children, className, size = 'md', title }: ModalProps) {
   React.useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -53,6 +54,7 @@ export function Modal({ open, onClose, children, className, size = 'md' }: Modal
           className,
         )}
       >
+        {title && <ModalHeader title={title} onClose={onClose} />}
         {children}
       </div>
     </div>

@@ -5,7 +5,7 @@ export interface User {
   bio: string;
   website?: string;
   location?: string;
-  avatar: string;
+  avatarUrl: string;
   banner?: string;
   walletAddress: string;
   followersCount: number;
@@ -13,7 +13,7 @@ export interface User {
   castsCount: number;
   tipsReceived: number;
   nftsMinted: number;
-  verified: boolean;
+  isVerified: boolean;
   tier: 0 | 1 | 2; // 0=free 1=pro 2=creator
   joinedAt: string;
 }

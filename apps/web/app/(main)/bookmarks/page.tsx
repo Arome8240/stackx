@@ -9,9 +9,9 @@ import type { Cast } from '@/lib/types/social';
 
 const MOCK_USER = {
   id: 'u2', username: 'satoshi_hiro', displayName: 'Hiro Systems',
-  bio: 'Building on Stacks', avatar: '', walletAddress: 'SP2...',
+  bio: 'Building on Stacks', avatarUrl: '', walletAddress: 'SP2...',
   followersCount: 18000, followingCount: 200, castsCount: 430,
-  tipsReceived: 2100000, nftsMinted: 0, verified: true, tier: 1 as const,
+  tipsReceived: 2100000, nftsMinted: 0, isVerified: true, tier: 1 as const,
   joinedAt: '2023-03-15',
 };
 

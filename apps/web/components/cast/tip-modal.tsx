@@ -6,7 +6,8 @@ import { cn, formatSTX } from '@/lib/utils';
 import { Modal } from '@/components/ui/modal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { callTipCast } from '@/lib/stacks';
+import { callTipCast, stxToMicroStx } from '@/lib/stacks';
+import { useCurrentUser } from '@/lib/hooks/use-auth';
 import type { Cast } from '@/lib/types/social';
 
 const QUICK_AMOUNTS = [1, 5, 10, 25, 50, 100];
@@ -21,6 +22,7 @@ export function TipModal({ cast, open, onClose }: TipModalProps) {
   const [amount, setAmount] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const { data: user } = useCurrentUser();
 
   const parsedAmount = parseFloat(amount);
   const isValid = !isNaN(parsedAmount) && parsedAmount > 0;
@@ -32,7 +34,12 @@ export function TipModal({ cast, open, onClose }: TipModalProps) {
     setLoading(true);
     setError(null);
     try {
-      await callTipCast({ castId: cast._id, recipientAddress: cast.author.stxAddress ?? '', amountStx: parsedAmount });
+      await callTipCast(
+        user?.stxAddress ?? '',
+        Number(cast.id),
+        cast.author.walletAddress ?? '',
+        stxToMicroStx(parsedAmount),
+      );
       onClose();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Transaction failed');

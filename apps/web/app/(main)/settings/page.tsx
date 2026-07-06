@@ -35,7 +35,7 @@ export default function SettingsPage() {
 
       {/* Profile summary */}
       <div className="p-4 flex items-center gap-3 border-b border-border">
-        <Avatar src={null} alt="Your Name" size="lg" />
+        <Avatar src={null} fallback="Your Name" size="lg" />
         <div className="flex-1 min-w-0">
           <p className="font-semibold">Your Name</p>
           <p className="text-sm text-muted-foreground">@yourusername</p>

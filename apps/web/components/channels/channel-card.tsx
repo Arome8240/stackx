@@ -50,7 +50,7 @@ export function ChannelCard({ channel, isMember, onJoin, joining, className }: C
             onClick={onJoin}
             loading={joining}
           >
-            {channel.isPaid ? `Join · ${formatSTX(channel.entryFeeStx ?? 0)} STX` : 'Join'}
+            {channel.isPaid ? `Join · ${formatSTX(channel.entryFee ?? 0)} STX` : 'Join'}
           </Button>
         )}
         {isMember && (

@@ -1,8 +1,20 @@
 'use client';
 
 import { useMemo } from 'react';
-import { STACKS_TESTNET, STACKS_MAINNET } from '@stacks/network';
-import type { StaxialConfig } from '@/lib/types/sdk';
+import { STACKS_TESTNET, STACKS_MAINNET, type StacksNetwork } from '@stacks/network';
+
+/**
+ * Minimal config shape consumed by our local contract-call helpers
+ * (see `use-contract-call.ts`). Inlined here since it's only used by this
+ * hook and its one consumer — no `lib/types/sdk.ts` module exists (or is
+ * needed) for it.
+ */
+export interface StaxialConfig {
+  network: StacksNetwork;
+  contractAddress: string;
+  contractName: string;
+  stacksApiUrl: string;
+}
 
 export function useStacksSDK() {
   const config: StaxialConfig = useMemo(() => {

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { DM_Sans, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { QueryProvider } from '@/components/providers/query-provider';
 import { StacksProvider } from '@/components/providers/stacks-provider';
 import { ToastProvider } from '@/components/ui/toast';
 import { Sidebar } from '@/components/layout/sidebar';
@@ -65,25 +66,27 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className={`${dmSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased font-sans selection:bg-primary/20">
         <ThemeProvider>
-          <StacksProvider>
-            <ToastProvider>
-              <div className="relative flex min-h-screen">
-                {/* Left sidebar — hidden on mobile */}
-                <Sidebar />
+          <QueryProvider>
+            <StacksProvider>
+              <ToastProvider>
+                <div className="relative flex min-h-screen">
+                  {/* Left sidebar — hidden on mobile */}
+                  <Sidebar />
 
-                {/* Main content */}
-                <main className="flex-1 min-w-0 lg:ml-64 xl:mr-80">
-                  {children}
-                </main>
+                  {/* Main content */}
+                  <main className="flex-1 min-w-0 lg:ml-64 xl:mr-80">
+                    {children}
+                  </main>
 
-                {/* Right sidebar — hidden below xl */}
-                <RightSidebar />
-              </div>
+                  {/* Right sidebar — hidden below xl */}
+                  <RightSidebar />
+                </div>
 
-              {/* Mobile bottom nav */}
-              <MobileNav />
-            </ToastProvider>
-          </StacksProvider>
+                {/* Mobile bottom nav */}
+                <MobileNav />
+              </ToastProvider>
+            </StacksProvider>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>

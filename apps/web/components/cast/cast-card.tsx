@@ -75,7 +75,6 @@ export function CastCard({ cast, variant = 'feed', showThread, onReply }: CastCa
   };
 
   const timeAgo = formatTimeAgo(cast.timestamp);
-  const isThread = variant === 'thread';
   const isDetail = variant === 'detail';
 
   return (
@@ -97,10 +96,10 @@ export function CastCard({ cast, variant = 'feed', showThread, onReply }: CastCa
           <div className="shrink-0">
             <Link href={`/profile/${cast.author.username}`}>
               <Avatar
-                src={ipfsToHttp(cast.author.avatar)}
-                alt={cast.author.displayName}
+                src={ipfsToHttp(cast.author.avatarUrl)}
+                fallback={cast.author.displayName}
                 size={isDetail ? 'lg' : 'md'}
-                verified={cast.author.verified}
+                verified={cast.author.isVerified}
               />
             </Link>
           </div>
@@ -113,7 +112,7 @@ export function CastCard({ cast, variant = 'feed', showThread, onReply }: CastCa
                 <Link href={`/profile/${cast.author.username}`} className="font-semibold hover:underline truncate text-sm">
                   {cast.author.displayName}
                 </Link>
-                {cast.author.verified && (
+                {cast.author.isVerified && (
                   <CheckCircle className="w-3.5 h-3.5 text-primary fill-primary shrink-0" />
                 )}
                 {cast.author.tier >= 2 && (

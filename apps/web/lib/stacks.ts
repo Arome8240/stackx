@@ -1,20 +1,18 @@
 'use client';
 
-import {
-  makeStandardSTXPostCondition,
-  FungibleConditionCode,
-  uintCV,
-  stringAsciiCV,
-  principalCV,
-} from '@stacks/transactions';
+import { Pc, uintCV, stringAsciiCV, principalCV } from '@stacks/transactions';
 import { openContractCall } from '@stacks/connect';
 
 const NETWORK = process.env.NEXT_PUBLIC_STACKS_NETWORK ?? 'testnet';
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? '';
 const CONTRACT_NAME = process.env.NEXT_PUBLIC_CONTRACT_NAME ?? 'social-platform-v2';
 
-function getContractId() {
-  return `${CONTRACT_ADDRESS}.${CONTRACT_NAME}`;
+/**
+ * Builds a "sender will send exactly `amountMicroStx`" STX post-condition
+ * using the `Pc` builder API (replaces the removed `makeStandardSTXPostCondition`).
+ */
+function stxEqualsPostCondition(senderAddress: string, amountMicroStx: number) {
+  return Pc.principal(senderAddress).willSendEq(amountMicroStx).ustx();
 }
 
 export async function callTipCast(
@@ -23,11 +21,7 @@ export async function callTipCast(
   recipientAddress: string,
   amountMicroStx: number,
 ): Promise<void> {
-  const postCondition = makeStandardSTXPostCondition(
-    senderAddress,
-    FungibleConditionCode.Equal,
-    amountMicroStx,
-  );
+  const postCondition = stxEqualsPostCondition(senderAddress, amountMicroStx);
 
   await openContractCall({
     contractAddress: CONTRACT_ADDRESS,
@@ -69,11 +63,7 @@ export async function callJoinPaidChannel(
   feeStx: number,
 ): Promise<void> {
   const amountMicroStx = feeStx * 1_000_000;
-  const postCondition = makeStandardSTXPostCondition(
-    senderAddress,
-    FungibleConditionCode.Equal,
-    amountMicroStx,
-  );
+  const postCondition = stxEqualsPostCondition(senderAddress, amountMicroStx);
 
   await openContractCall({
     contractAddress: CONTRACT_ADDRESS,
@@ -94,11 +84,7 @@ export async function callBuyNFT(
   priceStx: number,
 ): Promise<void> {
   const amountMicroStx = priceStx * 1_000_000;
-  const postCondition = makeStandardSTXPostCondition(
-    senderAddress,
-    FungibleConditionCode.Equal,
-    amountMicroStx,
-  );
+  const postCondition = stxEqualsPostCondition(senderAddress, amountMicroStx);
 
   await openContractCall({
     contractAddress: CONTRACT_ADDRESS,

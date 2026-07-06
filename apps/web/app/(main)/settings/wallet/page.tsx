@@ -1,15 +1,25 @@
 'use client';
 
 import * as React from 'react';
-import { Wallet, Copy, ExternalLink, Zap, Shield, Key } from 'lucide-react';
-import { useWallet } from '@/lib/hooks/use-wallet';
+import { Wallet, ExternalLink, Shield, Key } from 'lucide-react';
+import { useConnect } from '@stacks/connect-react';
+import { userSession } from '@/lib/stacks-config';
+import { useWallet, useSTXBalance } from '@/lib/hooks/use-wallet';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CopyButton } from '@/components/ui/copy-button';
 import { formatSTX } from '@/lib/utils';
 
 export default function WalletSettingsPage() {
-  const { address, balance, isConnected, connect, disconnect } = useWallet();
+  const { address, connected: isConnected, stxBalance } = useWallet();
+  const { data: liveBalance } = useSTXBalance(address);
+  const { doOpenAuth } = useConnect();
+
+  const connect = () => doOpenAuth();
+  const disconnect = () => {
+    userSession.signUserOut();
+    window.location.reload();
+  };
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
@@ -38,31 +48,22 @@ export default function WalletSettingsPage() {
               <Badge variant="primary" className="shrink-0">Connected</Badge>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-xl bg-white/[0.02] text-center">
-                <p className="text-xs text-muted-foreground">STX Balance</p>
-                <p className="font-bold text-sm text-primary mt-1">{formatSTX(balance?.stx?.balance ?? 0)}</p>
-              </div>
-              <div className="p-3 rounded-xl bg-white/[0.02] text-center">
-                <p className="text-xs text-muted-foreground">BTC Balance</p>
-                <p className="font-bold text-sm text-orange-400 mt-1">{balance?.btc?.balance ?? '—'}</p>
-              </div>
+            <div className="p-3 rounded-xl bg-white/[0.02] text-center">
+              <p className="text-xs text-muted-foreground">STX Balance</p>
+              <p className="font-bold text-sm text-primary mt-1">{formatSTX(liveBalance ?? stxBalance)}</p>
             </div>
 
             <div className="flex gap-3">
-              <Button
-                as="a"
+              <a
                 href={`https://explorer.hiro.so/address/${address}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                variant="ghost"
-                size="sm"
-                className="flex-1"
+                className="btn-outline flex-1"
               >
                 <ExternalLink className="w-4 h-4" />
                 View on Explorer
-              </Button>
-              <Button variant="danger" size="sm" onClick={disconnect} className="flex-1">
+              </a>
+              <Button variant="destructive" size="sm" onClick={disconnect} className="flex-1">
                 Disconnect
               </Button>
             </div>

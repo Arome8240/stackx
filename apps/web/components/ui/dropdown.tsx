@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 interface DropdownItem {
   label: string;
-  icon?: React.ElementType;
+  icon?: React.ReactNode;
   onClick?: () => void;
   destructive?: boolean;
   disabled?: boolean;
@@ -62,7 +62,7 @@ export function Dropdown({ trigger, items, align = 'left', className }: Dropdown
                   item.disabled && 'opacity-40 cursor-not-allowed',
                 )}
               >
-                {item.icon && <item.icon className="w-4 h-4 shrink-0" />}
+                {item.icon}
                 {item.label}
               </button>
             ),

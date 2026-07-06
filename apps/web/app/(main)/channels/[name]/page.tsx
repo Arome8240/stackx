@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 import { useParams } from 'next/navigation';
-import { Hash, Users, Lock, Settings, MessageSquare } from 'lucide-react';
-import { useChannel, useJoinChannel, useIsChannelMember } from '@/lib/hooks/use-channels';
+import { Hash, Users, Lock, MessageSquare } from 'lucide-react';
+import { useChannel, useJoinChannel } from '@/lib/hooks/use-channels';
+import { useWallet } from '@/lib/hooks/use-wallet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -13,7 +14,7 @@ import { formatNumber, formatSTX } from '@/lib/utils';
 export default function ChannelPage() {
   const { name } = useParams<{ name: string }>();
   const { data: channel, isLoading } = useChannel(name);
-  const { data: memberStatus } = useIsChannelMember(channel?._id ?? '');
+  const { address } = useWallet();
   const joinMutation = useJoinChannel();
 
   if (isLoading) {
@@ -28,7 +29,7 @@ export default function ChannelPage() {
   if (!channel) {
     return (
       <EmptyState
-        icon={Hash}
+        icon={<Hash className="w-8 h-8" />}
         title="Channel not found"
         description={`/${name} doesn't exist`}
         className="py-24"
@@ -36,7 +37,7 @@ export default function ChannelPage() {
     );
   }
 
-  const isMember = memberStatus?.isMember ?? false;
+  const isMember = channel.isMember ?? false;
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -65,10 +66,10 @@ export default function ChannelPage() {
             <Button
               variant={channel.isPaid ? 'primary' : 'outline'}
               size="sm"
-              onClick={() => joinMutation.mutate(channel._id)}
+              onClick={() => joinMutation.mutate({ channelId: Number(channel.id), entryFee: channel.entryFee ?? 0, sender: address ?? '' })}
               loading={joinMutation.isPending}
             >
-              {channel.isPaid ? `Join · ${formatSTX(channel.entryFeeStx ?? 0)} STX` : 'Join'}
+              {channel.isPaid ? `Join · ${formatSTX(channel.entryFee ?? 0)} STX` : 'Join'}
             </Button>
           ) : (
             <Badge variant="primary">Member</Badge>
@@ -89,20 +90,20 @@ export default function ChannelPage() {
           </div>
           <h2 className="font-semibold text-foreground mb-2">Paid Channel</h2>
           <p className="text-sm text-muted-foreground mb-4">
-            Join for {formatSTX(channel.entryFeeStx ?? 0)} STX to access all casts in this channel.
+            Join for {formatSTX(channel.entryFee ?? 0)} STX to access all casts in this channel.
           </p>
           <Button
             variant="primary"
-            onClick={() => joinMutation.mutate(channel._id)}
+            onClick={() => joinMutation.mutate({ channelId: Number(channel.id), entryFee: channel.entryFee ?? 0, sender: address ?? '' })}
             loading={joinMutation.isPending}
           >
             <Lock className="w-4 h-4" />
-            Join for {formatSTX(channel.entryFeeStx ?? 0)} STX
+            Join for {formatSTX(channel.entryFee ?? 0)} STX
           </Button>
         </div>
       ) : (
         <EmptyState
-          icon={MessageSquare}
+          icon={<MessageSquare className="w-8 h-8" />}
           title="No casts yet"
           description="Be the first to cast in this channel"
           className="py-16"

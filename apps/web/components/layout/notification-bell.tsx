@@ -3,12 +3,13 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { Bell } from 'lucide-react';
-import { useUnreadNotificationCount } from '@/lib/hooks/use-notifications';
+import { useUnreadCount } from '@/lib/hooks/use-notifications';
+import { useCurrentUser } from '@/lib/hooks/use-auth';
 import { cn } from '@/lib/utils';
 
 export function NotificationBell({ className }: { className?: string }) {
-  const { data: count } = useUnreadNotificationCount();
-  const unread = count ?? 0;
+  const { data: user } = useCurrentUser();
+  const unread = useUnreadCount(user?.stxAddress ?? null);
 
   return (
     <Link

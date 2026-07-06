@@ -2,8 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Hash, User, MessageSquare, X, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Search, Hash, MessageSquare, X, ArrowRight } from 'lucide-react';
 
 interface CommandItem {
   id: string;

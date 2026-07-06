@@ -23,11 +23,11 @@ export function useLikeCast() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ castId, liked }: { castId: string; liked: boolean }) => {
+    mutationFn: async ({ castId: _castId, liked: _liked }: { castId: string; liked: boolean }) => {
       // wire: liked ? contract.unlikeCast(+castId) : contract.likeCast(+castId)
       await new Promise(r => setTimeout(r, 100));
     },
-    onMutate: async ({ castId, liked }) => {
+    onMutate: async ({ castId, liked: _liked }) => {
       await qc.cancelQueries({ queryKey: ['feed'] });
       const prev = qc.getQueryData<Cast[]>(['feed', 'for-you']);
       qc.setQueryData(['feed', 'for-you'], (old: Cast[] | undefined) =>
@@ -48,7 +48,7 @@ export function useRecast() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ castId, recasted }: { castId: string; recasted: boolean }) => {
+    mutationFn: async ({ castId: _castId, recasted: _recasted }: { castId: string; recasted: boolean }) => {
       await new Promise(r => setTimeout(r, 100));
     },
     onMutate: async ({ castId }) => {
@@ -71,7 +71,7 @@ export function useTipCast() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ castId, amountStx, sender }: { castId: string; amountStx: number; sender: string }) => {
+    mutationFn: async ({ castId: _castId, amountStx, sender: _sender }: { castId: string; amountStx: number; sender: string }) => {
       // wire: contract.tipCast(+castId, amountStx * 1_000_000, sender)
       await new Promise(r => setTimeout(r, 1200));
       return amountStx;
@@ -90,7 +90,7 @@ export function useBookmarkCast() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ castId, bookmarked }: { castId: string; bookmarked: boolean }) => {
+    mutationFn: async ({ castId: _castId, bookmarked: _bookmarked }: { castId: string; bookmarked: boolean }) => {
       await new Promise(r => setTimeout(r, 100));
     },
     onMutate: async ({ castId }) => {
@@ -113,7 +113,7 @@ export function useCreateCast() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (args: {
+    mutationFn: async (_args: {
       content: string;
       imagesIpfs: string[];
       mentions: string[];

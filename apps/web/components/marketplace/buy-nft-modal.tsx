@@ -5,8 +5,8 @@ import { Gem, AlertCircle, Shield } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import { Button } from '@/components/ui/button';
 import { callBuyNFT } from '@/lib/stacks';
+import { useCurrentUser } from '@/lib/hooks/use-auth';
 import { formatNumber, formatSTX } from '@/lib/utils';
-import { cn } from '@/lib/utils';
 
 interface BuyNftModalProps {
   tokenId: number;
@@ -22,16 +22,16 @@ interface BuyNftModalProps {
 export function BuyNftModal({ tokenId, priceStx, creatorUsername, edition, maxEdition, open, onClose, onSuccess }: BuyNftModalProps) {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const { data: user } = useCurrentUser();
 
   const platformFee = priceStx * 0.025;
   const royaltyFee = priceStx * 0.05;
-  const creatorReceives = priceStx - platformFee - royaltyFee;
 
   async function handleBuy() {
     setLoading(true);
     setError(null);
     try {
-      await callBuyNFT({ tokenId, priceStx });
+      await callBuyNFT(user?.stxAddress ?? '', tokenId, priceStx);
       onSuccess?.();
       onClose();
     } catch (e) {

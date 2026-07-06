@@ -72,7 +72,7 @@ export function RightSidebar() {
               href={`/profile/${user.username}`}
               className="flex items-start gap-3 px-4 py-3 hover:bg-accent/40 transition-colors"
             >
-              <Avatar src={user.avatar} alt={user.displayName} size="sm" verified={user.verified} />
+              <Avatar src={user.avatar} fallback={user.displayName} size="sm" verified={user.verified} />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1">
                   <span className="text-sm font-semibold truncate">{user.displayName}</span>

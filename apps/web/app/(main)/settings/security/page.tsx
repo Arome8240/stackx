@@ -92,7 +92,7 @@ export default function SecuritySettingsPage() {
       <div className="glass rounded-2xl p-5 space-y-3">
         <h2 className="font-semibold text-foreground">Active Sessions</h2>
         <p className="text-sm text-muted-foreground">You are currently signed in on this device.</p>
-        <Button variant="danger" size="sm">
+        <Button variant="destructive" size="sm">
           Sign out all other sessions
         </Button>
       </div>

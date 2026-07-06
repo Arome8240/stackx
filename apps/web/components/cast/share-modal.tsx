@@ -1,11 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { Link2, Twitter, Copy, Check } from 'lucide-react';
+import { Link2, X, Copy, Check } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import { Button } from '@/components/ui/button';
 import { useClipboard } from '@/lib/hooks/use-clipboard';
 import { APP_URL } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
 interface ShareModalProps {
   castId: string;
@@ -33,17 +34,20 @@ export function ShareModal({ castId, open, onClose }: ShareModalProps) {
           </button>
         </div>
 
-        <Button
-          as="a"
+        <a
           href={twitterUrl}
           target="_blank"
           rel="noopener noreferrer"
-          variant="ghost"
-          className="w-full justify-start gap-3"
+          className={cn(
+            'inline-flex items-center justify-center font-semibold transition-all duration-150 select-none',
+            'hover:bg-accent hover:text-accent-foreground active:scale-[0.97]',
+            'h-10 px-5 text-sm rounded-xl gap-2',
+            'w-full justify-start gap-3',
+          )}
         >
-          <Twitter className="w-4 h-4" />
+          <X className="w-4 h-4" />
           Share on X (Twitter)
-        </Button>
+        </a>
 
         <Button
           onClick={() => { copy(castUrl); onClose(); }}

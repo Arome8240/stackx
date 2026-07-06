@@ -10,12 +10,10 @@ export interface IPFSUploadResult {
 
 export class IPFSClient {
   private pinataApiKey: string;
-  private pinataSecretKey: string;
   private gateway: string;
 
   constructor() {
     this.pinataApiKey = process.env.NEXT_PUBLIC_PINATA_API_KEY || '';
-    this.pinataSecretKey = process.env.NEXT_PUBLIC_PINATA_SECRET_KEY || '';
     this.gateway = process.env.NEXT_PUBLIC_IPFS_GATEWAY || 'https://gateway.pinata.cloud/ipfs/';
   }
 

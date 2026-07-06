@@ -7,7 +7,6 @@ import {
   Users,
   MessageSquare,
   Award,
-  Clock,
   Zap,
   ArrowUpRight,
   Globe,
@@ -130,7 +129,6 @@ export default function TrendsPage() {
         </h2>
         <div className="space-y-3">
           {TOP_EARNERS.map(({ rank, username, displayName, stxEarned, castsCount, tier }) => {
-            const medalColors = ['text-yellow-400', 'text-gray-300', 'text-amber-600'];
             const medals = ['🥇', '🥈', '🥉'];
             return (
               <div key={username} className="flex items-center gap-3 hover:bg-white/[0.03] rounded-xl p-2 transition-colors">

@@ -71,7 +71,7 @@ export default function ExplorePage() {
             <div key={user.username} className="flex items-center gap-3 px-4 py-4 hover:bg-accent/30 transition-colors">
               <span className="w-5 text-sm font-bold text-muted-foreground">{i + 1}</span>
               <Link href={"/profile/" + user.username}>
-                <Avatar src={user.avatar} alt={user.displayName} size="md" verified={user.verified} />
+                <Avatar src={user.avatar} fallback={user.displayName} size="md" verified={user.verified} />
               </Link>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
@@ -96,7 +96,7 @@ export default function ExplorePage() {
               <span className="w-6 text-center font-bold">
                 {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : String(i + 1)}
               </span>
-              <Avatar src={user.avatar} alt={user.displayName} size="sm" />
+              <Avatar src={user.avatar} fallback={user.displayName} size="sm" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold truncate">{user.displayName}</p>
                 <p className="text-xs text-muted-foreground">@{user.username}</p>

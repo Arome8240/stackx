@@ -26,7 +26,7 @@ export function useJoinChannel() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ channelId, entryFee, sender }: { channelId: number; entryFee: number; sender: string }) => {
+    mutationFn: async ({ channelId: _channelId, entryFee: _entryFee, sender: _sender }: { channelId: number; entryFee: number; sender: string }) => {
       // wire: contract.joinChannel(channelId, entryFee, sender)
       await new Promise(r => setTimeout(r, 1200));
     },
@@ -43,7 +43,7 @@ export function useCreateChannel() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (args: {
+    mutationFn: async (_args: {
       name: string; description: string; imageIpfs: string;
       entryFee: number; isNsfw: boolean; isPrivate: boolean;
     }) => {

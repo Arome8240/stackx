@@ -7,7 +7,18 @@ import { useToast } from '@/components/ui/toast';
 
 interface LoginPayload { email: string; password: string }
 interface RegisterPayload { username: string; email: string; password: string }
-interface AuthUser { id: string; email: string; username: string; stxAddress?: string }
+interface AuthUser {
+  id: string;
+  email: string;
+  username: string;
+  stxAddress?: string;
+  displayName?: string;
+  avatarUrl?: string;
+  bio?: string;
+  website?: string;
+  location?: string;
+  tier?: number;
+}
 interface AuthResponse { accessToken: string; user: AuthUser }
 
 export function useCurrentUser() {
@@ -15,7 +26,7 @@ export function useCurrentUser() {
     queryKey: ['auth', 'me'],
     queryFn: async () => {
       try {
-        return await api.get<AuthUser>('/auth/me');
+        return await api.get<AuthUser>('/users/me');
       } catch {
         return null;
       }

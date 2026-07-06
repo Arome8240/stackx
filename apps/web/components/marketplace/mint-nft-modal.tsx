@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Gem, AlertCircle, Info } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { NumberInput } from '@/components/ui/number-input';
 import { callMintNFT } from '@/lib/stacks';
 import type { Cast } from '@/lib/types/social';
@@ -25,7 +24,9 @@ export function MintNftModal({ cast, open, onClose }: MintNftModalProps) {
     setLoading(true);
     setError(null);
     try {
-      await callMintNFT({ castId: cast._id, maxEditions, royaltyBps: royaltyPct * 100 });
+      // callMintNFT's on-chain signature is (castId, tokenUri, maxEdition) — the
+      // contract has no royalty parameter, so `royaltyPct` isn't sent on-chain.
+      await callMintNFT(Number(cast.id), '', maxEditions);
       onClose();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Minting failed');
@@ -39,7 +40,7 @@ export function MintNftModal({ cast, open, onClose }: MintNftModalProps) {
       <div className="space-y-4">
         <div className="p-3 rounded-xl bg-nft/10 border border-nft/20">
           <p className="text-sm text-nft font-medium line-clamp-2">{cast.content}</p>
-          <p className="text-xs text-nft/60 mt-1">Cast #{cast._id.slice(-8)}</p>
+          <p className="text-xs text-nft/60 mt-1">Cast #{cast.id.slice(-8)}</p>
         </div>
 
         <NumberInput

@@ -18,7 +18,7 @@ export function useFollowUser() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ address, following }: { address: string; following: boolean }) => {
+    mutationFn: async ({ address: _address, following: _following }: { address: string; following: boolean }) => {
       // wire: following ? contract.unfollowUser(address) : contract.followUser(address)
       await new Promise(r => setTimeout(r, 800));
     },
@@ -35,7 +35,7 @@ export function useUpdateProfile() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (args: {
+    mutationFn: async (_args: {
       displayName: string;
       bio: string;
       avatarIpfs: string;

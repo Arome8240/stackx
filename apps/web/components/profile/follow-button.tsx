@@ -28,7 +28,7 @@ export function FollowButton({ targetUserId, className }: FollowButtonProps) {
   if (isFollowing) {
     return (
       <Button
-        variant={hovering ? 'danger' : 'outline'}
+        variant={hovering ? 'destructive' : 'outline'}
         size="sm"
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}

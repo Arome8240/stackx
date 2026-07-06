@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { createSocialPlatformContract } from '../contracts/social-platform';
-import { StacksTestnet } from '@stacks/network';
+import { createV2Contract } from '../contracts/social-platform-v2';
+import { STACKS_TESTNET } from '@stacks/network';
 import { CONTRACT_ADDRESS, CONTRACTS } from '../stacks-config';
 
 // Ensure we have valid fallback values for contract instantiation
-const testnet = new StacksTestnet();
+const testnet = STACKS_TESTNET;
 
 // Use a safe sender address for read-only calls (just needs to be a valid Stacks address)
 const READ_ONLY_SENDER = 'ST2JHG361ZXG51QTKY2ZA4XBPDAZJCWA8M634FVDQ';
@@ -21,7 +21,7 @@ export function useCasts() {
           throw new Error("Contract configuration is missing.");
         }
 
-        const contract = createSocialPlatformContract({
+        const contract = createV2Contract({
           network: testnet,
           contractAddress: CONTRACT_ADDRESS,
           contractName: CONTRACTS.SOCIAL_PLATFORM,
@@ -54,7 +54,7 @@ export function useCasts() {
               author: {
                 username: castData.author?.value || 'unknown',
                 displayName: 'On-Chain User',
-                avatar: '/placeholder.svg' // We could fetch get-user here too, but optimizing for now
+                avatarUrl: '/placeholder.svg' // We could fetch get-user here too, but optimizing for now
               },
               content: castData.content?.value || '',
               timestamp: new Date().toISOString(), // Block height would need to be converted to actual time

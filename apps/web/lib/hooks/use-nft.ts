@@ -26,7 +26,7 @@ export function useMintNFT() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ castId, uri, maxEdition }: { castId: number; uri: string; maxEdition: number }) => {
+    mutationFn: async ({ castId: _castId, uri: _uri, maxEdition: _maxEdition }: { castId: number; uri: string; maxEdition: number }) => {
       // wire: contract.mintCastNFT(castId, uri, maxEdition)
       await new Promise(r => setTimeout(r, 1500));
       return { nftId: Math.floor(Math.random() * 1000) };
@@ -44,7 +44,7 @@ export function useBuyNFT() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ nftId, priceStx, sender }: { nftId: number; priceStx: number; sender: string }) => {
+    mutationFn: async ({ nftId: _nftId, priceStx: _priceStx, sender: _sender }: { nftId: number; priceStx: number; sender: string }) => {
       // wire: contract.buyNFT(nftId, priceStx * 1_000_000, sender)
       await new Promise(r => setTimeout(r, 1200));
     },
@@ -61,7 +61,7 @@ export function useListNFT() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ nftId, priceStx }: { nftId: number; priceStx: number }) => {
+    mutationFn: async ({ nftId: _nftId, priceStx: _priceStx }: { nftId: number; priceStx: number }) => {
       await new Promise(r => setTimeout(r, 800));
     },
     onSuccess: () => {

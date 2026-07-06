@@ -33,9 +33,9 @@ const TRENDING_TOPICS = [
 
 const MOCK_USER: User = {
   id: 'u1', username: 'muneeb', displayName: 'Muneeb Ali',
-  bio: 'Co-founder @Stacks', avatar: '', walletAddress: 'SP1...',
+  bio: 'Co-founder @Stacks', avatarUrl: '', walletAddress: 'SP1...',
   followersCount: 42000, followingCount: 800, castsCount: 1200,
-  tipsReceived: 5000000, nftsMinted: 3, verified: true, tier: 2, joinedAt: '2023-01-01',
+  tipsReceived: 5000000, nftsMinted: 3, isVerified: true, tier: 2, joinedAt: '2023-01-01',
 };
 
 const MOCK_RESULTS_CAST: Cast[] = [
@@ -157,7 +157,7 @@ function UserResult({ user }: { user: User }) {
   const [following, setFollowing] = React.useState(false);
   return (
     <Link href={`/profile/${user.username}`} className="flex items-start gap-3 px-4 py-3 hover:bg-accent/30 transition-colors">
-      <Avatar src={user.avatar} alt={user.displayName} size="md" verified={user.verified} />
+      <Avatar src={user.avatarUrl} fallback={user.displayName} size="md" verified={user.isVerified} />
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
           <span className="font-semibold text-sm">{user.displayName}</span>

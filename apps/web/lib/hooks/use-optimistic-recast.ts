@@ -11,7 +11,7 @@ export function useOptimisticRecast(cast: Cast) {
   const [optimisticCount, setOptimisticCount] = React.useState(cast.recastsCount ?? 0);
 
   const recastMutation = useMutation({
-    mutationFn: () => api.post(`/casts/${cast._id}/recast`, {}),
+    mutationFn: () => api.post(`/casts/${cast.id}/recast`, {}),
     onMutate: () => {
       setOptimisticRecasted(true);
       setOptimisticCount((n) => n + 1);
@@ -21,7 +21,7 @@ export function useOptimisticRecast(cast: Cast) {
       setOptimisticCount((n) => Math.max(0, n - 1));
     },
     onSettled: () => {
-      qc.invalidateQueries({ queryKey: ['cast', cast._id] });
+      qc.invalidateQueries({ queryKey: ['cast', cast.id] });
       qc.invalidateQueries({ queryKey: ['feed'] });
     },
   });

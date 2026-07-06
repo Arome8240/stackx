@@ -29,11 +29,11 @@ const MOCK_USER: User = {
   id: 'u1', username: 'muneeb', displayName: 'Muneeb Ali',
   bio: 'Co-founder @Stacks. Building the Bitcoin economy.',
   website: 'stacks.co', location: 'New York, NY',
-  avatar: '', banner: '',
+  avatarUrl: '', banner: '',
   walletAddress: 'SP1HTBVD3JG9C05J7HBJTHGR0GGW7KXW28M5JS8QE',
   followersCount: 42000, followingCount: 800, castsCount: 1200,
   tipsReceived: 24750000, nftsMinted: 3,
-  verified: true, tier: 2,
+  isVerified: true, tier: 2,
   joinedAt: '2023-01-15',
 };
 
@@ -75,7 +75,7 @@ export default function ProfilePage({ params }: { params: Promise<{ username: st
       {/* Profile info */}
       <div className="relative px-4 pb-4">
         <div className="flex items-end justify-between -mt-10 mb-3">
-          <Avatar src={user.avatar} alt={user.displayName} size="2xl" verified={user.verified} className="ring-4 ring-background" />
+          <Avatar src={user.avatarUrl} fallback={user.displayName} size="2xl" verified={user.isVerified} className="ring-4 ring-background" />
           <div className="flex items-center gap-2 mb-1">
             {isOwnProfile ? (
               <Button variant="outline" size="sm" icon={<Settings className="w-4 h-4" />}>Edit profile</Button>
@@ -92,7 +92,7 @@ export default function ProfilePage({ params }: { params: Promise<{ username: st
 
         <div className="flex items-center flex-wrap gap-2 mb-1">
           <h2 className="text-xl font-bold">{user.displayName}</h2>
-          {user.verified && <CheckCircle className="w-5 h-5 text-primary fill-primary" />}
+          {user.isVerified && <CheckCircle className="w-5 h-5 text-primary fill-primary" />}
           {user.tier === 2 && <Badge variant="nft">Creator</Badge>}
           {user.tier >= 1 && <Badge variant="primary">Pro</Badge>}
         </div>

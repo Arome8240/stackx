@@ -1,11 +1,11 @@
 'use client';
 
-import { useInfiniteQuery, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import type { Cast } from '@/lib/types/social';
 
 const PAGE_SIZE = 20;
 
-async function fetchFeed(page: number, tab: 'for-you' | 'following'): Promise<Cast[]> {
+async function fetchFeed(_page: number, _tab: 'for-you' | 'following'): Promise<Cast[]> {
   // In production: call contract read-only or indexer API
   // Returns mocked data for now
   await new Promise(r => setTimeout(r, 400));

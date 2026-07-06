@@ -5,7 +5,7 @@ import { cn, getInitials } from '@/lib/utils';
 
 interface AvatarProps {
   src?: string | null;
-  alt?: string;
+  fallback?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   className?: string;
   online?: boolean;
@@ -30,16 +30,16 @@ const indicatorMap = {
   '2xl': 'w-4 h-4 border-2',
 };
 
-export function Avatar({ src, alt = '', size = 'md', className, online, verified }: AvatarProps) {
+export function Avatar({ src, fallback = '', size = 'md', className, online, verified }: AvatarProps) {
   const [imgError, setImgError] = React.useState(false);
-  const initials = getInitials(alt);
+  const initials = getInitials(fallback);
 
   return (
     <span className={cn('relative inline-flex shrink-0', sizeMap[size], className)}>
       {src && !imgError ? (
         <img
           src={src}
-          alt={alt}
+          alt={fallback}
           onError={() => setImgError(true)}
           className="w-full h-full rounded-full object-cover ring-1 ring-border"
         />

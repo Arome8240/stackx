@@ -5,7 +5,6 @@ import { BarChart2, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { usePoll, useVotePoll, useMyVote } from '@/lib/hooks/use-polls';
 import { Spinner } from '@/components/ui/spinner';
-import { Button } from '@/components/ui/button';
 
 interface PollCardProps {
   castId: string;
@@ -19,7 +18,7 @@ export function PollCard({ castId }: PollCardProps) {
   if (isLoading) return <div className="mt-3"><Spinner size="sm" /></div>;
   if (!poll) return null;
 
-  const hasVoted = !!myVote?.optionIndex;
+  const hasVoted = myVote != null;
   const totalVotes = poll.totalVotes ?? 0;
   const isExpired = poll.endsAt && new Date(poll.endsAt) < new Date();
   const showResults = hasVoted || isExpired || poll.closed;
@@ -36,7 +35,7 @@ export function PollCard({ castId }: PollCardProps) {
       {poll.options.map((option, i) => {
         const pct = getPercent(option.votes ?? 0);
         const isWinner = showResults && (option.votes ?? 0) === Math.max(...poll.options.map((o) => o.votes ?? 0));
-        const isMyVote = myVote?.optionIndex === i;
+        const isMyVote = myVote === i;
 
         return (
           <div key={i}>
@@ -51,18 +50,18 @@ export function PollCard({ castId }: PollCardProps) {
                 />
                 <div className="relative flex items-center justify-between px-3 py-2 text-sm">
                   <span className={cn('font-medium', isMyVote && 'text-primary')}>
-                    {option.text} {isMyVote && '✓'}
+                    {option.label} {isMyVote && '✓'}
                   </span>
                   <span className="text-muted-foreground font-medium">{pct}%</span>
                 </div>
               </div>
             ) : (
               <button
-                onClick={() => voteMutation.mutate({ castId, optionIndex: i })}
+                onClick={() => voteMutation.mutate({ pollId: poll.id, optionIndex: i })}
                 disabled={voteMutation.isPending}
                 className="w-full text-left px-3 py-2 rounded-lg border border-border/40 hover:border-primary/50 hover:bg-primary/5 text-sm transition-colors"
               >
-                {option.text}
+                {option.label}
               </button>
             )}
           </div>

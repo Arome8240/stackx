@@ -23,7 +23,7 @@ export function Timeline({ items, className }: TimelineProps) {
     <div className={cn('relative', className)}>
       <div className="absolute left-4 top-2 bottom-2 w-px bg-border/40" aria-hidden />
       <ol className="space-y-4">
-        {items.map((item, i) => {
+        {items.map((item) => {
           const Icon = item.icon;
           return (
             <li key={item.id} className="relative flex gap-4 pl-10">

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
   Image as ImageIcon, Smile, BarChart3, Hash,
-  X, Loader2, Zap,
+  X, Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
@@ -28,7 +28,6 @@ interface CastComposerProps {
 
 export function CastComposer({
   placeholder = "What's happening on-chain?",
-  parentCastId,
   channelId,
   compact,
   onSuccess,
@@ -105,7 +104,7 @@ export function CastComposer({
     <div className={cn('border-b border-border bg-background', compact ? 'p-3' : 'p-4')}>
       <div className="flex gap-3">
         {/* Avatar */}
-        <Avatar src={null} alt="You" size={compact ? 'sm' : 'md'} className="shrink-0 mt-0.5" />
+        <Avatar src={null} fallback="You" size={compact ? 'sm' : 'md'} className="shrink-0 mt-0.5" />
 
         {/* Input area */}
         <div className="flex-1 min-w-0">

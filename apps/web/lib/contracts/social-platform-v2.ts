@@ -4,11 +4,8 @@
  */
 
 import {
-  makeContractCall,
-  broadcastTransaction,
   AnchorMode,
   PostConditionMode,
-  PostConditions,
   Pc,
   stringAsciiCV,
   stringUtf8CV,
@@ -18,10 +15,8 @@ import {
   someCV,
   noneCV,
   boolCV,
-  callReadOnlyFunction,
+  fetchCallReadOnlyFunction,
   cvToJSON,
-  FungibleConditionCode,
-  makeStandardSTXPostCondition,
 } from '@stacks/transactions';
 import { StacksNetwork } from '@stacks/network';
 import { openContractCall } from '@stacks/connect';
@@ -71,14 +66,14 @@ export class SocialPlatformV2 {
       functionArgs: args as never[],
       postConditionMode: PostConditionMode.Deny,
       postConditions: [
-        makeStandardSTXPostCondition(sender, FungibleConditionCode.Equal, microStx),
+        Pc.principal(sender).willSendEq(microStx).ustx(),
       ],
       ...cb,
     });
   }
 
   private async readOnly(fn: string, args: ReturnType<typeof uintCV>[], sender: string) {
-    const result = await callReadOnlyFunction({
+    const result = await fetchCallReadOnlyFunction({
       network: this.cfg.network,
       contractAddress: this.cfg.contractAddress,
       contractName: this.cfg.contractName,

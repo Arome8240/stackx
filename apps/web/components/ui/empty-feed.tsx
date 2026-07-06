@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { MessageSquare, UserPlus, Compass } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from './button';
 import { cn } from '@/lib/utils';
 
 interface EmptyFeedProps {
@@ -55,10 +54,17 @@ export function EmptyFeed({ type = 'home', className }: EmptyFeedProps) {
       {config.actions.length > 0 && (
         <div className="flex gap-3">
           {config.actions.map(({ label, href, variant, icon: ActionIcon }) => (
-            <Button key={label} as={Link} href={href} variant={variant} size="sm">
+            <Link
+              key={label}
+              href={href}
+              className={cn(
+                variant === 'primary' ? 'btn-primary' : 'btn-outline',
+                'gap-2',
+              )}
+            >
               <ActionIcon className="w-4 h-4" />
               {label}
-            </Button>
+            </Link>
           ))}
         </div>
       )}

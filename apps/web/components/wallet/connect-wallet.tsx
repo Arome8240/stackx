@@ -1,7 +1,6 @@
 'use client';
 
 import { useConnect } from '@stacks/connect-react';
-import { Button } from '../ui/button'; // Check if we have this or use regular button
 import { userSession } from '@/lib/stacks-config';
 import { Wallet } from 'lucide-react';
 import { useState, useEffect } from 'react';

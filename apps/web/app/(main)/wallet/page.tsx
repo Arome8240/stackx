@@ -5,12 +5,10 @@ import { Wallet, ArrowUpRight, ArrowDownLeft, RefreshCw, Gem, Coins, TrendingUp,
 import { Button } from '@/components/ui/button';
 import { Tabs } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Avatar } from '@/components/ui/avatar';
 import { EmptyState } from '@/components/ui/empty-state';
 import { formatSTX, formatNumber, formatTimeAgo, shortenAddress, copyToClipboard } from '@/lib/utils';
 import { useToast } from '@/components/ui/toast';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
 
 const TABS = [
   { id: 'overview',  label: 'Overview' },

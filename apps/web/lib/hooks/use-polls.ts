@@ -3,11 +3,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-client';
 import { useToast } from '@/components/ui/toast';
+import type { Poll } from '@/lib/types/social';
 
 export function usePoll(castId: string | undefined) {
-  return useQuery({
+  return useQuery<Poll>({
     queryKey: ['poll', castId],
-    queryFn: () => api.get(`/polls/cast/${castId}`),
+    queryFn: () => api.get<Poll>(`/polls/cast/${castId}`),
     enabled: !!castId,
     staleTime: 15_000,
   });

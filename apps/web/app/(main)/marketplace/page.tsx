@@ -6,7 +6,6 @@ import {
   Grid3X3,
   List,
   TrendingUp,
-  Filter,
   ShoppingBag,
   Tag,
   Award,
@@ -14,19 +13,29 @@ import {
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@/components/ui/avatar';
-import { formatNumber, formatSTX } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import type { NFTListing } from '@/lib/types/social';
 
 const MOCK_LISTINGS: (NFTListing & { castPreview: string; seller: { username: string; avatarUrl: string; isVerified: boolean } })[] = Array.from(
   { length: 12 },
   (_, i) => ({
-    id: `nft-${i}`,
-    castId: i,
+    nftId: `nft-${i}`,
+    castId: `cast-${i}`,
     seller: {
+      id: `user-${i}`,
       username: ['satoshi', 'nakamoto', 'vitalik', 'stacks_dev', 'clarity_coder', 'bitcoin_max'][i % 6],
+      displayName: ['satoshi', 'nakamoto', 'vitalik', 'stacks_dev', 'clarity_coder', 'bitcoin_max'][i % 6],
+      bio: '',
       avatarUrl: '',
+      walletAddress: `SP${i}`,
+      followersCount: 0,
+      followingCount: 0,
+      castsCount: 0,
+      tipsReceived: 0,
+      nftsMinted: 0,
       isVerified: i % 3 === 0,
+      tier: 0 as const,
+      joinedAt: new Date().toISOString(),
     },
     castPreview: [
       'Just shipped the SIP-009 NFT trait on StackX 🚀',
@@ -36,12 +45,11 @@ const MOCK_LISTINGS: (NFTListing & { castPreview: string; seller: { username: st
       'Web3 social will eat Web2 social. The incentives are right.',
       'STX tipping is live! Support creators directly on-chain.',
     ][i % 6],
-    priceStx: [10, 25, 5, 100, 50, 15, 200, 8, 35, 75, 12, 300][i],
+    price: [10, 25, 5, 100, 50, 15, 200, 8, 35, 75, 12, 300][i],
     edition: i % 4 === 0 ? 1 : Math.floor(Math.random() * 10) + 1,
     maxEdition: [1, 10, 5, 1, 10, 3, 1, 10, 5, 1, 10, 1][i],
-    tokenUri: `ipfs://Qm${Math.random().toString(36).slice(2)}`,
-    isListed: true,
-    createdAt: new Date(Date.now() - 86400_000 * i).toISOString(),
+    uri: `ipfs://Qm${Math.random().toString(36).slice(2)}`,
+    listedAt: new Date(Date.now() - 86400_000 * i).toISOString(),
   }),
 );
 
@@ -84,7 +92,7 @@ function NFTCard({
         )}
         <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity">
           <button className="w-full btn-primary py-2 text-sm rounded-xl">
-            Buy for {listing.priceStx} STX
+            Buy for {listing.price} STX
           </button>
         </div>
       </div>
@@ -101,11 +109,11 @@ function NFTCard({
         <div className="flex items-center justify-between">
           <div>
             <div className="text-xs text-muted-foreground">Price</div>
-            <div className="font-bold text-sm text-primary">{listing.priceStx} STX</div>
+            <div className="font-bold text-sm text-primary">{listing.price} STX</div>
           </div>
           <div className="text-right">
             <div className="text-xs text-muted-foreground">Cast NFT</div>
-            <div className="text-xs text-muted-foreground">#{listing.id.replace('nft-', '')}</div>
+            <div className="text-xs text-muted-foreground">#{listing.nftId.replace('nft-', '')}</div>
           </div>
         </div>
       </div>
@@ -130,7 +138,7 @@ function NFTRow({ listing }: { listing: (typeof MOCK_LISTINGS)[0] }) {
         </div>
       </div>
       <div className="text-right flex-shrink-0">
-        <div className="font-bold text-sm text-primary">{listing.priceStx} STX</div>
+        <div className="font-bold text-sm text-primary">{listing.price} STX</div>
         <button className="text-xs text-primary hover:text-primary/80 mt-0.5 transition-colors">
           Buy now
         </button>
@@ -149,9 +157,9 @@ export default function MarketplacePage() {
     let list = [...MOCK_LISTINGS];
     if (query) list = list.filter((l) => l.castPreview.toLowerCase().includes(query.toLowerCase()));
     if (tab === 'rare') list = list.filter((l) => l.maxEdition === 1);
-    if (tab === 'trending') list = list.sort((a, b) => b.priceStx - a.priceStx);
-    if (sortBy === 'price-asc') list = list.sort((a, b) => a.priceStx - b.priceStx);
-    if (sortBy === 'price-desc') list = list.sort((a, b) => b.priceStx - a.priceStx);
+    if (tab === 'trending') list = list.sort((a, b) => b.price - a.price);
+    if (sortBy === 'price-asc') list = list.sort((a, b) => a.price - b.price);
+    if (sortBy === 'price-desc') list = list.sort((a, b) => b.price - a.price);
     return list;
   }, [query, tab, sortBy]);
 
@@ -251,13 +259,13 @@ export default function MarketplacePage() {
       {view === 'grid' ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filtered.map((listing) => (
-            <NFTCard key={listing.id} listing={listing} />
+            <NFTCard key={listing.nftId} listing={listing} />
           ))}
         </div>
       ) : (
         <div className="flex flex-col gap-2">
           {filtered.map((listing) => (
-            <NFTRow key={listing.id} listing={listing} />
+            <NFTRow key={listing.nftId} listing={listing} />
           ))}
         </div>
       )}

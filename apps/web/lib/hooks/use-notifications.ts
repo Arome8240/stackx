@@ -22,7 +22,7 @@ export function useMarkAllRead() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: async (address: string) => {
+    mutationFn: async (_address: string) => {
       await new Promise(r => setTimeout(r, 200));
     },
     onSuccess: (_, address) => {

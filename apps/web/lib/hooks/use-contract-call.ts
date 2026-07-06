@@ -1,8 +1,60 @@
 'use client';
 
 import { useState } from 'react';
-import { useStacksSDK } from './use-stacks-sdk';
-import { verifyHospital, updateHospitalStatus, revokeHospital } from '../sdk/contract-calls';
+import { useStacksSDK, type StaxialConfig } from './use-stacks-sdk';
+import { openContractCall } from '@stacks/connect';
+import { uintCV, stringAsciiCV, type ClarityValue } from '@stacks/transactions';
+import type { FinishedTxData, Canceled } from '@stacks/connect';
+
+/**
+ * `staxial-sdk` (linked locally via `apps/web/package.json`) only exposes
+ * read-only helpers (`getHospital`, `isHospitalVerified`, etc.) — it has no
+ * write/transaction functions. The hospital-admin write calls below
+ * (`verify-hospital`, `update-hospital-status`, `revoke-hospital`) have no
+ * equivalent there, so they're implemented locally as thin wrappers around
+ * `@stacks/connect`'s `openContractCall` + `@stacks/transactions` Clarity
+ * value builders. These are typed stubs pending real contract ABI wiring.
+ */
+type TxCallback = { onFinish?: (data: FinishedTxData) => void; onCancel?: Canceled };
+
+function callHospitalContract(
+  config: StaxialConfig,
+  functionName: string,
+  functionArgs: ClarityValue[],
+  cb?: TxCallback,
+) {
+  return openContractCall({
+    network: config.network,
+    contractAddress: config.contractAddress,
+    contractName: config.contractName,
+    functionName,
+    functionArgs,
+    onFinish: cb?.onFinish,
+    onCancel: cb?.onCancel,
+  });
+}
+
+function verifyHospital(config: StaxialConfig, hospitalId: number, cb?: TxCallback) {
+  return callHospitalContract(config, 'verify-hospital', [uintCV(hospitalId)], cb);
+}
+
+function updateHospitalStatus(
+  config: StaxialConfig,
+  hospitalId: number,
+  status: 'active' | 'suspended',
+  cb?: TxCallback,
+) {
+  return callHospitalContract(
+    config,
+    'update-hospital-status',
+    [uintCV(hospitalId), stringAsciiCV(status)],
+    cb,
+  );
+}
+
+function revokeHospital(config: StaxialConfig, hospitalId: number, cb?: TxCallback) {
+  return callHospitalContract(config, 'revoke-hospital', [uintCV(hospitalId)], cb);
+}
 
 export function useContractCall() {
   const config = useStacksSDK();
