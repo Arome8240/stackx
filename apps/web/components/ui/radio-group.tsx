@@ -70,10 +70,10 @@ function RadioItem({ value, label, description, disabled, name, checked, onChang
         <div
           className={cn(
             'w-4 h-4 rounded-full border-2 transition-colors flex items-center justify-center',
-            checked ? 'border-violet-500' : 'border-border',
+            checked ? 'border-primary' : 'border-border',
           )}
         >
-          {checked && <div className="w-1.5 h-1.5 rounded-full bg-violet-500" />}
+          {checked && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
         </div>
       </div>
       <div className="flex flex-col">

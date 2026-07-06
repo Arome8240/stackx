@@ -46,7 +46,7 @@ export function Avatar({ src, alt = '', size = 'md', className, online, verified
       ) : (
         <span className={cn(
           'w-full h-full rounded-full flex items-center justify-center font-semibold',
-          'bg-gradient-to-br from-violet-500 to-fuchsia-600 text-white ring-1 ring-border',
+          'bg-primary text-white ring-1 ring-border',
         )}>
           {initials || '?'}
         </span>

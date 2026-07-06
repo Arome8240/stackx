@@ -80,7 +80,7 @@ function ReplyCard({ cast }: { cast: Cast }) {
           </div>
           <p className="text-sm text-foreground/90 leading-relaxed">{cast.content}</p>
           <div className="flex gap-4 mt-2">
-            <button className="text-xs text-muted-foreground hover:text-violet-400 transition-colors">
+            <button className="text-xs text-muted-foreground hover:text-primary transition-colors">
               {formatNumber(cast.likesCount)} likes
             </button>
             <button className="text-xs text-muted-foreground hover:text-green-400 transition-colors">
@@ -189,7 +189,7 @@ export default function CastDetailPage() {
           </div>
           {cast.nftId && (
             <div className="text-sm">
-              <span className="font-bold text-violet-400">NFT #{cast.nftId}</span>
+              <span className="font-bold text-nft">NFT #{cast.nftId}</span>
             </div>
           )}
         </div>
@@ -214,8 +214,8 @@ export default function CastDetailPage() {
             </span>
             <span className="text-sm">{formatNumber(cast.likesCount)}</span>
           </button>
-          <button className="flex items-center gap-2 text-muted-foreground hover:text-violet-400 transition-colors group p-2">
-            <span className="p-2 rounded-full group-hover:bg-violet-400/10 transition-colors">
+          <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group p-2">
+            <span className="p-2 rounded-full group-hover:bg-primary/10 transition-colors">
               ⚡
             </span>
             <span className="text-sm">{cast.tipsCount}</span>

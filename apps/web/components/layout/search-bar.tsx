@@ -33,7 +33,7 @@ export function SearchBar({ placeholder = 'Search StackX…', className, autoFoc
 
   return (
     <form onSubmit={handleSubmit} className={cn('relative', className)}>
-      <Search className={cn('absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors pointer-events-none', focused ? 'text-violet-400' : 'text-muted-foreground')} />
+      <Search className={cn('absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors pointer-events-none', focused ? 'text-primary' : 'text-muted-foreground')} />
       <input
         ref={inputRef}
         value={query}
@@ -44,7 +44,7 @@ export function SearchBar({ placeholder = 'Search StackX…', className, autoFoc
         autoFocus={autoFocus}
         className={cn(
           'w-full pl-9 pr-8 py-2 rounded-xl text-sm text-foreground placeholder:text-muted-foreground bg-white/[0.04] border transition-colors outline-none',
-          focused ? 'border-violet-500/60 bg-white/[0.06]' : 'border-border/40 hover:border-border/60',
+          focused ? 'border-ring bg-white/[0.06]' : 'border-border/40 hover:border-border/60',
         )}
       />
       {query && (

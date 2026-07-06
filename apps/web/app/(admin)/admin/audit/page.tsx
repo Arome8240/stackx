@@ -109,7 +109,7 @@ export default function AuditPage() {
         </div>
         <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
           <h3 className="text-sm font-medium text-gray-400">Critical Events</h3>
-          <p className="text-3xl font-bold mt-2 text-purple-400">{stats.criticalEvents}</p>
+          <p className="text-3xl font-bold mt-2 text-accent-foreground">{stats.criticalEvents}</p>
           <p className="text-sm text-gray-500 mt-1">Requires attention</p>
         </div>
         <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
@@ -146,10 +146,10 @@ export default function AuditPage() {
             </div>
             <span className="text-3xl">❌</span>
           </div>
-          <div className="flex items-center justify-between p-4 bg-purple-900/20 rounded-lg border border-purple-600">
+          <div className="flex items-center justify-between p-4 bg-accent/20 rounded-lg border border-accent">
             <div>
               <p className="text-sm text-gray-400">Critical</p>
-              <p className="text-2xl font-bold text-purple-400">
+              <p className="text-2xl font-bold text-accent-foreground">
                 {stats.bySeverity.critical || 0}
               </p>
             </div>

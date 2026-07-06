@@ -12,7 +12,7 @@ const variantMap: Record<NonNullable<BadgeProps['variant']>, string> = {
   success:   'bg-green-500/15 text-green-500',
   warning:   'bg-yellow-500/15 text-yellow-400',
   error:     'bg-destructive/15 text-destructive',
-  nft:       'bg-fuchsia-500/15 text-fuchsia-400',
+  nft:       'bg-nft/15 text-nft',
   tip:       'bg-yellow-500/15 text-yellow-400',
   outline:   'border border-border text-foreground',
 };

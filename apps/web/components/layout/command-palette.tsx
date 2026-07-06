@@ -115,7 +115,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                     onClick={() => execute(item)}
                     className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.06] transition-colors group"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-muted-foreground group-hover:text-violet-400 transition-colors shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-muted-foreground group-hover:text-primary transition-colors shrink-0">
                       <item.icon className="w-4 h-4" />
                     </div>
                     <div className="flex-1 text-left">

@@ -45,8 +45,8 @@ export function TipModal({ cast, open, onClose }: TipModalProps) {
     <Modal open={open} onClose={onClose} title="Tip Creator" size="sm">
       <div className="space-y-4">
         <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-border/40">
-          <div className="w-10 h-10 rounded-full bg-violet-500/20 flex items-center justify-center">
-            <Zap className="w-5 h-5 text-violet-400" />
+          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+            <Zap className="w-5 h-5 text-primary" />
           </div>
           <div>
             <p className="text-sm font-medium text-foreground">{cast.author.displayName}</p>
@@ -64,8 +64,8 @@ export function TipModal({ cast, open, onClose }: TipModalProps) {
                 className={cn(
                   'py-2 rounded-lg text-sm font-medium border transition-colors',
                   amount === String(a)
-                    ? 'border-violet-500 bg-violet-500/20 text-violet-300'
-                    : 'border-border/50 hover:border-violet-500/40 text-muted-foreground',
+                    ? 'border-primary bg-primary/15 text-primary'
+                    : 'border-border/50 hover:border-primary/40 text-muted-foreground',
                 )}
               >
                 {a} STX

@@ -82,7 +82,7 @@ function UserList({ username, type }: { username: string; type: 'followers' | 'f
             <Avatar size="md" src={user.avatarUrl} fallback={user.displayName ?? user.username} verified={user.tier === 2} />
           </Link>
           <div className="flex-1 min-w-0">
-            <Link href={`/profile/${user.username}`} className="font-medium text-sm text-foreground hover:text-violet-400 transition-colors block truncate">
+            <Link href={`/profile/${user.username}`} className="font-medium text-sm text-foreground hover:text-primary transition-colors block truncate">
               {user.displayName ?? user.username}
             </Link>
             <p className="text-xs text-muted-foreground">@{user.username} · {formatNumber(user.followersCount ?? 0)} followers</p>

@@ -39,9 +39,9 @@ export function TagInput({ value, onChange, placeholder = 'Add tag…', maxTags 
   return (
     <div className={className}>
       {label && <label className="block text-xs text-muted-foreground mb-1.5">{label}</label>}
-      <div className={cn('flex flex-wrap gap-1.5 p-2 rounded-lg border border-border/60 bg-white/[0.03] min-h-[42px] focus-within:border-violet-500/60 transition-colors')}>
+      <div className={cn('flex flex-wrap gap-1.5 p-2 rounded-lg border border-border/60 bg-white/[0.03] min-h-[42px] focus-within:border-ring transition-colors')}>
         {value.map((tag) => (
-          <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-400 text-xs font-medium border border-violet-500/20">
+          <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 text-primary text-xs font-medium border border-primary/20">
             #{tag}
             <button onClick={() => removeTag(tag)} className="hover:text-white transition-colors">
               <X className="w-2.5 h-2.5" />

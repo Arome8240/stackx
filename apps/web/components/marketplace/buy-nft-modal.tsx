@@ -44,9 +44,9 @@ export function BuyNftModal({ tokenId, priceStx, creatorUsername, edition, maxEd
   return (
     <Modal open={open} onClose={onClose} title="Purchase NFT" size="sm">
       <div className="space-y-4">
-        <div className="text-center p-4 rounded-xl bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20">
-          <Gem className="w-10 h-10 text-violet-400 mx-auto mb-2" />
-          <p className="font-bold gradient-text text-xl">{formatNumber(priceStx)} STX</p>
+        <div className="text-center p-4 rounded-xl bg-nft/10 border border-nft/20">
+          <Gem className="w-10 h-10 text-nft mx-auto mb-2" />
+          <p className="font-bold text-nft text-xl">{formatNumber(priceStx)} STX</p>
           <p className="text-xs text-muted-foreground">Cast NFT #{tokenId}</p>
           {edition && maxEdition && (
             <p className="text-xs text-muted-foreground">Edition {edition}/{maxEdition}</p>
@@ -71,7 +71,7 @@ export function BuyNftModal({ tokenId, priceStx, creatorUsername, edition, maxEd
           ))}
           <div className="border-t border-border/40 mt-2 pt-2 flex justify-between text-sm font-bold">
             <span>You pay</span>
-            <span className="gradient-text">{formatSTX(priceStx)}</span>
+            <span className="text-nft">{formatSTX(priceStx)}</span>
           </div>
         </div>
 

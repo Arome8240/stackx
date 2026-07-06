@@ -263,7 +263,7 @@ export function CastCard({ cast, variant = 'feed', showThread, onReply }: CastCa
                 icon={<Gem className="w-4 h-4" />}
                 label="Mint NFT"
                 onClick={() => setNftOpen(true)}
-                hoverClass="hover:text-fuchsia-500 hover:bg-fuchsia-500/10"
+                hoverClass="hover:text-nft hover:bg-nft/10"
               />
 
               {/* Analytics (detail only) */}
@@ -343,7 +343,7 @@ export function CastCard({ cast, variant = 'feed', showThread, onReply }: CastCa
       <Modal open={nftOpen} onClose={() => setNftOpen(false)} size="sm">
         <ModalHeader title="Mint Cast as NFT" onClose={() => setNftOpen(false)} />
         <ModalBody className="space-y-4">
-          <div className="rounded-xl bg-gradient-to-br from-fuchsia-500/10 to-violet-500/10 border border-fuchsia-500/20 p-4">
+          <div className="rounded-xl bg-nft/10 border border-nft/20 p-4">
             <p className="text-sm font-medium">"{cast.content.slice(0, 80)}{cast.content.length > 80 ? '…' : ''}"</p>
             <p className="text-xs text-muted-foreground mt-2">— @{cast.author.username}</p>
           </div>
@@ -375,7 +375,7 @@ export function CastCard({ cast, variant = 'feed', showThread, onReply }: CastCa
         <ModalFooter>
           <Button variant="ghost" onClick={() => setNftOpen(false)}>Cancel</Button>
           <Button
-            className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 border-0"
+            className="bg-nft hover:bg-nft/90 border-0"
             icon={<Gem className="w-4 h-4" />}
             onClick={() => { toast({ type: 'success', title: 'NFT minted!', description: 'Your cast is now a collectible.' }); setNftOpen(false); }}
           >

@@ -22,11 +22,11 @@ export function ChannelCard({ channel, isMember, onJoin, joining, className }: C
     <div className={cn('glass rounded-2xl p-4 space-y-3', className)}>
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center font-bold text-white text-lg">
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center font-bold text-white text-lg">
             {channel.name[0].toUpperCase()}
           </div>
           <div>
-            <Link href={`/channels/${channel.name}`} className="font-semibold text-foreground hover:text-violet-400 transition-colors flex items-center gap-1.5">
+            <Link href={`/channels/${channel.name}`} className="font-semibold text-foreground hover:text-primary transition-colors flex items-center gap-1.5">
               /{channel.name}
               {channel.isPaid && <Lock className="w-3.5 h-3.5 text-amber-400" />}
             </Link>

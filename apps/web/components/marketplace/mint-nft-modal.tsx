@@ -37,9 +37,9 @@ export function MintNftModal({ cast, open, onClose }: MintNftModalProps) {
   return (
     <Modal open={open} onClose={onClose} title="Mint Cast as NFT" size="sm">
       <div className="space-y-4">
-        <div className="p-3 rounded-xl bg-violet-500/10 border border-violet-500/20">
-          <p className="text-sm text-violet-300 font-medium line-clamp-2">{cast.content}</p>
-          <p className="text-xs text-violet-400/60 mt-1">Cast #{cast._id.slice(-8)}</p>
+        <div className="p-3 rounded-xl bg-nft/10 border border-nft/20">
+          <p className="text-sm text-nft font-medium line-clamp-2">{cast.content}</p>
+          <p className="text-xs text-nft/60 mt-1">Cast #{cast._id.slice(-8)}</p>
         </div>
 
         <NumberInput
@@ -62,7 +62,7 @@ export function MintNftModal({ cast, open, onClose }: MintNftModalProps) {
         />
 
         <div className="flex items-start gap-2 text-xs text-muted-foreground p-3 rounded-lg bg-white/[0.02]">
-          <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-violet-400" />
+          <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-nft" />
           <span>Minting creates a SIP-009 NFT on the Stacks blockchain. You earn {royaltyPct}% royalty on each secondary sale. Platform takes 2.5% on sales.</span>
         </div>
 

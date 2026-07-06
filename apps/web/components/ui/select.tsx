@@ -41,8 +41,8 @@ export function Select({ options, value, onChange, placeholder = 'Select…', di
         className={cn(
           'w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg border text-sm transition-colors',
           'bg-white/[0.03] text-foreground',
-          error ? 'border-red-500/60' : 'border-border/60 focus:border-violet-500/60',
-          disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-violet-500/40',
+          error ? 'border-red-500/60' : 'border-border/60 focus:border-ring',
+          disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-ring/60',
         )}
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -71,7 +71,7 @@ export function Select({ options, value, onChange, placeholder = 'Select…', di
                 }}
                 className={cn(
                   'flex items-center justify-between px-3 py-2 text-sm cursor-pointer transition-colors',
-                  option.value === value ? 'text-violet-400 bg-violet-500/10' : 'text-foreground hover:bg-white/5',
+                  option.value === value ? 'text-primary bg-primary/10' : 'text-foreground hover:bg-white/5',
                   option.disabled && 'opacity-40 cursor-not-allowed',
                 )}
               >

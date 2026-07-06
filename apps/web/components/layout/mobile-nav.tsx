@@ -42,7 +42,7 @@ export function MobileNav() {
         {/* Center cast FAB */}
         <Link
           href="/compose"
-          className="flex-shrink-0 mx-2 w-12 h-12 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-glow transition-transform duration-150 active:scale-95"
+          className="flex-shrink-0 mx-2 w-12 h-12 rounded-full bg-primary flex items-center justify-center transition-transform duration-150 active:scale-95"
           aria-label="Compose cast"
         >
           <PenSquare className="w-5 h-5 text-white" />

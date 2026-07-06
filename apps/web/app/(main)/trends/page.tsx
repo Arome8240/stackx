@@ -56,8 +56,8 @@ export default function TrendsPage() {
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold gradient-text flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-violet-400" />
+        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+          <TrendingUp className="w-6 h-6 text-primary" />
           Trending
         </h1>
         <div className="flex gap-1 p-1 glass rounded-lg">
@@ -67,7 +67,7 @@ export default function TrendsPage() {
               onClick={() => setPeriod(p)}
               className={cn(
                 'px-3 py-1 rounded text-xs font-medium transition-colors',
-                period === p ? 'bg-violet-500/20 text-violet-300' : 'text-muted-foreground hover:text-foreground',
+                period === p ? 'bg-primary/15 text-primary' : 'text-muted-foreground hover:text-foreground',
               )}
             >
               {p}
@@ -79,7 +79,7 @@ export default function TrendsPage() {
       {/* Trending hashtags */}
       <div className="glass rounded-2xl p-5">
         <h2 className="font-semibold text-foreground flex items-center gap-2 mb-4">
-          <Hash className="w-4 h-4 text-violet-400" />
+          <Hash className="w-4 h-4 text-primary" />
           Trending Topics
         </h2>
         <div className="space-y-3">
@@ -92,7 +92,7 @@ export default function TrendsPage() {
                 <div className="flex items-center gap-2 mb-1">
                   <Link
                     href={`/search?q=${encodeURIComponent(tag)}`}
-                    className="font-medium text-foreground hover:text-violet-400 transition-colors"
+                    className="font-medium text-foreground hover:text-primary transition-colors"
                   >
                     {tag}
                   </Link>
@@ -106,7 +106,7 @@ export default function TrendsPage() {
                   value={posts}
                   max={maxPosts}
                   size="sm"
-                  color={trending ? 'violet' : 'blue'}
+                  color={trending ? 'primary' : 'blue'}
                   className="w-full"
                 />
               </div>
@@ -125,7 +125,7 @@ export default function TrendsPage() {
       {/* Top earners */}
       <div className="glass rounded-2xl p-5">
         <h2 className="font-semibold text-foreground flex items-center gap-2 mb-4">
-          <Zap className="w-4 h-4 text-violet-400" />
+          <Zap className="w-4 h-4 text-primary" />
           Top STX Earners
         </h2>
         <div className="space-y-3">
@@ -138,7 +138,7 @@ export default function TrendsPage() {
                 <Avatar size="sm" src="" fallback={displayName} verified={tier === 2} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <Link href={`/profile/${username}`} className="font-medium text-sm text-foreground hover:text-violet-400 transition-colors">
+                    <Link href={`/profile/${username}`} className="font-medium text-sm text-foreground hover:text-primary transition-colors">
                       {displayName}
                     </Link>
                     {tier === 2 && <Badge variant="nft" className="text-xs px-1.5">Pro</Badge>}
@@ -146,7 +146,7 @@ export default function TrendsPage() {
                   <div className="text-xs text-muted-foreground">{castsCount} casts</div>
                 </div>
                 <div className="text-right">
-                  <div className="font-bold text-sm gradient-text">{formatNumber(stxEarned)} STX</div>
+                  <div className="font-bold text-sm text-primary">{formatNumber(stxEarned)} STX</div>
                   <div className="text-xs text-muted-foreground">earned</div>
                 </div>
               </div>
@@ -158,7 +158,7 @@ export default function TrendsPage() {
       {/* Rising creators */}
       <div className="glass rounded-2xl p-5">
         <h2 className="font-semibold text-foreground flex items-center gap-2 mb-4">
-          <Users className="w-4 h-4 text-violet-400" />
+          <Users className="w-4 h-4 text-primary" />
           Rising Creators
           <span className="text-xs text-muted-foreground font-normal ml-1">fastest growing</span>
         </h2>
@@ -167,7 +167,7 @@ export default function TrendsPage() {
             <div key={username} className="flex items-center gap-3 hover:bg-white/[0.03] rounded-xl p-2 transition-colors">
               <Avatar size="sm" src="" fallback={displayName} />
               <div className="flex-1 min-w-0">
-                <Link href={`/profile/${username}`} className="font-medium text-sm text-foreground hover:text-violet-400 transition-colors block">
+                <Link href={`/profile/${username}`} className="font-medium text-sm text-foreground hover:text-primary transition-colors block">
                   {displayName}
                 </Link>
                 <div className="text-xs text-muted-foreground">{formatNumber(followers)} followers</div>
@@ -184,7 +184,7 @@ export default function TrendsPage() {
       {/* Global activity */}
       <div className="glass rounded-2xl p-5">
         <h2 className="font-semibold text-foreground flex items-center gap-2 mb-4">
-          <Globe className="w-4 h-4 text-violet-400" />
+          <Globe className="w-4 h-4 text-primary" />
           Platform Activity
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -195,7 +195,7 @@ export default function TrendsPage() {
             { label: 'NFTs minted', value: '184', icon: Award, change: '+36%' },
           ].map(({ label, value, icon: Icon, change }) => (
             <div key={label} className="text-center p-3 rounded-xl bg-white/[0.02]">
-              <Icon className="w-4 h-4 text-violet-400 mx-auto mb-2" />
+              <Icon className="w-4 h-4 text-primary mx-auto mb-2" />
               <div className="font-bold text-foreground">{value}</div>
               <div className="text-xs text-muted-foreground">{label}</div>
               <div className="text-xs text-green-400 mt-0.5">{change}</div>

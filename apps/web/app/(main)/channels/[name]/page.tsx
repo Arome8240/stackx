@@ -42,7 +42,7 @@ export default function ChannelPage() {
     <div className="max-w-2xl mx-auto">
       <div className="sticky top-0 z-10 backdrop-blur-xl bg-background/80 border-b border-border/40 px-4 py-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center font-bold text-white text-lg">
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center font-bold text-white text-lg">
             {channel.name[0].toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">

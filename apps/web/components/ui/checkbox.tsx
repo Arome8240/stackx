@@ -28,10 +28,10 @@ export function Checkbox({ checked, onChange, disabled, label, description, clas
         className={cn(
           'mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors',
           checked && checked !== 'indeterminate'
-            ? 'bg-violet-600 border-violet-600'
+            ? 'bg-primary border-primary'
             : checked === 'indeterminate'
-              ? 'bg-violet-600/50 border-violet-600'
-              : 'border-border bg-transparent hover:border-violet-500',
+              ? 'bg-primary/50 border-primary'
+              : 'border-border bg-transparent hover:border-primary',
           disabled && 'opacity-50 cursor-not-allowed',
           !disabled && 'cursor-pointer',
         )}

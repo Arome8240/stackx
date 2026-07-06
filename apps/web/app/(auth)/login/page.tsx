@@ -38,10 +38,10 @@ export default function LoginPage() {
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 max-w-md mx-auto w-full">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 mb-10">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-glow">
+          <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center">
             <Zap className="w-5 h-5 text-white fill-white" />
           </div>
-          <span className="text-2xl font-bold gradient-text">StackX</span>
+          <span className="text-2xl font-bold text-primary">StackX</span>
         </Link>
 
         <div className="w-full space-y-6">
@@ -130,7 +130,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right: visual panel (hidden on mobile) */}
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-violet-950 via-purple-950 to-fuchsia-950 items-center justify-center p-12">
+      <div className="hidden lg:flex flex-1 bg-muted items-center justify-center p-12">
         <div className="max-w-sm space-y-8 text-center">
           <div className="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur flex items-center justify-center mx-auto">
             <Zap className="w-10 h-10 text-white fill-white" />

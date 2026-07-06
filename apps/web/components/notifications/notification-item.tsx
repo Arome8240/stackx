@@ -11,7 +11,7 @@ const ICONS = {
   like: { icon: Heart, color: 'text-red-400', bg: 'bg-red-500/10' },
   recast: { icon: Repeat2, color: 'text-green-400', bg: 'bg-green-500/10' },
   reply: { icon: MessageCircle, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-  follow: { icon: UserPlus, color: 'text-violet-400', bg: 'bg-violet-500/10' },
+  follow: { icon: UserPlus, color: 'text-primary', bg: 'bg-primary/10' },
   tip: { icon: Zap, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
   mention: { icon: AtSign, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
   system: { icon: Bell, color: 'text-muted-foreground', bg: 'bg-white/5' },
@@ -42,7 +42,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
       href={href}
       className={cn(
         'flex items-start gap-3 px-4 py-3 hover:bg-white/[0.03] transition-colors',
-        !notification.read && 'bg-violet-500/[0.04]',
+        !notification.read && 'bg-primary/[0.04]',
       )}
     >
       <div className="relative shrink-0">
@@ -71,7 +71,7 @@ export function NotificationItem({ notification }: NotificationItemProps) {
       </div>
 
       {!notification.read && (
-        <div className="w-2 h-2 rounded-full bg-violet-500 shrink-0 mt-1.5" />
+        <div className="w-2 h-2 rounded-full bg-primary shrink-0 mt-1.5" />
       )}
     </Link>
   );

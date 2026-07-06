@@ -68,7 +68,7 @@ export default function ProfilePage({ params }: { params: Promise<{ username: st
       </header>
 
       {/* Banner */}
-      <div className="relative h-36 bg-gradient-to-br from-violet-900/60 via-fuchsia-900/40 to-purple-900/60">
+      <div className="relative h-36 bg-muted">
         {user.banner && <img src={user.banner} alt="" className="w-full h-full object-cover" />}
       </div>
 
@@ -114,7 +114,7 @@ export default function ProfilePage({ params }: { params: Promise<{ username: st
             { label: 'Following',   value: formatNumber(user.followingCount) },
             { label: 'Followers',   value: formatNumber(user.followersCount) },
             { label: 'Tips rcvd',   value: formatSTX(user.tipsReceived),   icon: <Coins className="w-3.5 h-3.5 text-yellow-500" /> },
-            { label: 'NFTs minted', value: String(user.nftsMinted),        icon: <Gem   className="w-3.5 h-3.5 text-fuchsia-400" /> },
+            { label: 'NFTs minted', value: String(user.nftsMinted),        icon: <Gem   className="w-3.5 h-3.5 text-nft" /> },
           ].map(({ label, value, icon }) => (
             <div key={label} className="flex items-center gap-1">
               {icon}
@@ -155,9 +155,9 @@ function NftGrid() {
   return (
     <div className="grid grid-cols-2 gap-3 p-4">
       {nfts.map(nft => (
-        <div key={nft.id} className="rounded-xl border border-border bg-card overflow-hidden hover:border-fuchsia-500/40 transition-colors">
-          <div className="aspect-square bg-gradient-to-br from-violet-600/20 to-fuchsia-600/20 flex items-center justify-center">
-            <Gem className="w-12 h-12 text-fuchsia-400 opacity-60" />
+        <div key={nft.id} className="rounded-xl border border-border bg-card overflow-hidden hover:border-nft/40 transition-colors">
+          <div className="aspect-square bg-nft/10 flex items-center justify-center">
+            <Gem className="w-12 h-12 text-nft opacity-60" />
           </div>
           <div className="p-3 space-y-1">
             <p className="text-sm font-semibold">{nft.name}</p>

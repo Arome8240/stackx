@@ -87,7 +87,7 @@ const PROPOSALS: Proposal[] = [
 ];
 
 const statusConfig: Record<ProposalStatus, { label: string; color: string; icon: React.ElementType }> = {
-  active: { label: 'Active', color: 'text-violet-400 bg-violet-500/10', icon: Clock },
+  active: { label: 'Active', color: 'text-primary bg-primary/10', icon: Clock },
   passed: { label: 'Passed', color: 'text-green-400 bg-green-500/10', icon: CheckCircle2 },
   rejected: { label: 'Rejected', color: 'text-red-400 bg-red-500/10', icon: XCircle },
   pending: { label: 'Pending', color: 'text-yellow-400 bg-yellow-500/10', icon: Clock },
@@ -127,7 +127,7 @@ function ProposalCard({ proposal }: { proposal: Proposal }) {
         </span>
         <span>by @{proposal.proposer}</span>
         {proposal.status === 'active' && (
-          <span className="flex items-center gap-1 text-violet-400">
+          <span className="flex items-center gap-1 text-primary">
             <Clock className="w-3 h-3" />
             {daysLeft}d left
           </span>
@@ -214,8 +214,8 @@ export default function GovernancePage() {
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-bold gradient-text flex items-center gap-2">
-            <Vote className="w-6 h-6 text-violet-400" />
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Vote className="w-6 h-6 text-primary" />
             Governance
           </h1>
           <button className="flex items-center gap-1.5 btn-primary px-4 py-2 text-sm rounded-xl">
@@ -230,7 +230,7 @@ export default function GovernancePage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {stats.map(({ label, value, icon: Icon }) => (
           <div key={label} className="glass rounded-xl p-3 text-center">
-            <Icon className="w-4 h-4 text-violet-400 mx-auto mb-1" />
+            <Icon className="w-4 h-4 text-primary mx-auto mb-1" />
             <div className="font-bold text-foreground">{value}</div>
             <div className="text-xs text-muted-foreground">{label}</div>
           </div>
@@ -245,7 +245,7 @@ export default function GovernancePage() {
             onClick={() => setFilter(f)}
             className={cn(
               'px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize',
-              filter === f ? 'bg-violet-500/20 text-violet-300' : 'text-muted-foreground hover:text-foreground',
+              filter === f ? 'bg-primary/15 text-primary' : 'text-muted-foreground hover:text-foreground',
             )}
           >
             {f}

@@ -61,7 +61,7 @@ export default function WalletPage() {
       </header>
 
       {/* Balance hero */}
-      <div className="bg-gradient-to-br from-violet-950/60 via-purple-950/40 to-fuchsia-950/60 border-b border-border p-6">
+      <div className="bg-muted border-b border-border p-6">
         <div className="flex items-start justify-between mb-6">
           <div>
             <p className="text-sm text-muted-foreground mb-1">Total Balance</p>
@@ -105,7 +105,7 @@ export default function WalletPage() {
         {[
           { label: 'Tips Received', value: formatSTX(TIPS_RECEIVED), icon: <ArrowDownLeft className="w-3.5 h-3.5 text-green-500" /> },
           { label: 'Tips Sent',     value: formatSTX(TIPS_SENT),     icon: <ArrowUpRight  className="w-3.5 h-3.5 text-red-500" /> },
-          { label: 'NFTs Held',     value: formatNumber(NFT_HOLDINGS.length), icon: <Gem className="w-3.5 h-3.5 text-fuchsia-400" /> },
+          { label: 'NFTs Held',     value: formatNumber(NFT_HOLDINGS.length), icon: <Gem className="w-3.5 h-3.5 text-nft" /> },
         ].map(({ label, value, icon }) => (
           <div key={label} className="flex flex-col items-center gap-1 py-4 px-2">
             <div className="flex items-center gap-1">{icon}<span className="text-base font-bold">{value}</span></div>
@@ -144,9 +144,9 @@ export default function WalletPage() {
             ) : (
               <div className="grid grid-cols-2 gap-3 p-4">
                 {NFT_HOLDINGS.map(nft => (
-                  <div key={nft.id} className="rounded-xl border border-border bg-card overflow-hidden hover:border-fuchsia-500/30 transition-colors">
-                    <div className="aspect-square bg-gradient-to-br from-violet-600/20 to-fuchsia-600/20 flex items-center justify-center">
-                      <Gem className="w-12 h-12 text-fuchsia-400 opacity-60" />
+                  <div key={nft.id} className="rounded-xl border border-border bg-card overflow-hidden hover:border-nft/30 transition-colors">
+                    <div className="aspect-square bg-nft/10 flex items-center justify-center">
+                      <Gem className="w-12 h-12 text-nft opacity-60" />
                     </div>
                     <div className="p-3 space-y-1">
                       <p className="text-xs font-semibold line-clamp-1">{nft.name}</p>

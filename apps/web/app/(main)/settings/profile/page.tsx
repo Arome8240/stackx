@@ -63,14 +63,14 @@ export default function SettingsProfilePage() {
               fallback={user?.displayName ?? user?.username ?? '?'}
               verified={user?.tier === 2}
             />
-            <button className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center border-2 border-background hover:bg-violet-500 transition-colors">
+            <button className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-primary flex items-center justify-center border-2 border-background hover:bg-primary/90 transition-colors">
               <Camera className="w-4 h-4 text-white" />
             </button>
           </div>
           <div>
             <p className="font-medium text-foreground">{user?.displayName ?? user?.username}</p>
             <p className="text-sm text-muted-foreground">@{user?.username}</p>
-            <p className="text-xs text-violet-400 mt-1">Click the camera to change photo</p>
+            <p className="text-xs text-primary mt-1">Click the camera to change photo</p>
           </div>
         </div>
 

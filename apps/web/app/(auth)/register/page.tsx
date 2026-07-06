@@ -40,10 +40,10 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-12">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2.5 mb-8">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-glow-sm">
+        <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
           <Zap className="w-4 h-4 text-white fill-white" />
         </div>
-        <span className="text-xl font-bold gradient-text">StackX</span>
+        <span className="text-xl font-bold text-primary">StackX</span>
       </Link>
 
       {/* Progress */}
@@ -84,7 +84,7 @@ export default function RegisterPage() {
                     form.walletConnected ? 'border-primary bg-primary/5' : 'border-border hover:bg-accent',
                   )}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                     🦊
                   </div>
                   <div>

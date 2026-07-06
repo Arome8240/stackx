@@ -40,13 +40,13 @@ export default function SecuritySettingsPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
       <h1 className="text-xl font-bold text-foreground flex items-center gap-2">
-        <Shield className="w-5 h-5 text-violet-400" />
+        <Shield className="w-5 h-5 text-primary" />
         Security Settings
       </h1>
 
       <div className="glass rounded-2xl p-5 space-y-4">
         <h2 className="font-semibold text-foreground flex items-center gap-2">
-          <Key className="w-4 h-4 text-violet-400" />
+          <Key className="w-4 h-4 text-primary" />
           Change Password
         </h2>
         <div className="grid gap-3">

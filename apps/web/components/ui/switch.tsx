@@ -37,7 +37,7 @@ export function Switch({ checked, onChange, disabled, label, description, size =
         className={cn(
           'relative inline-flex shrink-0 items-center rounded-full border-2 border-transparent transition-colors',
           s.track,
-          checked ? 'bg-violet-600' : 'bg-white/10',
+          checked ? 'bg-primary' : 'bg-white/10',
           disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
         )}
       >

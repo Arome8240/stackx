@@ -193,9 +193,9 @@ export function AuditLogFilters({ filter, onFilterChange, onClearFilters }: Audi
             </span>
           )}
           {filter.searchTerm && (
-            <span className="px-3 py-1 bg-purple-900/50 text-purple-400 rounded-full text-sm flex items-center gap-2">
+            <span className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-sm flex items-center gap-2">
               Search: {filter.searchTerm}
-              <button onClick={() => handleSearchChange('')} className="hover:text-purple-300">
+              <button onClick={() => handleSearchChange('')} className="hover:text-accent-foreground">
                 ✕
               </button>
             </span>

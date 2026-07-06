@@ -50,13 +50,13 @@ export function AppointmentVolumeChart({ data }: AppointmentVolumeChartProps) {
           />
           <Bar 
             dataKey="completed" 
-            fill="#10B981" 
+            fill="#04704b"
             name="Completed"
             radius={[4, 4, 0, 0]}
           />
-          <Bar 
-            dataKey="confirmed" 
-            fill="#3B82F6" 
+          <Bar
+            dataKey="confirmed"
+            fill="#1865ff"
             name="Confirmed"
             radius={[4, 4, 0, 0]}
           />

@@ -31,7 +31,7 @@ export function TokenTransactionHistory({ transactions, loading }: TokenTransact
       case 'burn':
         return 'bg-red-900/50 text-red-400';
       case 'stake':
-        return 'bg-purple-900/50 text-purple-400';
+        return 'bg-accent text-accent-foreground';
       case 'unstake':
         return 'bg-yellow-900/50 text-yellow-400';
       case 'transfer':

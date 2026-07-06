@@ -14,7 +14,7 @@ export default function WalletSettingsPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
       <h1 className="text-xl font-bold text-foreground flex items-center gap-2">
-        <Wallet className="w-5 h-5 text-violet-400" />
+        <Wallet className="w-5 h-5 text-primary" />
         Wallet Settings
       </h1>
 
@@ -23,8 +23,8 @@ export default function WalletSettingsPage() {
         {isConnected ? (
           <>
             <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-border/40">
-              <div className="w-10 h-10 rounded-full bg-violet-500/20 flex items-center justify-center">
-                <Key className="w-5 h-5 text-violet-400" />
+              <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center">
+                <Key className="w-5 h-5 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
@@ -41,7 +41,7 @@ export default function WalletSettingsPage() {
             <div className="grid grid-cols-2 gap-3">
               <div className="p-3 rounded-xl bg-white/[0.02] text-center">
                 <p className="text-xs text-muted-foreground">STX Balance</p>
-                <p className="font-bold text-sm gradient-text mt-1">{formatSTX(balance?.stx?.balance ?? 0)}</p>
+                <p className="font-bold text-sm text-primary mt-1">{formatSTX(balance?.stx?.balance ?? 0)}</p>
               </div>
               <div className="p-3 rounded-xl bg-white/[0.02] text-center">
                 <p className="text-xs text-muted-foreground">BTC Balance</p>
@@ -69,8 +69,8 @@ export default function WalletSettingsPage() {
           </>
         ) : (
           <div className="text-center py-8">
-            <div className="w-16 h-16 rounded-full bg-violet-500/10 flex items-center justify-center mx-auto mb-4">
-              <Wallet className="w-8 h-8 text-violet-400" />
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <Wallet className="w-8 h-8 text-primary" />
             </div>
             <p className="text-sm text-muted-foreground mb-4">Connect your Stacks wallet to tip creators, mint Cast NFTs, and participate in governance</p>
             <Button variant="primary" onClick={connect}>

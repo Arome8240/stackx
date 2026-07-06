@@ -58,7 +58,7 @@ export function TokenStatistics({ stats, loading }: TokenStatisticsProps) {
       <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
         <h3 className="text-sm font-medium text-gray-400">Total Staked</h3>
         <p className="text-2xl font-bold mt-2">{formatNumber(stats.totalStaked)}</p>
-        <p className="text-xs text-purple-400 mt-1">{stakingPercentage}% staked</p>
+        <p className="text-xs text-accent-foreground mt-1">{stakingPercentage}% staked</p>
       </div>
 
       <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">

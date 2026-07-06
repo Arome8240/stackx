@@ -230,11 +230,11 @@ function ChannelCard({ channel, onJoin }: { channel: Channel; onJoin: () => void
 
 function ChannelIcon({ name }: { name: string }) {
   const colors = [
-    'from-violet-500 to-purple-600',
+    'from-primary/80 to-primary',
     'from-blue-500 to-cyan-600',
     'from-green-500 to-emerald-600',
     'from-orange-500 to-red-600',
-    'from-fuchsia-500 to-pink-600',
+    'from-accent-foreground/80 to-accent-foreground',
   ];
   const color = colors[name.charCodeAt(0) % colors.length];
   return (

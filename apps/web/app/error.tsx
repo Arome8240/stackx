@@ -26,7 +26,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         )}
         <button
           onClick={reset}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium text-sm transition-colors mx-auto"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-medium text-sm transition-colors mx-auto"
         >
           <RefreshCw className="w-4 h-4" />
           Try again

@@ -63,9 +63,9 @@ function NFTCard({
   const rarityLabel = isOneOfOne ? '1/1' : `${listing.edition}/${listing.maxEdition}`;
 
   return (
-    <div className="glass rounded-2xl overflow-hidden group hover:-translate-y-1 transition-all duration-300 hover:shadow-glow-sm cursor-pointer">
+    <div className="glass rounded-2xl overflow-hidden group hover:-translate-y-1 transition-all duration-300 hover:shadow-card-lg cursor-pointer">
       {/* NFT preview */}
-      <div className="relative aspect-square bg-gradient-to-br from-violet-900/40 via-purple-900/30 to-fuchsia-900/40 overflow-hidden">
+      <div className="relative aspect-square bg-muted overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center p-4">
           <p className="text-center text-sm text-foreground/80 leading-relaxed font-medium line-clamp-4">
             {listing.castPreview}
@@ -96,12 +96,12 @@ function NFTCard({
             <Avatar size="xs" src={listing.seller.avatarUrl} fallback={listing.seller.username} />
             <span className="text-xs text-muted-foreground">@{listing.seller.username}</span>
           </div>
-          <Zap className="w-3.5 h-3.5 text-violet-400" />
+          <Zap className="w-3.5 h-3.5 text-primary" />
         </div>
         <div className="flex items-center justify-between">
           <div>
             <div className="text-xs text-muted-foreground">Price</div>
-            <div className="font-bold text-sm gradient-text">{listing.priceStx} STX</div>
+            <div className="font-bold text-sm text-primary">{listing.priceStx} STX</div>
           </div>
           <div className="text-right">
             <div className="text-xs text-muted-foreground">Cast NFT</div>
@@ -116,8 +116,8 @@ function NFTCard({
 function NFTRow({ listing }: { listing: (typeof MOCK_LISTINGS)[0] }) {
   return (
     <div className="glass rounded-xl px-4 py-3 flex items-center gap-4 hover:bg-white/[0.03] transition-colors cursor-pointer">
-      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-900/40 to-fuchsia-900/40 flex items-center justify-center flex-shrink-0">
-        <Zap className="w-4 h-4 text-violet-400" />
+      <div className="w-10 h-10 rounded-lg bg-nft/10 flex items-center justify-center flex-shrink-0">
+        <Zap className="w-4 h-4 text-nft" />
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm text-foreground truncate">{listing.castPreview}</p>
@@ -130,8 +130,8 @@ function NFTRow({ listing }: { listing: (typeof MOCK_LISTINGS)[0] }) {
         </div>
       </div>
       <div className="text-right flex-shrink-0">
-        <div className="font-bold text-sm gradient-text">{listing.priceStx} STX</div>
-        <button className="text-xs text-violet-400 hover:text-violet-300 mt-0.5 transition-colors">
+        <div className="font-bold text-sm text-primary">{listing.priceStx} STX</div>
+        <button className="text-xs text-primary hover:text-primary/80 mt-0.5 transition-colors">
           Buy now
         </button>
       </div>
@@ -167,10 +167,10 @@ export default function MarketplacePage() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 rounded-xl bg-violet-500/10">
-            <ShoppingBag className="w-6 h-6 text-violet-400" />
+          <div className="p-2 rounded-xl bg-primary/10">
+            <ShoppingBag className="w-6 h-6 text-primary" />
           </div>
-          <h1 className="text-2xl font-bold gradient-text">NFT Marketplace</h1>
+          <h1 className="text-2xl font-bold text-foreground">NFT Marketplace</h1>
         </div>
         <p className="text-muted-foreground">Buy and sell Cast NFTs minted on the Stacks blockchain</p>
       </div>
@@ -180,10 +180,10 @@ export default function MarketplacePage() {
         {STATS.map(({ label, value, icon: Icon }) => (
           <div key={label} className="glass rounded-xl p-4">
             <div className="flex items-center gap-2 mb-1">
-              <Icon className="w-4 h-4 text-violet-400" />
+              <Icon className="w-4 h-4 text-primary" />
               <span className="text-xs text-muted-foreground">{label}</span>
             </div>
-            <div className="font-bold text-lg gradient-text">{value}</div>
+            <div className="font-bold text-lg text-primary">{value}</div>
           </div>
         ))}
       </div>
@@ -211,13 +211,13 @@ export default function MarketplacePage() {
           </select>
           <button
             onClick={() => setView('grid')}
-            className={cn('p-2 rounded-lg transition-colors', view === 'grid' ? 'bg-violet-500/20 text-violet-400' : 'text-muted-foreground hover:text-foreground')}
+            className={cn('p-2 rounded-lg transition-colors', view === 'grid' ? 'bg-primary/15 text-primary' : 'text-muted-foreground hover:text-foreground')}
           >
             <Grid3X3 className="w-4 h-4" />
           </button>
           <button
             onClick={() => setView('list')}
-            className={cn('p-2 rounded-lg transition-colors', view === 'list' ? 'bg-violet-500/20 text-violet-400' : 'text-muted-foreground hover:text-foreground')}
+            className={cn('p-2 rounded-lg transition-colors', view === 'list' ? 'bg-primary/15 text-primary' : 'text-muted-foreground hover:text-foreground')}
           >
             <List className="w-4 h-4" />
           </button>
@@ -233,7 +233,7 @@ export default function MarketplacePage() {
             className={cn(
               'px-4 py-1.5 rounded-lg text-sm font-medium transition-colors',
               tab === key
-                ? 'bg-violet-500/20 text-violet-300'
+                ? 'bg-primary/15 text-primary'
                 : 'text-muted-foreground hover:text-foreground',
             )}
           >

@@ -72,7 +72,7 @@ export default function MiniAppsPage() {
             <Link
               key={app.id}
               href={app.url}
-              className="bg-gradient-to-br from-primary/20 to-purple-500/20 border border-primary/30 rounded-xl p-6 hover:scale-[1.02] transition-transform"
+              className="bg-gradient-to-br from-primary/20 to-accent-foreground/20 border border-primary/30 rounded-xl p-6 hover:scale-[1.02] transition-transform"
             >
               <div className="flex items-start gap-4">
                 <div className="w-16 h-16 bg-primary/20 rounded-xl flex items-center justify-center text-3xl">
@@ -141,7 +141,7 @@ export default function MiniAppsPage() {
       </div>
 
       {/* Developer Section */}
-      <div className="mt-12 bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 rounded-xl p-6">
+      <div className="mt-12 bg-gradient-to-r from-primary/10 to-accent-foreground/10 border border-primary/20 rounded-xl p-6">
         <h2 className="text-xl font-bold mb-2">Build Your Own Mini App</h2>
         <p className="text-muted-foreground mb-4">
           Create and publish mini apps for the StackX community

@@ -51,19 +51,19 @@ export function HospitalGrowthChart({ data }: HospitalGrowthChartProps) {
           <Line
             type="monotone"
             dataKey="total"
-            stroke="#3B82F6"
+            stroke="#1865ff"
             strokeWidth={2}
             name="Total Hospitals"
-            dot={{ fill: '#3B82F6', r: 4 }}
+            dot={{ fill: '#1865ff', r: 4 }}
             activeDot={{ r: 6 }}
           />
           <Line
             type="monotone"
             dataKey="active"
-            stroke="#10B981"
+            stroke="#04704b"
             strokeWidth={2}
             name="Active"
-            dot={{ fill: '#10B981', r: 4 }}
+            dot={{ fill: '#04704b', r: 4 }}
             activeDot={{ r: 6 }}
           />
           <Line

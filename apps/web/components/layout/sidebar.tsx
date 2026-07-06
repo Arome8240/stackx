@@ -33,10 +33,10 @@ export function Sidebar() {
     <aside className="fixed left-0 top-0 h-screen w-64 border-r border-border bg-card/50 backdrop-blur-md hidden lg:flex flex-col p-4 z-40">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2.5 px-3 py-2 mb-4 group">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-glow-sm group-hover:shadow-glow transition-all duration-300">
+        <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center transition-all duration-300">
           <Zap className="w-4 h-4 text-white fill-white" />
         </div>
-        <span className="text-xl font-bold gradient-text">StackX</span>
+        <span className="text-xl font-bold text-primary">StackX</span>
       </Link>
 
       {/* Navigation */}

@@ -27,7 +27,7 @@ export function Timeline({ items, className }: TimelineProps) {
           const Icon = item.icon;
           return (
             <li key={item.id} className="relative flex gap-4 pl-10">
-              <div className={cn('absolute left-2 -translate-x-1/2 w-5 h-5 rounded-full border-2 flex items-center justify-center', item.active ? 'bg-violet-600 border-violet-600' : 'bg-background border-border/60')}>
+              <div className={cn('absolute left-2 -translate-x-1/2 w-5 h-5 rounded-full border-2 flex items-center justify-center', item.active ? 'bg-primary border-primary' : 'bg-background border-border/60')}>
                 {Icon && <Icon className={cn('w-2.5 h-2.5', item.iconColor ?? 'text-muted-foreground', item.active && 'text-white')} />}
               </div>
               <div className="flex-1 min-w-0">

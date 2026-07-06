@@ -10,11 +10,11 @@ import { formatNumber } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 
 const PLATFORM_STATS = [
-  { label: 'Total Users', value: 42_184, change: '+1.2%', icon: Users, color: 'violet' },
+  { label: 'Total Users', value: 42_184, change: '+1.2%', icon: Users, color: 'primary' },
   { label: 'Total Casts', value: 1_284_000, change: '+3.8%', icon: MessageSquare, color: 'blue' },
   { label: 'Channels', value: 3_200, change: '+0.9%', icon: Hash, color: 'green' },
   { label: 'NFTs Minted', value: 8_900, change: '+12.4%', icon: ShoppingBag, color: 'orange' },
-  { label: 'STX Treasury', value: 184_500_000, change: '+5.1%', icon: Zap, color: 'fuchsia' },
+  { label: 'STX Treasury', value: 184_500_000, change: '+5.1%', icon: Zap, color: 'accent' },
   { label: 'Reports Pending', value: 34, change: '-8', icon: Flag, color: 'red' },
 ];
 
@@ -37,11 +37,11 @@ const RECENT_USERS = [
 type AdminTab = 'overview' | 'users' | 'content' | 'finance';
 
 const colorMap: Record<string, string> = {
-  violet: 'text-violet-400 bg-violet-500/10',
+  primary: 'text-primary bg-primary/10',
   blue: 'text-blue-400 bg-blue-500/10',
   green: 'text-green-400 bg-green-500/10',
   orange: 'text-orange-400 bg-orange-500/10',
-  fuchsia: 'text-fuchsia-400 bg-fuchsia-500/10',
+  accent: 'text-accent-foreground bg-accent/10',
   red: 'text-red-400 bg-red-500/10',
 };
 
@@ -60,8 +60,8 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold gradient-text flex items-center gap-2">
-            <Shield className="w-6 h-6 text-violet-400" />
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Shield className="w-6 h-6 text-primary" />
             Admin Dashboard
           </h1>
           <p className="text-muted-foreground text-sm mt-1">StackX Platform Management</p>
@@ -80,7 +80,7 @@ export default function AdminDashboard() {
             onClick={() => setTab(key)}
             className={cn(
               'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-              tab === key ? 'bg-violet-500/20 text-violet-300' : 'text-muted-foreground hover:text-foreground',
+              tab === key ? 'bg-primary/15 text-primary' : 'text-muted-foreground hover:text-foreground',
             )}
           >
             <Icon className="w-4 h-4" />
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
             <div className="glass rounded-2xl p-5">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold text-foreground flex items-center gap-2">
-                  <Users className="w-4 h-4 text-violet-400" />
+                  <Users className="w-4 h-4 text-primary" />
                   Recent Registrations
                 </h2>
                 <span className="text-xs text-muted-foreground">+42 today</span>
@@ -157,15 +157,15 @@ export default function AdminDashboard() {
               <div className="space-y-3">
                 {RECENT_USERS.map((user) => (
                   <div key={user.id} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-violet-500/20 flex items-center justify-center text-xs font-bold text-violet-400 shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-xs font-bold text-primary shrink-0">
                       {user.username[0].toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
                         <span className="text-sm font-medium text-foreground">@{user.username}</span>
-                        {user.isVerified && <CheckCircle className="w-3 h-3 text-violet-400" />}
+                        {user.isVerified && <CheckCircle className="w-3 h-3 text-primary" />}
                         {user.tier > 0 && (
-                          <span className="text-xs bg-violet-500/20 text-violet-400 px-1.5 rounded">
+                          <span className="text-xs bg-primary/15 text-primary px-1.5 rounded">
                             Tier {user.tier}
                           </span>
                         )}
@@ -173,7 +173,7 @@ export default function AdminDashboard() {
                       <div className="text-xs text-muted-foreground">{user.castsCount} casts · {user.joinedAt}</div>
                     </div>
                     <div className="flex gap-1">
-                      <button className="p-1 rounded hover:bg-violet-500/20 text-muted-foreground hover:text-violet-400 transition-colors" title="Verify">
+                      <button className="p-1 rounded hover:bg-primary/15 text-muted-foreground hover:text-primary transition-colors" title="Verify">
                         <Shield className="w-3.5 h-3.5" />
                       </button>
                       <button className="p-1 rounded hover:bg-red-500/20 text-muted-foreground hover:text-red-400 transition-colors" title="Suspend">
@@ -208,11 +208,11 @@ export default function AdminDashboard() {
                   <tr key={user.id} className="border-b border-border/20 hover:bg-white/[0.02]">
                     <td className="py-3 font-medium text-foreground flex items-center gap-2">
                       @{user.username}
-                      {user.isVerified && <CheckCircle className="w-3.5 h-3.5 text-violet-400" />}
+                      {user.isVerified && <CheckCircle className="w-3.5 h-3.5 text-primary" />}
                     </td>
                     <td className="py-3 text-muted-foreground">{user.email}</td>
                     <td className="py-3">
-                      <span className={cn('px-2 py-0.5 rounded text-xs', user.tier === 2 ? 'bg-violet-500/20 text-violet-400' : user.tier === 1 ? 'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-muted-foreground')}>
+                      <span className={cn('px-2 py-0.5 rounded text-xs', user.tier === 2 ? 'bg-primary/15 text-primary' : user.tier === 1 ? 'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-muted-foreground')}>
                         Tier {user.tier}
                       </span>
                     </td>
@@ -220,7 +220,7 @@ export default function AdminDashboard() {
                     <td className="py-3 text-muted-foreground">{user.joinedAt}</td>
                     <td className="py-3">
                       <div className="flex gap-2">
-                        <button className="text-xs text-violet-400 hover:text-violet-300 transition-colors">Verify</button>
+                        <button className="text-xs text-primary hover:text-primary/80 transition-colors">Verify</button>
                         <button className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors">Suspend</button>
                         <button className="text-xs text-red-400 hover:text-red-300 transition-colors">Delete</button>
                       </div>
@@ -269,13 +269,13 @@ export default function AdminDashboard() {
         <div className="grid md:grid-cols-2 gap-6">
           <div className="glass rounded-2xl p-5">
             <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-              <Zap className="w-4 h-4 text-violet-400" />
+              <Zap className="w-4 h-4 text-primary" />
               Treasury Overview
             </h2>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-muted-foreground">Total Treasury</span>
-                <span className="font-bold gradient-text">184.5M STX</span>
+                <span className="font-bold text-primary">184.5M STX</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-muted-foreground">Platform Fees (2.5%)</span>
@@ -297,7 +297,7 @@ export default function AdminDashboard() {
           </div>
           <div className="glass rounded-2xl p-5">
             <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-              <Settings className="w-4 h-4 text-violet-400" />
+              <Settings className="w-4 h-4 text-primary" />
               Fee Settings
             </h2>
             <div className="space-y-4">
@@ -312,7 +312,7 @@ export default function AdminDashboard() {
                     <div className="text-xs text-muted-foreground">{bps} BPS</div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-violet-400">{current}</span>
+                    <span className="text-sm font-medium text-primary">{current}</span>
                     <button className="text-xs text-muted-foreground hover:text-foreground transition-colors">Edit</button>
                   </div>
                 </div>

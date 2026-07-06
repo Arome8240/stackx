@@ -28,16 +28,16 @@ export function TokenCirculationChart({ data }: TokenCirculationChartProps) {
         >
           <defs>
             <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8}/>
-              <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.1}/>
+              <stop offset="5%" stopColor="#1865ff" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#1865ff" stopOpacity={0.1}/>
             </linearGradient>
             <linearGradient id="colorStaked" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8}/>
-              <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.1}/>
+              <stop offset="5%" stopColor="#045137" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#045137" stopOpacity={0.1}/>
             </linearGradient>
             <linearGradient id="colorCirculating" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#10B981" stopOpacity={0.8}/>
-              <stop offset="95%" stopColor="#10B981" stopOpacity={0.1}/>
+              <stop offset="5%" stopColor="#04704b" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#04704b" stopOpacity={0.1}/>
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -65,7 +65,7 @@ export function TokenCirculationChart({ data }: TokenCirculationChartProps) {
           <Area
             type="monotone"
             dataKey="totalSupply"
-            stroke="#3B82F6"
+            stroke="#1865ff"
             fillOpacity={1}
             fill="url(#colorTotal)"
             name="Total Supply"
@@ -73,7 +73,7 @@ export function TokenCirculationChart({ data }: TokenCirculationChartProps) {
           <Area
             type="monotone"
             dataKey="staked"
-            stroke="#8B5CF6"
+            stroke="#045137"
             fillOpacity={1}
             fill="url(#colorStaked)"
             name="Staked"
@@ -81,7 +81,7 @@ export function TokenCirculationChart({ data }: TokenCirculationChartProps) {
           <Area
             type="monotone"
             dataKey="circulating"
-            stroke="#10B981"
+            stroke="#04704b"
             fillOpacity={1}
             fill="url(#colorCirculating)"
             name="Circulating"

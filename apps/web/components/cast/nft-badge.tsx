@@ -14,14 +14,14 @@ interface NftBadgeProps {
 export function NftBadge({ tokenId, className, variant = 'inline' }: NftBadgeProps) {
   if (variant === 'card') {
     return (
-      <div className={cn('flex items-center gap-2 p-2.5 rounded-xl bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20', className)}>
-        <Gem className="w-4 h-4 text-violet-400 shrink-0" />
+      <div className={cn('flex items-center gap-2 p-2.5 rounded-xl bg-nft/10 border border-nft/20', className)}>
+        <Gem className="w-4 h-4 text-nft shrink-0" />
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-medium text-violet-400">Cast NFT</p>
+          <p className="text-xs font-medium text-nft">Cast NFT</p>
           {tokenId && <p className="text-xs text-muted-foreground">Token #{tokenId}</p>}
         </div>
         {tokenId && (
-          <Link href={`/marketplace/${tokenId}`} className="text-muted-foreground hover:text-violet-400 transition-colors">
+          <Link href={`/marketplace/${tokenId}`} className="text-muted-foreground hover:text-nft transition-colors">
             <ExternalLink className="w-3.5 h-3.5" />
           </Link>
         )}
@@ -30,7 +30,7 @@ export function NftBadge({ tokenId, className, variant = 'inline' }: NftBadgePro
   }
 
   return (
-    <span className={cn('inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-full bg-violet-500/15 text-violet-400 border border-violet-500/20', className)}>
+    <span className={cn('inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-full bg-nft/15 text-nft border border-nft/20', className)}>
       <Gem className="w-2.5 h-2.5" />
       NFT {tokenId ? `#${tokenId}` : ''}
     </span>

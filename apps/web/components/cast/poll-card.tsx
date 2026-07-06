@@ -45,12 +45,12 @@ export function PollCard({ castId }: PollCardProps) {
                 <div
                   className={cn(
                     'absolute inset-0 rounded-lg transition-all duration-700',
-                    isWinner ? 'bg-violet-500/20' : 'bg-white/[0.04]',
+                    isWinner ? 'bg-primary/15' : 'bg-white/[0.04]',
                   )}
                   style={{ width: `${pct}%` }}
                 />
                 <div className="relative flex items-center justify-between px-3 py-2 text-sm">
-                  <span className={cn('font-medium', isMyVote && 'text-violet-400')}>
+                  <span className={cn('font-medium', isMyVote && 'text-primary')}>
                     {option.text} {isMyVote && '✓'}
                   </span>
                   <span className="text-muted-foreground font-medium">{pct}%</span>
@@ -60,7 +60,7 @@ export function PollCard({ castId }: PollCardProps) {
               <button
                 onClick={() => voteMutation.mutate({ castId, optionIndex: i })}
                 disabled={voteMutation.isPending}
-                className="w-full text-left px-3 py-2 rounded-lg border border-border/40 hover:border-violet-500/50 hover:bg-violet-500/5 text-sm transition-colors"
+                className="w-full text-left px-3 py-2 rounded-lg border border-border/40 hover:border-primary/50 hover:bg-primary/5 text-sm transition-colors"
               >
                 {option.text}
               </button>

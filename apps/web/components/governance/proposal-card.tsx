@@ -34,7 +34,7 @@ const STATUS_CONFIG: Record<ProposalStatus, { label: string; icon: React.Element
   active: { label: 'Active', icon: Vote, color: 'text-green-400' },
   passed: { label: 'Passed', icon: CheckCircle, color: 'text-green-400' },
   rejected: { label: 'Rejected', icon: XCircle, color: 'text-red-400' },
-  executed: { label: 'Executed', icon: CheckCircle, color: 'text-violet-400' },
+  executed: { label: 'Executed', icon: CheckCircle, color: 'text-primary' },
 };
 
 export function ProposalCard({ proposal, myVote, onVote, voting }: ProposalCardProps) {
@@ -57,7 +57,7 @@ export function ProposalCard({ proposal, myVote, onVote, voting }: ProposalCardP
               {statusCfg.label}
             </span>
           </div>
-          <Link href={`/governance/${proposal._id}`} className="font-semibold text-foreground hover:text-violet-400 transition-colors">
+          <Link href={`/governance/${proposal._id}`} className="font-semibold text-foreground hover:text-primary transition-colors">
             {proposal.title}
           </Link>
           <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{proposal.description}</p>

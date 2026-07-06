@@ -63,7 +63,7 @@ export function FileUpload({
         onDrop={handleDrop}
         className={cn(
           'relative flex flex-col items-center justify-center gap-2 p-8 rounded-xl border-2 border-dashed cursor-pointer transition-colors',
-          dragging ? 'border-violet-500 bg-violet-500/5' : 'border-border/60 hover:border-violet-500/50 hover:bg-white/[0.02]',
+          dragging ? 'border-ring bg-primary/5' : 'border-border/60 hover:border-ring/50 hover:bg-white/[0.02]',
         )}
       >
         <Upload className="w-8 h-8 text-muted-foreground" />

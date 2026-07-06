@@ -24,7 +24,7 @@ export default function NotificationsPage() {
     <div className="max-w-2xl mx-auto">
       <div className="sticky top-0 z-10 backdrop-blur-xl bg-background/80 border-b border-border/40 px-4 py-3 flex items-center justify-between">
         <h1 className="font-bold text-lg text-foreground flex items-center gap-2">
-          <Bell className="w-5 h-5 text-violet-400" />
+          <Bell className="w-5 h-5 text-primary" />
           Notifications
         </h1>
         <Button

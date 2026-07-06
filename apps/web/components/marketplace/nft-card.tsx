@@ -38,12 +38,12 @@ export function NFTCard({
 }: NFTCardProps) {
   return (
     <div className={cn('glass rounded-2xl overflow-hidden group', className)}>
-      <div className="relative aspect-square bg-gradient-to-br from-violet-900/30 to-fuchsia-900/30">
+      <div className="relative aspect-square bg-nft/10">
         {imageUrl ? (
           <img src={imageUrl} alt={title ?? `NFT #${tokenId}`} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <Gem className="w-12 h-12 text-violet-400/40" />
+            <Gem className="w-12 h-12 text-nft/40" />
           </div>
         )}
         <div className="absolute top-2 right-2">
@@ -62,7 +62,7 @@ export function NFTCard({
           {creator && (
             <Link href={`/profile/${creator.username}`} className="flex items-center gap-1.5 mt-1 group/creator">
               <Avatar size="xs" src={creator.avatarUrl} fallback={creator.displayName ?? creator.username} />
-              <span className="text-xs text-muted-foreground group-hover/creator:text-violet-400 transition-colors">
+              <span className="text-xs text-muted-foreground group-hover/creator:text-nft transition-colors">
                 @{creator.username}
               </span>
             </Link>
@@ -73,7 +73,7 @@ export function NFTCard({
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground">Price</p>
-              <p className="font-bold text-sm gradient-text">{formatNumber(priceStx)} STX</p>
+              <p className="font-bold text-sm text-nft">{formatNumber(priceStx)} STX</p>
             </div>
             <Button size="sm" variant="primary" onClick={onBuy} loading={buying}>
               Buy
@@ -82,7 +82,7 @@ export function NFTCard({
         ) : (
           <div className="flex items-center justify-between">
             <Badge variant="outline" className="text-xs">Not listed</Badge>
-            <Link href={`/marketplace/${tokenId}`} className="text-muted-foreground hover:text-violet-400 transition-colors">
+            <Link href={`/marketplace/${tokenId}`} className="text-muted-foreground hover:text-nft transition-colors">
               <ExternalLink className="w-3.5 h-3.5" />
             </Link>
           </div>

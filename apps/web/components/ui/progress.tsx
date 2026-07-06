@@ -12,7 +12,7 @@ interface ProgressProps {
   showLabel?: boolean;
   size?: 'sm' | 'md' | 'lg';
   animated?: boolean;
-  color?: 'violet' | 'green' | 'blue' | 'red' | 'yellow';
+  color?: 'primary' | 'green' | 'blue' | 'red' | 'yellow';
 }
 
 const sizeMap = {
@@ -22,7 +22,7 @@ const sizeMap = {
 };
 
 const colorMap = {
-  violet: 'bg-violet-500',
+  primary: 'bg-primary',
   green: 'bg-green-500',
   blue: 'bg-blue-500',
   red: 'bg-red-500',
@@ -38,7 +38,7 @@ export function Progress({
   showLabel = false,
   size = 'md',
   animated = false,
-  color = 'violet',
+  color = 'primary',
 }: ProgressProps) {
   const pct = Math.min(100, Math.max(0, (value / max) * 100));
 

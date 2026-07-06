@@ -24,12 +24,12 @@ export function StatCard({ label, value, change, changeLabel, icon: Icon, gradie
       <div className="flex items-center justify-between">
         <span className="text-xs text-muted-foreground font-medium">{label}</span>
         {Icon && (
-          <div className="w-7 h-7 rounded-lg bg-violet-500/10 flex items-center justify-center">
-            <Icon className="w-3.5 h-3.5 text-violet-400" />
+          <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Icon className="w-3.5 h-3.5 text-primary" />
           </div>
         )}
       </div>
-      <p className={cn('text-2xl font-bold', gradient ? 'gradient-text' : 'text-foreground')}>
+      <p className={cn('text-2xl font-bold', gradient ? 'text-primary' : 'text-foreground')}>
         {typeof value === 'number' ? value.toLocaleString() : value}
       </p>
       {change !== undefined && (

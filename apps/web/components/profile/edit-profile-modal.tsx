@@ -53,7 +53,7 @@ export function EditProfileModal({ user, open, onClose }: EditProfileModalProps)
         <div className="flex items-center gap-4">
           <div className="relative">
             <Avatar size="lg" src={user.avatarUrl} fallback={user.displayName ?? user.username} verified={user.tier === 2} />
-            <button className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-violet-600 flex items-center justify-center border-2 border-background">
+            <button className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-primary flex items-center justify-center border-2 border-background">
               <Camera className="w-3.5 h-3.5 text-white" />
             </button>
           </div>
