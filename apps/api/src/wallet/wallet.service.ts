@@ -33,11 +33,11 @@ export class WalletService {
   private readonly encryptionKey: Buffer;
 
   constructor(private readonly config: ConfigService) {
-    this.network = this.config.get<string>('app.stacksNetwork', 'testnet') as StacksNetworkName;
-    this.contractAddress = this.config.get<string>('app.contractAddress', '');
-    this.contractName = this.config.get<string>('app.contractName', 'social-platform-v2');
+    this.network = this.config.get<string>('STACKS_NETWORK', 'testnet') as StacksNetworkName;
+    this.contractAddress = this.config.get<string>('CONTRACT_ADDRESS', '');
+    this.contractName = this.config.get<string>('CONTRACT_NAME', 'social-platform-v2');
 
-    const keyBase64 = this.config.get<string>('app.walletEncryptionKey', '');
+    const keyBase64 = this.config.get<string>('WALLET_ENCRYPTION_KEY', '');
     if (!keyBase64) {
       throw new InternalServerErrorException(
         'WALLET_ENCRYPTION_KEY is not set — cannot start wallet service safely.',
