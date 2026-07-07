@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useThemeTransition } from '@/lib/hooks/use-theme-transition';
 
 const SECTIONS = [
   { id: 'account',       label: 'Account',        icon: User,    description: 'Manage your profile and username' },
@@ -22,7 +23,7 @@ type Theme = 'dark' | 'light' | 'system';
 
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = React.useState<string | null>(null);
-  const [theme, setTheme] = React.useState<Theme>('dark');
+  const { theme, setThemeWithTransition } = useThemeTransition();
   const [notifs, setNotifs] = React.useState({
     likes: true, recasts: true, replies: true, follows: true, tips: true, mentions: true,
   });
@@ -75,7 +76,7 @@ export default function SettingsPage() {
             ] as { value: Theme; label: string; icon: React.ReactNode }[]).map(({ value, label, icon }) => (
               <button
                 key={value}
-                onClick={() => setTheme(value)}
+                onClick={(e) => setThemeWithTransition(value, { x: e.clientX, y: e.clientY })}
                 className={cn(
                   'flex flex-col items-center gap-2 p-4 rounded-xl border transition-all',
                   theme === value ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:bg-accent',

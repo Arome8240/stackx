@@ -2,19 +2,19 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
 import { User, Settings, Wallet, LogOut, Moon, Sun } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
 import { Dropdown } from '@/components/ui/dropdown';
 import { useCurrentUser, useLogout } from '@/lib/hooks/use-auth';
 import { formatSTX } from '@/lib/utils';
 import { useWallet } from '@/lib/hooks/use-wallet';
+import { useThemeTransition } from '@/lib/hooks/use-theme-transition';
 
 export function UserMenu() {
   const { data: user } = useCurrentUser();
   const logout = useLogout();
   const { stxBalance } = useWallet();
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, setThemeWithTransition } = useThemeTransition();
   const router = useRouter();
 
   if (!user) return null;
@@ -39,7 +39,8 @@ export function UserMenu() {
     {
       label: resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode',
       icon: resolvedTheme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />,
-      onClick: () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark'),
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) =>
+        setThemeWithTransition(resolvedTheme === 'dark' ? 'light' : 'dark', { x: e.clientX, y: e.clientY }),
     },
     { label: '', separator: true },
     {

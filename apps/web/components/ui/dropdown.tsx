@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 interface DropdownItem {
   label: string;
   icon?: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   destructive?: boolean;
   disabled?: boolean;
   separator?: boolean;
@@ -52,7 +52,7 @@ export function Dropdown({ trigger, items, align = 'left', className }: Dropdown
             ) : (
               <button
                 key={i}
-                onClick={() => { item.onClick?.(); setOpen(false); }}
+                onClick={(e) => { item.onClick?.(e); setOpen(false); }}
                 disabled={item.disabled}
                 className={cn(
                   'w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-colors text-left',
