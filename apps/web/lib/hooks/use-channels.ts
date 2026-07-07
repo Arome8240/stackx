@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/components/ui/toast';
+import { api } from '@/lib/api-client';
 import type { Channel } from '@/lib/types/social';
 
 export function useChannels() {
@@ -26,15 +27,12 @@ export function useJoinChannel() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ channelId: _channelId, entryFee: _entryFee, sender: _sender }: { channelId: number; entryFee: number; sender: string }) => {
-      // wire: contract.joinChannel(channelId, entryFee, sender)
-      await new Promise(r => setTimeout(r, 1200));
-    },
+    mutationFn: (channelId: string) => api.post<void>(`/channels/${channelId}/join`),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['channels'] });
-      toast({ type: 'success', title: 'Joined channel!', description: 'Transaction confirmed on Stacks.' });
+      toast({ type: 'success', title: 'Joined channel!' });
     },
-    onError: () => toast({ type: 'error', title: 'Failed to join', description: 'Check your wallet balance.' }),
+    onError: () => toast({ type: 'error', title: 'Failed to join' }),
   });
 }
 

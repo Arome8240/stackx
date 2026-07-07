@@ -4,7 +4,6 @@ import * as React from 'react';
 import { useParams } from 'next/navigation';
 import { Hash, Users, Lock, MessageSquare } from 'lucide-react';
 import { useChannel, useJoinChannel } from '@/lib/hooks/use-channels';
-import { useWallet } from '@/lib/hooks/use-wallet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +13,6 @@ import { formatNumber, formatSTX } from '@/lib/utils';
 export default function ChannelPage() {
   const { name } = useParams<{ name: string }>();
   const { data: channel, isLoading } = useChannel(name);
-  const { address } = useWallet();
   const joinMutation = useJoinChannel();
 
   if (isLoading) {
@@ -66,7 +64,7 @@ export default function ChannelPage() {
             <Button
               variant={channel.isPaid ? 'primary' : 'outline'}
               size="sm"
-              onClick={() => joinMutation.mutate({ channelId: Number(channel.id), entryFee: channel.entryFee ?? 0, sender: address ?? '' })}
+              onClick={() => joinMutation.mutate(channel.id)}
               loading={joinMutation.isPending}
             >
               {channel.isPaid ? `Join · ${formatSTX(channel.entryFee ?? 0)} STX` : 'Join'}

@@ -3,34 +3,29 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Zap, ArrowRight, ArrowLeft, Check } from 'lucide-react';
+import { Zap, ArrowRight, ArrowLeft, Check, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Avatar } from '@/components/ui/avatar';
-import { useToast } from '@/components/ui/toast';
+import { useRegister } from '@/lib/hooks/use-auth';
 import { cn } from '@/lib/utils';
 
-const STEPS = ['Connect', 'Profile', 'Follow'];
+const STEPS = ['Account', 'Follow'];
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { toast } = useToast();
+  const register = useRegister();
   const [step, setStep] = React.useState(0);
-  const [loading, setLoading] = React.useState(false);
-  const [form, setForm] = React.useState({
-    username: '', displayName: '', bio: '', walletConnected: false,
-  });
+  const [form, setForm] = React.useState({ username: '', email: '', password: '' });
   const [followed, setFollowed] = React.useState<string[]>([]);
 
   const SUGGESTED = ['muneeb', 'satoshi_hiro', 'clarity_dev', 'punk6529'];
 
-  const nextStep = async () => {
+  const canContinue = step === 0 ? form.username && form.email && form.password.length >= 8 : true;
+
+  const nextStep = () => {
     if (step === STEPS.length - 1) {
-      setLoading(true);
-      await new Promise(r => setTimeout(r, 1000));
-      toast({ type: 'success', title: 'Welcome to StackX!', description: 'Your account is ready.' });
-      router.push('/');
+      register.mutate(form, { onSuccess: () => router.push('/') });
     } else {
       setStep(s => s + 1);
     }
@@ -67,49 +62,15 @@ export default function RegisterPage() {
       </div>
 
       <div className="w-full max-w-md bg-card border border-border rounded-2xl p-6 shadow-card-lg space-y-5">
-        {/* Step 0: Connect wallet */}
+        {/* Step 0: Account */}
         {step === 0 && (
           <>
             <div>
-              <h2 className="text-xl font-bold mb-1">Connect your wallet</h2>
-              <p className="text-sm text-muted-foreground">Your wallet is your identity on StackX.</p>
-            </div>
-            <div className="space-y-3">
-              {['Leather Wallet', 'Hiro Wallet', 'Xverse'].map(w => (
-                <button
-                  key={w}
-                  onClick={() => setForm(f => ({ ...f, walletConnected: true }))}
-                  className={cn(
-                    'w-full flex items-center gap-3 p-4 rounded-xl border transition-all text-left',
-                    form.walletConnected ? 'border-primary bg-primary/5' : 'border-border hover:bg-accent',
-                  )}
-                >
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                    🦊
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold">{w}</p>
-                    <p className="text-xs text-muted-foreground">Connect with {w}</p>
-                  </div>
-                  {form.walletConnected && <Check className="w-4 h-4 text-primary ml-auto" />}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-
-        {/* Step 1: Profile setup */}
-        {step === 1 && (
-          <>
-            <div>
-              <h2 className="text-xl font-bold mb-1">Set up your profile</h2>
-              <p className="text-sm text-muted-foreground">Tell the community who you are.</p>
+              <h2 className="text-xl font-bold mb-1">Create your account</h2>
+              <p className="text-sm text-muted-foreground">StackX creates and secures your Stacks wallet for you — no browser extension needed.</p>
             </div>
             <div className="flex justify-center">
-              <div className="relative">
-                <Avatar src={null} fallback={form.displayName || 'You'} size="2xl" />
-                <button className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">+</button>
-              </div>
+              <Avatar src={null} fallback={form.username || 'You'} size="2xl" />
             </div>
             <div className="space-y-3">
               <Input
@@ -120,26 +81,26 @@ export default function RegisterPage() {
                 hint="Letters, numbers, underscores only"
               />
               <Input
-                label="Display name"
-                placeholder="Your Name"
-                value={form.displayName}
-                onChange={e => setForm(f => ({ ...f, displayName: e.target.value }))}
+                label="Email"
+                type="email"
+                placeholder="you@example.com"
+                value={form.email}
+                onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
               />
-              <Textarea
-                label="Bio"
-                placeholder="Tell everyone a bit about yourself…"
-                rows={3}
-                value={form.bio}
-                onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
-                showCount
-                maxLength={500}
+              <Input
+                label="Password"
+                type="password"
+                placeholder="••••••••"
+                value={form.password}
+                onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+                hint="At least 8 characters"
               />
             </div>
           </>
         )}
 
-        {/* Step 2: Follow suggestions */}
-        {step === 2 && (
+        {/* Step 1: Follow suggestions */}
+        {step === 1 && (
           <>
             <div>
               <h2 className="text-xl font-bold mb-1">Follow some people</h2>
@@ -165,6 +126,13 @@ export default function RegisterPage() {
           </>
         )}
 
+        {register.isError && (
+          <div className="flex items-center gap-2 text-xs text-red-400">
+            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+            {register.error instanceof Error ? register.error.message : 'Registration failed'}
+          </div>
+        )}
+
         {/* Footer actions */}
         <div className="flex items-center justify-between pt-2">
           {step > 0 ? (
@@ -174,8 +142,8 @@ export default function RegisterPage() {
           ) : <div />}
           <Button
             size="md"
-            loading={loading}
-            disabled={step === 0 && !form.walletConnected}
+            loading={register.isPending}
+            disabled={!canContinue}
             icon={<ArrowRight className="w-4 h-4" />}
             iconPosition="right"
             onClick={nextStep}

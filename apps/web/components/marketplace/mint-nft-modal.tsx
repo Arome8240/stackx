@@ -5,7 +5,7 @@ import { Gem, AlertCircle, Info } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import { Button } from '@/components/ui/button';
 import { NumberInput } from '@/components/ui/number-input';
-import { callMintNFT } from '@/lib/stacks';
+import { api } from '@/lib/api-client';
 import type { Cast } from '@/lib/types/social';
 
 interface MintNftModalProps {
@@ -24,9 +24,9 @@ export function MintNftModal({ cast, open, onClose }: MintNftModalProps) {
     setLoading(true);
     setError(null);
     try {
-      // callMintNFT's on-chain signature is (castId, tokenUri, maxEdition) — the
-      // contract has no royalty parameter, so `royaltyPct` isn't sent on-chain.
-      await callMintNFT(Number(cast.id), '', maxEditions);
+      // The contract has no royalty parameter, so `royaltyPct` isn't sent on-chain.
+      // tokenUri is left empty until IPFS metadata upload is wired up.
+      await api.post('/nfts/mint', { castId: cast.id, tokenUri: '', maxEdition: maxEditions });
       onClose();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Minting failed');
