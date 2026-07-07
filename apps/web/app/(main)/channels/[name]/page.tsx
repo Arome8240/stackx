@@ -92,7 +92,7 @@ export default function ChannelPage() {
           </p>
           <Button
             variant="primary"
-            onClick={() => joinMutation.mutate({ channelId: Number(channel.id), entryFee: channel.entryFee ?? 0, sender: address ?? '' })}
+            onClick={() => joinMutation.mutate(channel.id)}
             loading={joinMutation.isPending}
           >
             <Lock className="w-4 h-4" />

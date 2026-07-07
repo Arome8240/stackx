@@ -1,34 +1,24 @@
 'use client';
 
-import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { userSession } from '@/lib/stacks-config';
+import { useCurrentUser } from './use-auth';
 
 export interface WalletState {
   connected: boolean;
   address: string | null;
-  stxBalance: number;       // microSTX
+  stxBalance: number; // microSTX — always 0 here, see useSTXBalance for a live balance
   userData: unknown | null;
 }
 
+/** Wallet identity now comes from the backend session — StackX holds custody, not the browser. */
 export function useWallet(): WalletState {
-  const [state, setState] = React.useState<WalletState>({
-    connected: false,
-    address: null,
+  const { data: user } = useCurrentUser();
+  return {
+    connected: !!user,
+    address: user?.stxAddress ?? null,
     stxBalance: 0,
-    userData: null,
-  });
-
-  React.useEffect(() => {
-    const isSignedIn = userSession.isUserSignedIn();
-    if (isSignedIn) {
-      const data = userSession.loadUserData();
-      const addr = data?.profile?.stxAddress?.testnet ?? data?.profile?.stxAddress?.mainnet ?? null;
-      setState({ connected: true, address: addr, stxBalance: 0, userData: data });
-    }
-  }, []);
-
-  return state;
+    userData: user ?? null,
+  };
 }
 
 export function useSTXBalance(address: string | null) {

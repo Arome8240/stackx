@@ -1,7 +1,7 @@
 'use client';
 
 import { useStacks } from '@/components/providers/stacks-provider';
-import { ConnectWallet } from '@/components/connect-wallet';
+import { UserMenu } from '@/components/layout/user-menu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
@@ -25,8 +25,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Staxial Health Admin</h1>
-          <p className="text-gray-400 mb-8">Connect your wallet to access the admin dashboard</p>
-          <ConnectWallet />
+          <p className="text-gray-400 mb-8">Sign in to access the admin dashboard</p>
+          <Link href="/login" className="btn-primary">Sign in</Link>
         </div>
       </div>
     );
@@ -40,7 +40,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <p className="text-gray-400 mb-8">
             You don't have permission to access the admin dashboard
           </p>
-          <ConnectWallet />
         </div>
       </div>
     );
@@ -56,7 +55,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               <h1 className="text-xl font-bold">Staxial Health</h1>
               <span className="ml-3 px-2 py-1 bg-blue-600 text-xs rounded">Admin</span>
             </div>
-            <ConnectWallet />
+            <UserMenu />
           </div>
         </div>
       </header>

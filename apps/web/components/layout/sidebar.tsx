@@ -8,7 +8,7 @@ import {
   PenSquare, ShoppingBag, Vote,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ConnectWallet } from '../wallet/connect-wallet';
+import { UserMenu } from './user-menu';
 import { Button } from '../ui/button';
 
 const navItems = [
@@ -71,9 +71,9 @@ export function Sidebar() {
         </Button>
       </div>
 
-      {/* Wallet / User area */}
+      {/* User area */}
       <div className="mt-3 pt-3 border-t border-border">
-        <ConnectWallet />
+        <UserMenu />
       </div>
     </aside>
   );
