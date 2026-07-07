@@ -38,7 +38,7 @@ export class Cast {
   @Prop({ default: false })
   hasNft: boolean;
 
-  @Prop({ default: null })
+  @Prop({ default: null, type: Number })
   nftId: number | null;
 
   @Prop({ default: false })
@@ -50,7 +50,7 @@ export class Cast {
   @Prop({ default: false })
   pinned: boolean;
 
-  @Prop({ default: null })
+  @Prop({ default: null, type: Number })
   onChainId: number | null;
 
   @Prop({ default: 0 })
