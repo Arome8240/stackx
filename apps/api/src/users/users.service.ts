@@ -2,12 +2,16 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { WalletService } from '../wallet/wallet.service';
 import { User, UserDocument } from './schemas/user.schema';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    private readonly wallet: WalletService,
+  ) {}
 
   findByEmail(email: string) {
     return this.userModel.findOne({ email: email.toLowerCase() }).select('+passwordHash').exec();
@@ -28,7 +32,20 @@ export class UsersService {
     if (exists) throw new ConflictException('Email already in use');
 
     const passwordHash = await bcrypt.hash(password, 10);
-    return this.userModel.create({ username, email, passwordHash, displayName: username });
+    const { stxAddress, encryptedPrivateKey } = await this.wallet.generateWallet();
+    return this.userModel.create({
+      username,
+      email,
+      passwordHash,
+      displayName: username,
+      stxAddress,
+      encryptedPrivateKey,
+    });
+  }
+
+  /** Fetches a user with their encrypted wallet key included, for signing on-chain actions. */
+  findByIdWithWalletKey(id: string) {
+    return this.userModel.findById(id).select('+encryptedPrivateKey').exec();
   }
 
   async updateProfile(id: string, dto: UpdateProfileDto): Promise<UserDocument> {

@@ -35,6 +35,9 @@ export class User {
   @Prop({ default: '' })
   stxAddress: string;
 
+  @Prop({ default: '', select: false })
+  encryptedPrivateKey: string;
+
   @Prop({ default: false })
   isVerified: boolean;
 

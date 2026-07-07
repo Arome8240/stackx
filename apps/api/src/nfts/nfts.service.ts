@@ -1,12 +1,67 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { Pc, stringAsciiCV, uintCV } from '@stacks/transactions';
 import { Nft, NftDocument } from './schemas/nft.schema';
 import { paginate, Paginated } from '../common/interfaces/paginated.interface';
+import { WalletService } from '../wallet/wallet.service';
+import { UsersService } from '../users/users.service';
+import { CastsService } from '../casts/casts.service';
 
 @Injectable()
 export class NftsService {
-  constructor(@InjectModel(Nft.name) private readonly nftModel: Model<NftDocument>) {}
+  constructor(
+    @InjectModel(Nft.name) private readonly nftModel: Model<NftDocument>,
+    private readonly wallet: WalletService,
+    private readonly users: UsersService,
+    private readonly casts: CastsService,
+  ) {}
+
+  /**
+   * Signs and broadcasts a mint transaction for the given cast. Note: the contract assigns the new
+   * NFT's on-chain token ID only once the transaction confirms — this endpoint returns just the
+   * pending txId; syncing the resulting NFT record into MongoDB requires a chain indexer/webhook
+   * watching for the mint event, which doesn't exist yet (out of scope for this pass).
+   */
+  async mint(userId: string, castId: string, tokenUri: string, maxEdition: number): Promise<{ txId: string }> {
+    const cast = await this.casts.findById(castId);
+    if (!cast.onChainId) {
+      throw new BadRequestException('This cast has not been published on-chain yet — it cannot be minted.');
+    }
+
+    const user = await this.users.findByIdWithWalletKey(userId);
+    if (!user?.encryptedPrivateKey) {
+      throw new BadRequestException('You do not have a wallet.');
+    }
+
+    return this.wallet.signAndBroadcastContractCall(user.encryptedPrivateKey, {
+      functionName: 'mint-cast-nft',
+      functionArgs: [uintCV(cast.onChainId), stringAsciiCV(tokenUri), uintCV(maxEdition)],
+    });
+  }
+
+  /** Signs and broadcasts a buy transaction, then optimistically records the new ownership. */
+  async buy(buyerId: string, tokenId: number): Promise<NftDocument> {
+    const nft = await this.getByTokenId(tokenId);
+    if (!nft.isListed) {
+      throw new BadRequestException('This NFT is not listed for sale.');
+    }
+
+    const buyer = await this.users.findByIdWithWalletKey(buyerId);
+    if (!buyer?.encryptedPrivateKey || !buyer.stxAddress) {
+      throw new BadRequestException('You do not have a wallet.');
+    }
+
+    const priceMicroStx = Math.floor(nft.priceStx * 1_000_000);
+    await this.wallet.signAndBroadcastContractCall(buyer.encryptedPrivateKey, {
+      functionName: 'buy-nft',
+      functionArgs: [uintCV(tokenId)],
+      postConditions: [Pc.principal(buyer.stxAddress).willSendEq(priceMicroStx).ustx()],
+    });
+
+    await this.recordSale(tokenId, buyerId, nft.priceStx);
+    return this.getByTokenId(tokenId);
+  }
 
   async getListings(page = 1, limit = 20): Promise<Paginated<NftDocument>> {
     const skip = (page - 1) * limit;

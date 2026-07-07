@@ -1,9 +1,10 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser, JwtPayload } from '../common/decorators/current-user.decorator';
 import { Public } from '../common/decorators/public.decorator';
 import { TipsService } from './tips.service';
+import { SendTipDto } from './dto/send-tip.dto';
 
 @ApiTags('tips')
 @ApiBearerAuth()
@@ -11,6 +12,12 @@ import { TipsService } from './tips.service';
 @Controller({ path: 'tips', version: '1' })
 export class TipsController {
   constructor(private readonly tips: TipsService) {}
+
+  @Post()
+  @ApiOperation({ summary: 'Send a tip (signed and broadcast by the custodial wallet)' })
+  send(@CurrentUser() user: JwtPayload, @Body() dto: SendTipDto) {
+    return this.tips.sendTip(user.sub, dto.castId, dto.amountMicroStx);
+  }
 
   @Get('sent')
   @ApiOperation({ summary: 'Get tips sent by current user' })

@@ -77,6 +77,12 @@ export class ChannelsService {
     const channel = await this.channelModel.findById(channelId);
     if (!channel) throw new NotFoundException('Channel not found');
 
+    // NOTE: `Channel` has no on-chain numeric ID today (channel creation is DB-only, never
+    // published to the contract), so a paid channel's entry fee cannot be enforced/collected
+    // on-chain yet even now that wallet custody moved server-side — that requires first deciding
+    // how channels map to the contract's `join-channel(channel-id)` call. Out of scope for the
+    // custodial-wallet migration; this remains a DB-only membership record as it was before.
+
     const isMember = await this.memberModel.exists({
       channel: new Types.ObjectId(channelId),
       user: new Types.ObjectId(userId),

@@ -10,4 +10,5 @@ export const appConfig = registerAs('app', () => ({
   stacksNetwork: process.env.STACKS_NETWORK ?? 'testnet',
   contractAddress: process.env.CONTRACT_ADDRESS ?? '',
   contractName: process.env.CONTRACT_NAME ?? 'social-platform-v2',
+  walletEncryptionKey: process.env.WALLET_ENCRYPTION_KEY ?? '',
 }));

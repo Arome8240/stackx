@@ -1,9 +1,10 @@
-import { Controller, Get, Param, ParseIntPipe, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser, JwtPayload } from '../common/decorators/current-user.decorator';
 import { Public } from '../common/decorators/public.decorator';
 import { NftsService } from './nfts.service';
+import { MintNftDto } from './dto/mint-nft.dto';
 
 @ApiTags('nfts')
 @ApiBearerAuth()
@@ -11,6 +12,18 @@ import { NftsService } from './nfts.service';
 @Controller({ path: 'nfts', version: '1' })
 export class NftsController {
   constructor(private readonly nfts: NftsService) {}
+
+  @Post('mint')
+  @ApiOperation({ summary: 'Mint a cast as an NFT (signed and broadcast by the custodial wallet)' })
+  mint(@CurrentUser() user: JwtPayload, @Body() dto: MintNftDto) {
+    return this.nfts.mint(user.sub, dto.castId, dto.tokenUri, dto.maxEdition);
+  }
+
+  @Post(':tokenId/buy')
+  @ApiOperation({ summary: 'Buy a listed NFT (signed and broadcast by the custodial wallet)' })
+  buy(@CurrentUser() user: JwtPayload, @Param('tokenId', ParseIntPipe) tokenId: number) {
+    return this.nfts.buy(user.sub, tokenId);
+  }
 
   @Get()
   @Public()
