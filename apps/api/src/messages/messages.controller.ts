@@ -4,15 +4,13 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  IsString,
-  MaxLength,
-  MinLength,
   Param,
   Patch,
   Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { IsString, MaxLength, MinLength } from 'class-validator';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiProperty } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';

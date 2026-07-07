@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model, PipelineStage, Types } from 'mongoose';
 import { Message, MessageDocument } from './schemas/message.schema';
 import { paginate, Paginated } from '../common/interfaces/paginated.interface';
 
@@ -54,7 +54,7 @@ export class MessagesService {
   > {
     const oid = new Types.ObjectId(userId);
 
-    const pipeline = [
+    const pipeline: PipelineStage[] = [
       { $match: { deleted: false, $or: [{ sender: oid }, { recipient: oid }] } },
       { $sort: { createdAt: -1 } },
       {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PipelineStage } from 'mongoose';
 import { Cast, CastDocument } from '../casts/schemas/cast.schema';
 import { User, UserDocument } from '../users/schemas/user.schema';
 
@@ -85,7 +85,7 @@ export class SearchService {
   async getTrendingTopics(limit = 10): Promise<Array<{ topic: string; count: number }>> {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
-    const pipeline = [
+    const pipeline: PipelineStage[] = [
       { $match: { deleted: false, createdAt: { $gte: since } } },
       { $project: { words: { $split: ['$content', ' '] } } },
       { $unwind: '$words' },
