@@ -72,6 +72,30 @@ export function useRegister() {
   });
 }
 
+export function useForgotPassword() {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (email: string) =>
+      api.post<{ message: string }>('/auth/forgot-password', { email }),
+    onError: (err: Error) => {
+      toast({ type: 'error', title: 'Something went wrong', description: err.message });
+    },
+  });
+}
+
+export function useResetPassword() {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (payload: { token: string; newPassword: string }) =>
+      api.post<{ message: string }>('/auth/reset-password', payload),
+    onError: (err: Error) => {
+      toast({ type: 'error', title: 'Reset failed', description: err.message });
+    },
+  });
+}
+
 export function useLogout() {
   const qc = useQueryClient();
 

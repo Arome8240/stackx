@@ -11,4 +11,5 @@ export const appConfig = registerAs('app', () => ({
   contractAddress: process.env.CONTRACT_ADDRESS ?? '',
   contractName: process.env.CONTRACT_NAME ?? 'social-platform-v2',
   walletEncryptionKey: process.env.WALLET_ENCRYPTION_KEY ?? '',
+  frontendUrl: process.env.FRONTEND_URL ?? 'http://localhost:3000',
 }));

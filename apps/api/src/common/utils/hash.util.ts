@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import { createHash } from 'crypto';
 
 const SALT_ROUNDS = 12;
 
@@ -26,4 +27,9 @@ export function generateToken(length = 32): string {
   const crypto = require('crypto');
   crypto.randomFillSync(bytes);
   return Array.from(bytes).map((b: number) => chars[b % chars.length]).join('');
+}
+
+/** One-way hash for opaque tokens (e.g. password-reset tokens) so only the hash is ever stored at rest. */
+export function hashToken(token: string): string {
+  return createHash('sha256').update(token).digest('hex');
 }

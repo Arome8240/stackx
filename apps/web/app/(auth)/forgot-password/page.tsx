@@ -1,68 +1,75 @@
 'use client';
 
+import * as React from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
-import { Input } from '../../../components/ui/input';
-import { Button } from '../../../components/ui/button';
+import { Zap, ArrowLeft, Mail, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useForgotPassword } from '@/lib/hooks/use-auth';
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const forgotPassword = useForgotPassword();
+  const [email, setEmail] = React.useState('');
 
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    // TODO: wire to API reset endpoint
-    await new Promise((r) => setTimeout(r, 800));
-    setLoading(false);
-    setSubmitted(true);
-  }
-
-  if (submitted) {
-    return (
-      <>
-        <h1 className="text-3xl font-extrabold tracking-tight text-white">Check your email</h1>
-        <p className="text-sm text-zinc-400">
-          If an account exists for <span className="text-white">{email}</span>, you&apos;ll receive
-          a reset link shortly.
-        </p>
-        <Link
-          href="/login"
-          className="block text-center text-sm font-semibold text-white hover:underline"
-        >
-          Back to sign in
-        </Link>
-      </>
-    );
-  }
+    forgotPassword.mutate(email);
+  };
 
   return (
-    <>
-      <h1 className="text-3xl font-extrabold tracking-tight text-white">Reset your password</h1>
-      <p className="text-sm text-zinc-400">
-        Enter your email and we&apos;ll send you a link to reset your password.
-      </p>
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-12">
+      <Link href="/" className="flex items-center gap-2.5 mb-10">
+        <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center">
+          <Zap className="w-5 h-5 text-white fill-white" />
+        </div>
+        <span className="text-2xl font-bold text-primary">StackX</span>
+      </Link>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Email"
-          type="email"
-          autoComplete="email"
-          value={email}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-          required
-        />
-        <Button type="submit" loading={loading}>
-          Send reset link
-        </Button>
-      </form>
+      <div className="w-full max-w-sm space-y-6">
+        {forgotPassword.isSuccess ? (
+          <div className="text-center space-y-4">
+            <div className="w-14 h-14 rounded-full bg-success/10 flex items-center justify-center mx-auto">
+              <CheckCircle className="w-7 h-7 text-success" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold mb-1">Check your email</h1>
+              <p className="text-muted-foreground text-sm">
+                If an account exists for <span className="text-foreground">{email}</span>, you'll receive a
+                reset link shortly.
+              </p>
+            </div>
+            <Link href="/login" className="text-sm text-primary hover:underline font-medium inline-flex items-center gap-1.5">
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Back to sign in
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div>
+              <h1 className="text-2xl font-bold mb-1">Reset your password</h1>
+              <p className="text-muted-foreground text-sm">Enter your email and we'll send you a link to reset your password.</p>
+            </div>
 
-      <p className="text-center text-sm text-zinc-500">
-        <Link href="/login" className="font-semibold text-white hover:underline">
-          Back to sign in
-        </Link>
-      </p>
-    </>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Input
+                label="Email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+              />
+              <Button type="submit" className="w-full" size="lg" loading={forgotPassword.isPending} icon={<Mail className="w-4 h-4" />}>
+                Send reset link
+              </Button>
+            </form>
+
+            <p className="text-center text-sm text-muted-foreground">
+              <Link href="/login" className="text-primary hover:underline font-medium">Back to sign in</Link>
+            </p>
+          </>
+        )}
+      </div>
+    </div>
   );
 }

@@ -21,6 +21,10 @@ export class UsersService {
     return this.userModel.findById(id).exec();
   }
 
+  findByIdWithPassword(id: string) {
+    return this.userModel.findById(id).select('+passwordHash').exec();
+  }
+
   async findByUsername(username: string): Promise<UserDocument> {
     const user = await this.userModel.findOne({ username: username.toLowerCase() }).exec();
     if (!user) throw new NotFoundException(`User @${username} not found`);
@@ -46,6 +50,28 @@ export class UsersService {
   /** Fetches a user with their encrypted wallet key included, for signing on-chain actions. */
   findByIdWithWalletKey(id: string) {
     return this.userModel.findById(id).select('+encryptedPrivateKey').exec();
+  }
+
+  findByResetTokenHash(tokenHash: string) {
+    return this.userModel
+      .findOne({ resetPasswordTokenHash: tokenHash, resetPasswordExpires: { $gt: new Date() } })
+      .select('+resetPasswordTokenHash +resetPasswordExpires')
+      .exec();
+  }
+
+  async setResetToken(id: string, tokenHash: string, expires: Date) {
+    await this.userModel.findByIdAndUpdate(id, {
+      resetPasswordTokenHash: tokenHash,
+      resetPasswordExpires: expires,
+    }).exec();
+  }
+
+  async resetPassword(id: string, passwordHash: string) {
+    await this.userModel.findByIdAndUpdate(id, {
+      passwordHash,
+      resetPasswordTokenHash: null,
+      resetPasswordExpires: null,
+    }).exec();
   }
 
   async updateProfile(id: string, dto: UpdateProfileDto): Promise<UserDocument> {

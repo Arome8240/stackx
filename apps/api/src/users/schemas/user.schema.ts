@@ -38,6 +38,12 @@ export class User {
   @Prop({ default: '', select: false })
   encryptedPrivateKey: string;
 
+  @Prop({ default: null, select: false })
+  resetPasswordTokenHash: string | null;
+
+  @Prop({ default: null, select: false })
+  resetPasswordExpires: Date | null;
+
   @Prop({ default: false })
   isVerified: boolean;
 
