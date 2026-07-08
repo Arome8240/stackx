@@ -21,6 +21,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   validate(payload: JwtPayload) {
     if (!payload.sub) throw new UnauthorizedException();
-    return { id: payload.sub, email: payload.email, username: payload.username };
+    // Field names must match `JwtPayload` (`.sub`, not `.id`) — every controller's
+    // `@CurrentUser() user: JwtPayload` reads `user.sub` to identify the caller.
+    return { sub: payload.sub, email: payload.email, username: payload.username };
   }
 }
