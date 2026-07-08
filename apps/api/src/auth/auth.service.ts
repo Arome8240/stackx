@@ -50,7 +50,8 @@ export class AuthService {
       const expires = new Date(Date.now() + RESET_TOKEN_TTL_MS);
       await this.users.setResetToken((user._id as { toString(): string }).toString(), hashToken(rawToken), expires);
 
-      const resetUrl = `${this.config.get<string>('app.frontendUrl')}/reset-password/${rawToken}`;
+      const frontendUrl = this.config.get<string>('FRONTEND_URL', 'http://localhost:3000');
+      const resetUrl = `${frontendUrl}/reset-password/${rawToken}`;
       // TODO: send this via a real email provider once one is configured — logged for now.
       console.log(`Password reset requested for ${user.email}: ${resetUrl}`);
     }
